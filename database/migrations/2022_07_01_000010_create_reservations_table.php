@@ -1,0 +1,53 @@
+<?php
+
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateReservationsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('reservations', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('gym_class_id')->index();
+            $table->unsignedBigInteger('week_day_id')->index();
+            $table->integer('declined');
+            $table->integer('canceled');
+            $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('gym_class_id')
+                ->references('id')->on('gym_classes')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->foreign('week_day_id')
+                ->references('id')->on('week_days')
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+//            $table->unique(['user_id', 'gym_class_id', 'week_day_id']);
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('reservations');
+    }
+}

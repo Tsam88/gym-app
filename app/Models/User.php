@@ -13,20 +13,30 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -34,11 +44,22 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be cast.
+     * One to Many association for Subscription
      *
-     * @var array<string, string>
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function subscription()
+    {
+        return $this->hasMany(Subscriptions::class);
+    }
+
+    /**
+     * One to Many association for Reservation
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reservation()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }
