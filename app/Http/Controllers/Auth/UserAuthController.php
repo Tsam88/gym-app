@@ -12,6 +12,7 @@ class UserAuthController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|max:255',
+            'surname' => 'required|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed'
         ]);
@@ -33,7 +34,7 @@ class UserAuthController extends Controller
         ]);
 
         if (!auth()->attempt($data)) {
-            return response(['error_message' => 'Incorrect Details. 
+            return response(['error_message' => 'Incorrect Details.
             Please try again']);
         }
 

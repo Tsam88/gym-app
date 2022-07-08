@@ -2,15 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_STUDENT = 'student';
+
+    /**
+     * The number of models to return for pagination.
+     *
+     * @var int
+     */
+    protected $perPage = 1000;
 
     /**
      * The attributes that should be cast.
@@ -28,7 +39,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
+        'phone_number',
         'password',
         'role',
     ];
@@ -61,5 +74,24 @@ class User extends Authenticatable
     public function reservation()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    /**
+     * True if user is admin
+     *
+     * @return bool
+     */
+    public function getIsAdminAttribute()
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+    /**
+     * True if user is student
+     *
+     * @return bool
+     */
+    public function getIsStudentAttribute()
+    {
+        return $this->role === self::ROLE_STUDENT;
     }
 }
