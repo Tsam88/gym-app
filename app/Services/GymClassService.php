@@ -77,6 +77,9 @@ class GymClassService
 
         try {
             $gymClass = GymClass::create($data);
+
+            // create week days for gym class
+            $gymClass->weekDays()->createMany($data['week_days']);
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
             DB::rollBack();

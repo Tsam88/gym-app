@@ -61,7 +61,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscription()
+    public function subscriptions()
     {
         return $this->hasMany(Subscriptions::class);
     }
@@ -71,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reservation()
+    public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }

@@ -8,6 +8,7 @@ use App\Exceptions\DeleteUserHasParcelsException;
 use App\Exceptions\NotActiveUserException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\NotVerifiedUserException;
+use App\Models\WeekDay;
 use App\Rules\CheckPassword;
 
 class GymClassValidation extends AbstractValidation
@@ -37,6 +38,30 @@ class GymClassValidation extends AbstractValidation
             'required',
             'integer',
             'gt:0',
+        ],
+        'week_days' => [
+            'array',
+            'min:1',
+        ],
+        'week_days.*' => [
+            'required',
+            'array',
+        ],
+        'week_days.*.gym_class_id' => [
+            'required',
+            'integer',
+        ],
+        'week_days.*.day' => [
+            'required',
+            'string in:' . WeekDay::WEEK_DAYS,
+        ],
+        'week_days.*.start_time' => [
+            'required',
+            'time',
+        ],
+        'week_days.*.end_time' => [
+            'required',
+            'time',
         ],
         'items_per_page' => [
             'integer',

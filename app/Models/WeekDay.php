@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class WeekDay extends Model
 {
+    public const WEEK_DAYS = [
+        'SUNDAY',
+        'MONDAY',
+        'TUESDAY',
+        'WEDNESDAY',
+        'THURSDAY',
+        'FRIDAY',
+        'SATURDAY',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,7 +53,7 @@ class WeekDay extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reservation()
+    public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }

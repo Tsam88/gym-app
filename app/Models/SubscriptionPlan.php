@@ -46,7 +46,7 @@ class SubscriptionPlan extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function subscription()
+    public function subscriptions()
     {
         return $this->hasMany(Subscriptions::class);
     }

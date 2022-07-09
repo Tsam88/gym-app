@@ -33,7 +33,7 @@ class GymClass extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function weekDay()
+    public function weekDays()
     {
         return $this->hasMany(WeekDay::class);
     }
@@ -43,7 +43,7 @@ class GymClass extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function reservation()
+    public function reservations()
     {
         return $this->hasMany(Reservation::class);
     }
