@@ -74,7 +74,7 @@ class UserController extends Controller
         // get user
         $user = $request->user();
 
-        // register user
+        // update user profile
         $this->userService->updateProfile($data, $user);
 
         return new Response(null, Response::HTTP_NO_CONTENT);

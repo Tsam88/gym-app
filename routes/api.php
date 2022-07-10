@@ -61,7 +61,13 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::get('/', 'Admin\GymClassController@index')->name('admin.gym-classes.index');
             Route::post('/', 'Admin\GymClassController@store')->name('admin.gym-classes.store');
             Route::get('{gymClass}', 'Admin\GymClassController@show')->name('admin.gym-classes.show');
+        });
 
+        Route::group(['prefix' => 'subscription-plans'], function () {
+            Route::get('/', 'Admin\SubscriptionPlanController@index')->name('admin.subscription-plans.index');
+            Route::post('/', 'Admin\SubscriptionPlanController@store')->name('admin.subscription-plans.store');
+            Route::patch('{subscriptionPlan}', 'Admin\SubscriptionPlanController@update')->name('admin.subscription-plans.update');
+            Route::get('{subscriptionPlan}', 'Admin\SubscriptionPlanController@show')->name('admin.subscription-plans.show');
         });
     });
 

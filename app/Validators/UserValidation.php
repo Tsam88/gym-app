@@ -54,7 +54,7 @@ class UserValidation extends AbstractValidation
 
 
     /**
-     * Set user types for the given user.
+     * Get users validation.
      *
      * @param array $input
      *
@@ -74,7 +74,7 @@ class UserValidation extends AbstractValidation
     }
 
     /**
-     * Set user types for the given user.
+     * User register validation.
      *
      * @param array $input
      *
@@ -82,7 +82,7 @@ class UserValidation extends AbstractValidation
      */
     public function userRegister(array $input)
     {
-        // build the rules for registering
+        // build the rules for register
         $validationRules = [
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', []),
@@ -97,7 +97,7 @@ class UserValidation extends AbstractValidation
     }
 
     /**
-     * Set user types for the given user.
+     * User login validation.
      *
      * @param array $input
      *
@@ -118,7 +118,7 @@ class UserValidation extends AbstractValidation
     }
 
     /**
-     * Set user types for the given user.
+     * Update user validation.
      *
      * @param array $input
      *
@@ -132,7 +132,6 @@ class UserValidation extends AbstractValidation
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', ['sometimes']),
             'email' => $this->getRule(self::VALIDATION_RULES, 'email', ['sometimes']),
             'phone_number' => $this->getRule(self::VALIDATION_RULES, 'phone_number', []),
-            'items_per_page' => $this->getRule(self::VALIDATION_RULES, 'items_per_page', ['sometimes']),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

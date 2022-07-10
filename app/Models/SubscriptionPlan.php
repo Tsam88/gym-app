@@ -3,9 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubscriptionPlan extends Model
 {
+    use SoftDeletes;
+
+    /**
+     * The number of models to return for pagination.
+     *
+     * @var int
+     */
+    protected $perPage = 10000;
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -28,7 +38,6 @@ class SubscriptionPlan extends Model
         'number_of_months',
         'unlimited_sessions',
         'display_on_page',
-        'deleted_at',
     ];
 
     /**

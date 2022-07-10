@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_STUDENT = 'student';
@@ -21,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
      *
      * @var int
      */
-    protected $perPage = 1000;
+    protected $perPage = 10000;
 
     /**
      * The attributes that should be cast.

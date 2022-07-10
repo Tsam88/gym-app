@@ -8,10 +8,8 @@ use App\Exceptions\DeleteUserHasParcelsException;
 use App\Exceptions\NotActiveUserException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\NotVerifiedUserException;
-use App\Models\WeekDay;
-use App\Rules\CheckPassword;
 
-class GymClassValidation extends AbstractValidation
+class SubscriptionPlanValidation extends AbstractValidation
 {
     /**
      * The basic validation rules of model
@@ -24,44 +22,26 @@ class GymClassValidation extends AbstractValidation
             'string',
             'max:255',
         ],
-        'description' => [
-//            'required',
-            'string',
-            'max:255',
-        ],
-        'teacher' => [
-//            'required',
-            'string',
-            'max:255',
-        ],
-        'number_of_students' => [
+        'plan_price' => [
             'required',
+            'float',
+            'min:0',
+        ],
+        'number_of_sessions' => [
             'integer',
-            'gt:0',
+            'min:0',
         ],
-        'week_days' => [
-            'array',
-            'min:1',
-        ],
-        'week_days.*' => [
-            'required',
-            'array',
-        ],
-        'week_days.*.gym_class_id' => [
-            'required',
+        'number_of_months' => [
             'integer',
+            'min:0',
         ],
-        'week_days.*.day' => [
+        'unlimited_sessions' => [
             'required',
-            'string in:' . WeekDay::WEEK_DAYS,
+            'boolean',
         ],
-        'week_days.*.start_time' => [
+        'display_on_page' => [
             'required',
-            'time',
-        ],
-        'week_days.*.end_time' => [
-            'required',
-            'time',
+            'boolean',
         ],
         'items_per_page' => [
             'integer',
@@ -71,13 +51,13 @@ class GymClassValidation extends AbstractValidation
 
 
     /**
-     * Get gym classes validation.
+     * Get subscription plans validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function gymClassGetClasses(array $input)
+    public function subscriptionPlanGetPlans(array $input)
     {
         // build the rules for index
         $validationRules = [
@@ -91,20 +71,22 @@ class GymClassValidation extends AbstractValidation
     }
 
     /**
-     * Create gym class validation.
+     * Create subscription plan validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function gymClassCreate(array $input)
+    public function subscriptionPlanCreate(array $input)
     {
         // build the rules for create
         $validationRules = [
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
-            'description' => $this->getRule(self::VALIDATION_RULES, 'description', []),
-            'teacher' => $this->getRule(self::VALIDATION_RULES, 'teacher', []),
-            'number_of_students' => $this->getRule(self::VALIDATION_RULES, 'number_of_students', []),
+            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
+            'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
+            'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
+            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
+            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
@@ -114,20 +96,22 @@ class GymClassValidation extends AbstractValidation
     }
 
     /**
-     * Update gym class validation.
+     * Update subscription plan validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function gymClassUpdate(array $input)
+    public function subscriptionPlanUpdate(array $input)
     {
         // build the rules for update
         $validationRules = [
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
-            'description' => $this->getRule(self::VALIDATION_RULES, 'surname', []),
-            'teacher' => $this->getRule(self::VALIDATION_RULES, 'email', []),
-            'number_of_students' => $this->getRule(self::VALIDATION_RULES, 'number_of_students', []),
+            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
+            'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
+            'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
+            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
+            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

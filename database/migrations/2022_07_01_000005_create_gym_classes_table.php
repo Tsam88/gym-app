@@ -20,6 +20,7 @@ class CreateGymClassesTable extends Migration
             $table->string('teacher');
             $table->integer('number_of_students');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

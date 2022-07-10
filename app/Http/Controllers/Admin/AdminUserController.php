@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\User\UserProfileSingle;
 use App\Models\User;
 use App\Services\UserService;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class AdminUserController extends Controller
@@ -24,7 +23,7 @@ class AdminUserController extends Controller
     /**
      * Display single user.
      *
-     * @param Request $request
+     * @param User $user
      *
      * @return Response
      */

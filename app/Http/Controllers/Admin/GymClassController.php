@@ -22,7 +22,7 @@ class GymClassController extends Controller
     }
 
     /**
-     * Display users.
+     * Display gym classes.
      *
      * @param Request $request
      *
@@ -34,8 +34,6 @@ class GymClassController extends Controller
 
         $gymClasses = $this->gymClassService->getGymClasses($data);
 
-//        $usersCollection = new AdminUserCollection($users->appends($data));
-
         $response = new Response($gymClasses, Response::HTTP_OK);
 
         return $response;
@@ -44,7 +42,7 @@ class GymClassController extends Controller
     /**
      * Display single gym class.
      *
-     * @param Request $request
+     * @param GymClass $gymClass
      *
      * @return Response
      */
@@ -56,7 +54,7 @@ class GymClassController extends Controller
     }
 
     /**
-     * Create a parcel.
+     * Create gym class.
      *
      * @param Request $request
      *
@@ -67,7 +65,7 @@ class GymClassController extends Controller
         // get the payload
         $data = $request->post();
 
-        // create parcel
+        // create gym class
         $gymClass = $this->gymClassService->create($data);
 
         $response = new Response(null, Response::HTTP_CREATED);
@@ -77,13 +75,14 @@ class GymClassController extends Controller
     }
 
     /**
-     * Update Authorized user profile
+     * Update gym class
      *
      * @param Request $request
+     * @param GymClass $gymClass
      *
      * @return Response
      */
-    public function update(Request $request)
+    public function update(Request $request, GymClass $gymClass)
     {
         // get the payload
         $data = $request->post();
@@ -93,11 +92,8 @@ class GymClassController extends Controller
             return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
-        // get user
-        $user = $request->user();
-
-        // register user
-        $this->gymClassService->updateGymClass($data, $user);
+        // update gym class
+        $this->gymClassService->update($data, $gymClass);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
