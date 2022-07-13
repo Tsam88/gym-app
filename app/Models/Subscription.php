@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Subscriptions extends Model
+class Subscription extends Model
 {
     /**
      * The attributes that are mass assignable.

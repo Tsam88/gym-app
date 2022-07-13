@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
 //Route::group(['middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'admin'], function () {
+        // users
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UserController@index')->name('users.index');
             Route::get('{user}', 'Admin\AdminUserController@show')->name('admin.users.show');
@@ -56,22 +57,29 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
 //        Route::delete('users/delete', 'UserController@deleteUser')->name('user.destroy');
 //        Route::get('users/permissions', 'UserController@getPermissions')->name('user.get-permissions');
         });
-
+        // gym classes
         Route::group(['prefix' => 'gym-classes'], function () {
             Route::get('/', 'Admin\GymClassController@index')->name('admin.gym-classes.index');
             Route::post('/', 'Admin\GymClassController@store')->name('admin.gym-classes.store');
             Route::get('{gymClass}', 'Admin\GymClassController@show')->name('admin.gym-classes.show');
         });
-
+        // subscription plans
         Route::group(['prefix' => 'subscription-plans'], function () {
             Route::get('/', 'Admin\SubscriptionPlanController@index')->name('admin.subscription-plans.index');
             Route::post('/', 'Admin\SubscriptionPlanController@store')->name('admin.subscription-plans.store');
             Route::patch('{subscriptionPlan}', 'Admin\SubscriptionPlanController@update')->name('admin.subscription-plans.update');
             Route::get('{subscriptionPlan}', 'Admin\SubscriptionPlanController@show')->name('admin.subscription-plans.show');
+            Route::delete('{subscriptionPlan}', 'Admin\SubscriptionPlanController@delete')->name('admin.subscription-plans.delete');
+        });
+        // subscriptions
+        Route::group(['prefix' => 'subscriptions'], function () {
+            Route::get('/', 'Admin\SubscriptionController@index')->name('admin.subscriptions.index');
+            Route::post('/', 'Admin\SubscriptionController@store')->name('admin.subscriptions.store');
+            Route::patch('{subscription}', 'Admin\SubscriptionController@update')->name('admin.subscriptions.update');
+            Route::get('{subscription}', 'Admin\SubscriptionController@show')->name('admin.subscriptions.show');
+            Route::delete('{subscription}', 'Admin\SubscriptionController@delete')->name('admin.subscriptions.delete');
         });
     });
-
-
 });
 
 //Route::apiResource('/employee', 'EmployeeController')->middleware('auth:api');

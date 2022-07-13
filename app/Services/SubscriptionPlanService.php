@@ -52,7 +52,7 @@ class SubscriptionPlanService
         $data = $this->subscriptionPlanValidation->subscriptionPlanGetPlans($input);
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $subscriptionPlans = GymClass::paginate($itemsPerPage);
+        $subscriptionPlans = SubscriptionPlan::paginate($itemsPerPage);
 
         return $subscriptionPlans;
     }
@@ -114,33 +114,29 @@ class SubscriptionPlanService
         // commit database changes
         DB::commit();
     }
-//
-//    /**
-//     * Delete user.
-//     *
-//     * @param User $user
-//     *
-//     * @return void
-//     */
-//    public function delete(User $user)
-//    {
-//        // start db transaction
-//        DB::beginTransaction();
-//
-//        try {
-//            if (0 < $user->parcels->count()) {
-//                throw new DeleteUserHasParcelsException();
-//            }
-//
-//            $user->delete();
-//        } catch (\Exception $e) {
-//            // something went wrong, rollback and throw same exception
-//            DB::rollBack();
-//
-//            throw $e;
-//        }
-//
-//        // commit database changes
-//        DB::commit();
-//    }
+
+    /**
+     * Delete subscription plan
+     *
+     * @param SubscriptionPlan $subscriptionPlan
+     *
+     * @return void
+     */
+    public function delete(SubscriptionPlan $subscriptionPlan)
+    {
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            $subscriptionPlan->delete();
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
+    }
 }

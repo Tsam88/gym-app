@@ -98,19 +98,17 @@ class SubscriptionPlanController extends Controller
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
-//    /**
-//     * Delete Authorized user profile
-//     *
-//     * @param Request $request
-//     *
-//     * @return Response
-//     */
-//    public function delete(Request $request)
-//    {
-//        $user = $request->user();
-//
-//        $this->userService->delete($user);
-//
-//        return new Response(null, Response::HTTP_NO_CONTENT);
-//    }
+    /**
+     * Delete subscription plan
+     *
+     * @param SubscriptionPlan $subscriptionPlan
+     *
+     * @return Response
+     */
+    public function delete(SubscriptionPlan $subscriptionPlan)
+    {
+        $this->subscriptionPlanService->delete($subscriptionPlan);
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
+    }
 }

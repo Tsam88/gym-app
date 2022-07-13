@@ -69,7 +69,6 @@ class GymClassValidation extends AbstractValidation
         ],
     ];
 
-
     /**
      * Get gym classes validation.
      *

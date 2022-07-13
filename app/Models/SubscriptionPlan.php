@@ -57,6 +57,6 @@ class SubscriptionPlan extends Model
      */
     public function subscriptions()
     {
-        return $this->hasMany(Subscriptions::class);
+        return $this->hasMany(Subscription::class);
     }
 }

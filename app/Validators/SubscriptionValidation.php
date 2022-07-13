@@ -9,7 +9,7 @@ use App\Exceptions\NotActiveUserException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\NotVerifiedUserException;
 
-class SubscriptionPlanValidation extends AbstractValidation
+class SubscriptionValidation extends AbstractValidation
 {
     /**
      * The basic validation rules of model
@@ -17,21 +17,22 @@ class SubscriptionPlanValidation extends AbstractValidation
      * @var array
      */
     private const VALIDATION_RULES = [
-        'name' => [
+        'user_id' => [
             'required',
-            'string',
-            'max:255',
+            'integer',
+            'gt:0',
         ],
-        'plan_price' => [
+        'subscription_plan_id' => [
+            'required',
+            'integer',
+            'gt:0',
+        ],
+        'price' => [
             'required',
             'float',
             'min:0',
         ],
-        'number_of_sessions' => [
-            'integer',
-            'min:0',
-        ],
-        'number_of_months' => [
+        'remaining_sessions' => [
             'integer',
             'min:0',
         ],
@@ -39,9 +40,19 @@ class SubscriptionPlanValidation extends AbstractValidation
             'required',
             'boolean',
         ],
-        'display_on_page' => [
+        'starts_at' => [
             'required',
-            'boolean',
+            'date',
+        ],
+        'expires_at' => [
+            'required',
+            'date',
+        ],
+        'users' => [
+            'array',
+        ],
+        'users.*' => [
+            'integer',
         ],
         'items_per_page' => [
             'integer',
@@ -50,16 +61,17 @@ class SubscriptionPlanValidation extends AbstractValidation
     ];
 
     /**
-     * Get subscription plans validation.
+     * Get subscriptions validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionPlanGetPlans(array $input)
+    public function subscriptionGetSubscriptions(array $input)
     {
         // build the rules for index
         $validationRules = [
+            'users' => $this->getRule(self::VALIDATION_RULES, 'users', []),
             'items_per_page' => $this->getRule(self::VALIDATION_RULES, 'items_per_page', ['sometimes']),
         ];
 
@@ -70,22 +82,18 @@ class SubscriptionPlanValidation extends AbstractValidation
     }
 
     /**
-     * Create subscription plan validation.
+     * Create subscription validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionPlanCreate(array $input)
+    public function subscriptionCreate(array $input)
     {
         // build the rules for create
         $validationRules = [
-            'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
-            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
-            'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
-            'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
-            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
-            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
+            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
+            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
@@ -95,22 +103,23 @@ class SubscriptionPlanValidation extends AbstractValidation
     }
 
     /**
-     * Update subscription plan validation.
+     * Update subscription validation.
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionPlanUpdate(array $input)
+    public function subscriptionUpdate(array $input)
     {
         // build the rules for update
         $validationRules = [
-            'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
-            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
-            'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
-            'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
+            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
+            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
+            'price' => $this->getRule(self::VALIDATION_RULES, 'price', []),
+            'remaining_sessions' => $this->getRule(self::VALIDATION_RULES, 'remaining_sessions', []),
             'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
-            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
+            'starts_at' => $this->getRule(self::VALIDATION_RULES, 'starts_at', []),
+            'expires_at' => $this->getRule(self::VALIDATION_RULES, 'expires_at', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

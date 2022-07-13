@@ -52,7 +52,6 @@ class UserValidation extends AbstractValidation
         ],
     ];
 
-
     /**
      * Get users validation.
      *
