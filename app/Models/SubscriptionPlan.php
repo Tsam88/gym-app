@@ -35,6 +35,7 @@ class SubscriptionPlan extends Model
     protected $fillable = [
         'plan_price',
         'number_of_sessions',
+        'sessions_per_week',
         'number_of_months',
         'unlimited_sessions',
         'display_on_page',

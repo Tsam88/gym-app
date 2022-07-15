@@ -30,11 +30,15 @@ class SubscriptionValidation extends AbstractValidation
         'price' => [
             'required',
             'float',
-            'min:0',
+            'gte:0',
         ],
         'remaining_sessions' => [
             'integer',
-            'min:0',
+            'gte:0',
+        ],
+        'sessions_per_week' => [
+            'integer',
+            'gte:0',
         ],
         'unlimited_sessions' => [
             'required',
@@ -117,6 +121,7 @@ class SubscriptionValidation extends AbstractValidation
             'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
             'price' => $this->getRule(self::VALIDATION_RULES, 'price', []),
             'remaining_sessions' => $this->getRule(self::VALIDATION_RULES, 'remaining_sessions', []),
+            'sessions_per_week' => $this->getRule(self::VALIDATION_RULES, 'sessions_per_week', []),
             'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
             'starts_at' => $this->getRule(self::VALIDATION_RULES, 'starts_at', []),
             'expires_at' => $this->getRule(self::VALIDATION_RULES, 'expires_at', []),

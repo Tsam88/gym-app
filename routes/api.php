@@ -42,6 +42,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     });
 });
 
+// subscription plans
+Route::get('/', 'SubscriptionPlanController@index')->name('subscription-plans.index');
+Route::get('{subscriptionPlan}', 'SubscriptionPlanController@show')->name('subscription-plans.show');
+
+
+
 
 Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
 //Route::group(['middleware' => ['auth:api']], function () {
@@ -65,11 +71,11 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
         });
         // subscription plans
         Route::group(['prefix' => 'subscription-plans'], function () {
-            Route::get('/', 'Admin\SubscriptionPlanController@index')->name('admin.subscription-plans.index');
-            Route::post('/', 'Admin\SubscriptionPlanController@store')->name('admin.subscription-plans.store');
-            Route::patch('{subscriptionPlan}', 'Admin\SubscriptionPlanController@update')->name('admin.subscription-plans.update');
-            Route::get('{subscriptionPlan}', 'Admin\SubscriptionPlanController@show')->name('admin.subscription-plans.show');
-            Route::delete('{subscriptionPlan}', 'Admin\SubscriptionPlanController@delete')->name('admin.subscription-plans.delete');
+            Route::get('/', 'Admin\AdminSubscriptionPlanController@index')->name('admin.subscription-plans.index');
+            Route::post('/', 'Admin\AdminSubscriptionPlanController@store')->name('admin.subscription-plans.store');
+            Route::patch('{subscriptionPlan}', 'Admin\AdminSubscriptionPlanController@update')->name('admin.subscription-plans.update');
+            Route::get('{subscriptionPlan}', 'Admin\AdminSubscriptionPlanController@show')->name('admin.subscription-plans.show');
+            Route::delete('{subscriptionPlan}', 'Admin\AdminSubscriptionPlanController@delete')->name('admin.subscription-plans.delete');
         });
         // subscriptions
         Route::group(['prefix' => 'subscriptions'], function () {

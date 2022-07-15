@@ -9,7 +9,7 @@ use App\Services\SubscriptionPlanService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class SubscriptionPlanController extends Controller
+class AdminSubscriptionPlanController extends Controller
 {
     /**
      * @var SubscriptionPlanService

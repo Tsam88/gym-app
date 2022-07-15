@@ -16,6 +16,7 @@ class Subscription extends Model
         'subscription_plan_id',
         'price',
         'remaining_sessions',
+        'sessions_per_week',
         'unlimited_sessions',
         'starts_at',
         'expires_at',
