@@ -58,6 +58,25 @@ class SubscriptionPlanService
     }
 
     /**
+     * Return all subscription plans that are allowed to display on page.
+     *
+     * @param array $input
+     *
+     * @return LengthAwarePaginator
+     */
+    public function getAllowedSubscriptionPlansOnPage(array $input): LengthAwarePaginator
+    {
+        // data validation
+        $data = $this->subscriptionPlanValidation->subscriptionPlanGetPlans($input);
+
+        $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
+        $subscriptionPlans = SubscriptionPlan::where('display_on_page', true)
+            ->paginate($itemsPerPage);
+
+        return $subscriptionPlans;
+    }
+
+    /**
      * Create a subscription plan.
      *
      * @param array $input SubscriptionPlan data

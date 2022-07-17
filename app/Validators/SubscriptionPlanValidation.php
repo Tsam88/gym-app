@@ -25,15 +25,19 @@ class SubscriptionPlanValidation extends AbstractValidation
         'plan_price' => [
             'required',
             'float',
-            'min:0',
+            'gte:0',
         ],
         'number_of_sessions' => [
             'integer',
-            'min:0',
+            'gte:0',
+        ],
+        'sessions_per_week' => [
+            'integer',
+            'gte:0',
         ],
         'number_of_months' => [
             'integer',
-            'min:0',
+            'gte:0',
         ],
         'unlimited_sessions' => [
             'required',
@@ -83,6 +87,7 @@ class SubscriptionPlanValidation extends AbstractValidation
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
             'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
+            'sessions_per_week' => $this->getRule(self::VALIDATION_RULES, 'sessions_per_week', []),
             'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
             'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
             'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
@@ -108,6 +113,7 @@ class SubscriptionPlanValidation extends AbstractValidation
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
             'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
+            'sessions_per_week' => $this->getRule(self::VALIDATION_RULES, 'sessions_per_week', []),
             'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
             'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
             'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),

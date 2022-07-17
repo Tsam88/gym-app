@@ -18,6 +18,7 @@ class CreateSubscriptionPlansTable extends Migration
             $table->string('name');
             $table->float('plan_price');
             $table->unsignedInteger('number_of_sessions')->nullable();
+            $table->unsignedInteger('sessions_per_week')->nullable();
             $table->unsignedInteger('number_of_months')->nullable();
             $table->boolean('unlimited_sessions')->default(false);
             $table->boolean('display_on_page')->default(false);
