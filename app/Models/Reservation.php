@@ -14,7 +14,7 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'gym_class_id',
-        'week_day_id',
+        'date',
         'declined',
         'canceled',
     ];

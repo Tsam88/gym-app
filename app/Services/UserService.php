@@ -16,8 +16,10 @@ use App\Models\UserSetting;
 use App\Models\UserType;
 use App\Rules\CheckPassword;
 use App\Validators\UserValidation;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -39,6 +41,22 @@ class UserService
     public function __construct(UserValidation $userValidation)
     {
         $this->userValidation = $userValidation;
+    }
+
+    /**
+     * check if the given user_id is equal to the logged-in user's id
+     *
+     * @param array $input
+     *
+     * @throws AuthorizationException
+     *
+     * @return void
+     */
+    public function hasAccess(int $userId): bool
+    {
+        if ($userId !== Auth::id()) {
+            throw new AuthorizationException();
+        }
     }
 
     /**

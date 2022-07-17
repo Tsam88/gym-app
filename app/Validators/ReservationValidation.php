@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Validators;
 
-class SubscriptionValidation extends AbstractValidation
+class ReservationValidation extends AbstractValidation
 {
     /**
      * The basic validation rules of model
@@ -17,31 +17,22 @@ class SubscriptionValidation extends AbstractValidation
             'integer',
             'gt:0',
         ],
-        'subscription_plan_id' => [
+        'gym_class_id' => [
             'required',
             'integer',
             'gt:0',
         ],
-        'price' => [
+        'date' => [
             'required',
-            'float',
-            'min:0',
+            'date',
         ],
-        'remaining_sessions' => [
-            'integer',
-            'min:0',
-        ],
-        'unlimited_sessions' => [
+        'declined' => [
             'required',
             'boolean',
         ],
-        'starts_at' => [
+        'canceled' => [
             'required',
-            'date',
-        ],
-        'expires_at' => [
-            'required',
-            'date',
+            'boolean',
         ],
         'users' => [
             'array',
@@ -56,13 +47,13 @@ class SubscriptionValidation extends AbstractValidation
     ];
 
     /**
-     * Get subscriptions validation.
+     * Get reservations validation
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionGetSubscriptions(array $input)
+    public function reservationGetReservations(array $input)
     {
         // build the rules for index
         $validationRules = [
@@ -77,18 +68,19 @@ class SubscriptionValidation extends AbstractValidation
     }
 
     /**
-     * Create subscription validation.
+     * Create reservation validation
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionCreate(array $input)
+    public function reservationCreate(array $input)
     {
         // build the rules for create
         $validationRules = [
             'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
-            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
+            'gym_class_id' => $this->getRule(self::VALIDATION_RULES, 'gym_class_id', []),
+            'date' => $this->getRule(self::VALIDATION_RULES, 'date', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
@@ -98,23 +90,37 @@ class SubscriptionValidation extends AbstractValidation
     }
 
     /**
-     * Update subscription validation.
+     * Decline reservation
      *
      * @param array $input
      *
      * @return array
      */
-    public function subscriptionUpdate(array $input)
+    public function reservationDecline(array $input)
     {
         // build the rules for update
         $validationRules = [
-            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
-            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
-            'price' => $this->getRule(self::VALIDATION_RULES, 'price', []),
-            'remaining_sessions' => $this->getRule(self::VALIDATION_RULES, 'remaining_sessions', []),
-            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
-            'starts_at' => $this->getRule(self::VALIDATION_RULES, 'starts_at', []),
-            'expires_at' => $this->getRule(self::VALIDATION_RULES, 'expires_at', []),
+            'declined' => $this->getRule(self::VALIDATION_RULES, 'declined', []),
+        ];
+
+        $validator = $this->getValidator($input, $validationRules);
+        $data = $validator->validate();
+
+        return $data;
+    }
+
+    /**
+     * Cancel reservation
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function reservationCancel(array $input)
+    {
+        // build the rules for update
+        $validationRules = [
+            'canceled' => $this->getRule(self::VALIDATION_RULES, 'canceled', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
