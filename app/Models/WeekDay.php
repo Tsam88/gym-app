@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class WeekDay extends Model
 {
     public const WEEK_DAYS = [
-        'SUNDAY',
         'MONDAY',
         'TUESDAY',
         'WEDNESDAY',
         'THURSDAY',
         'FRIDAY',
         'SATURDAY',
+        'SUNDAY',
     ];
 
     /**
