@@ -8,7 +8,8 @@ use App\Exceptions\InternalServerErrorException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
-use Illuminate\Validation\Validator;
+//use Illuminate\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator;
 
 class AbstractValidation
 {

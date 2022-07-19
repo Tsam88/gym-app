@@ -69,7 +69,7 @@ class SubscriptionController extends Controller
         $subscription = $this->subscriptionService->create($data);
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $response->headers->set('Location', route('admin.subscription.show', ['subscription' => $subscription]));
+        $response->headers->set('Location', route('admin.subscriptions.show', ['subscription' => $subscription]));
 
         return $response;
     }

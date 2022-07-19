@@ -24,7 +24,7 @@ class SubscriptionValidation extends AbstractValidation
         ],
         'price' => [
             'required',
-            'float',
+            'numeric',
             'gte:0',
         ],
         'remaining_sessions' => [
@@ -112,8 +112,8 @@ class SubscriptionValidation extends AbstractValidation
     {
         // build the rules for update
         $validationRules = [
-            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
-            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
+//            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
+//            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
             'price' => $this->getRule(self::VALIDATION_RULES, 'price', []),
             'remaining_sessions' => $this->getRule(self::VALIDATION_RULES, 'remaining_sessions', []),
             'sessions_per_week' => $this->getRule(self::VALIDATION_RULES, 'sessions_per_week', []),

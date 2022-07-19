@@ -4,12 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Validators;
 
-use App\Exceptions\DeleteUserHasParcelsException;
-use App\Exceptions\NotActiveUserException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
+//use App\Exceptions\DeleteUserHasParcelsException;
+//use App\Exceptions\NotActiveUserException;
+//use App\Exceptions\NotFoundException;
+//use App\Exceptions\NotVerifiedUserException;
 use App\Models\WeekDay;
-use App\Rules\CheckPassword;
+//use App\Rules\CheckPassword;
 
 class GymClassValidation extends AbstractValidation
 {
@@ -45,23 +45,18 @@ class GymClassValidation extends AbstractValidation
         ],
         'week_days.*' => [
             'required',
-            'array',
-        ],
-        'week_days.*.gym_class_id' => [
-            'required',
-            'integer',
         ],
         'week_days.*.day' => [
             'required',
-            'string in:' . WeekDay::WEEK_DAYS,
+            'string',
         ],
         'week_days.*.start_time' => [
             'required',
-            'time',
+            'date_format:H:i',
         ],
         'week_days.*.end_time' => [
             'required',
-            'time',
+            'date_format:H:i',
         ],
         'items_per_page' => [
             'integer',
@@ -104,6 +99,11 @@ class GymClassValidation extends AbstractValidation
             'description' => $this->getRule(self::VALIDATION_RULES, 'description', []),
             'teacher' => $this->getRule(self::VALIDATION_RULES, 'teacher', []),
             'number_of_students' => $this->getRule(self::VALIDATION_RULES, 'number_of_students', []),
+            'week_days' => $this->getRule(self::VALIDATION_RULES, 'week_days', []),
+            'week_days.*' => $this->getRule(self::VALIDATION_RULES, 'week_days.*', []),
+            'week_days.*.day' => $this->getRule(self::VALIDATION_RULES, 'week_days.*.day', ['in:' . implode(',', WeekDay::WEEK_DAYS)]),
+            'week_days.*.start_time' => $this->getRule(self::VALIDATION_RULES, 'week_days.*.start_time', []),
+            'week_days.*.end_time' => $this->getRule(self::VALIDATION_RULES, 'week_days.*.end_time', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

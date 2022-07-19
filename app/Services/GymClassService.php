@@ -18,6 +18,7 @@ use App\Models\UserSetting;
 use App\Models\UserType;
 use App\Rules\CheckPassword;
 use App\Validators\GymClassValidation;
+use Carbon\Carbon;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;

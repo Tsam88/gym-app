@@ -33,6 +33,7 @@ class SubscriptionPlan extends Model
      * @var array
      */
     protected $fillable = [
+        'name',
         'plan_price',
         'number_of_sessions',
         'sessions_per_week',

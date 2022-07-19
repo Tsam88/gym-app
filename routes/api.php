@@ -43,9 +43,10 @@ Route::group(['middleware' => ['auth:api']], function () {
 });
 
 // subscription plans
-Route::get('/', 'SubscriptionPlanController@index')->name('subscription-plans.index');
-Route::get('{subscriptionPlan}', 'SubscriptionPlanController@show')->name('subscription-plans.show');
-
+Route::group(['prefix' => 'subscription-plans'], function () {
+    Route::get('/', 'SubscriptionPlanController@index')->name('subscription-plans.index');
+    Route::get('{subscriptionPlan}', 'SubscriptionPlanController@show')->name('subscription-plans.show');
+});
 
 
 

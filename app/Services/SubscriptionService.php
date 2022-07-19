@@ -5,7 +5,9 @@ declare(strict_types = 1);
 namespace App\Services;
 
 use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Validators\SubscriptionValidation;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -62,6 +64,14 @@ class SubscriptionService
         DB::beginTransaction();
 
         try {
+            $subscriptionPlanData = SubscriptionPlan::findOrFail($data['subscription_plan_id']);
+
+            $data['price'] = $subscriptionPlanData['plan_price'];
+            $data['remaining_sessions'] = $subscriptionPlanData['number_of_sessions'];
+            $data['unlimited_sessions'] = $subscriptionPlanData['unlimited_sessions'];
+            $data['starts_at'] = Carbon::today();
+            $data['expires_at'] = Carbon::today()->addMonths($subscriptionPlanData['number_of_months']);
+
             $subscription = Subscription::create($data);
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception

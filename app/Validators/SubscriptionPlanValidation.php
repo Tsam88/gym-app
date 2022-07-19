@@ -24,7 +24,7 @@ class SubscriptionPlanValidation extends AbstractValidation
         ],
         'plan_price' => [
             'required',
-            'float',
+            'numeric',
             'gte:0',
         ],
         'number_of_sessions' => [
@@ -110,13 +110,13 @@ class SubscriptionPlanValidation extends AbstractValidation
     {
         // build the rules for update
         $validationRules = [
-            'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
-            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', []),
+            'name' => $this->getRule(self::VALIDATION_RULES, 'name', ['sometimes']),
+            'plan_price' => $this->getRule(self::VALIDATION_RULES, 'plan_price', ['sometimes']),
             'number_of_sessions' => $this->getRule(self::VALIDATION_RULES, 'number_of_sessions', []),
             'sessions_per_week' => $this->getRule(self::VALIDATION_RULES, 'sessions_per_week', []),
             'number_of_months' => $this->getRule(self::VALIDATION_RULES, 'number_of_months', []),
-            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', []),
-            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', []),
+            'unlimited_sessions' => $this->getRule(self::VALIDATION_RULES, 'unlimited_sessions', ['sometimes']),
+            'display_on_page' => $this->getRule(self::VALIDATION_RULES, 'display_on_page', ['sometimes']),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
