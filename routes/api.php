@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,52 @@ use Illuminate\Support\Facades\Route;
 //Route::post('/login', 'App\Http\Controllers\Auth\UserAuthController@login')->name('user.login');
 Route::post('/register', 'AuthController@register')->name('user.register');
 Route::post('/login', 'AuthController@login')->name('user.login');
+
+//Route::get('/email/verify', function () {
+//    return view('auth.verify-email');
+//})->middleware('auth')->name('verification.notice');
+
+//Route::group(['middleware' => ['auth']], function() {
+Route::group(['middleware' => ['auth:api']], function() {
+    /**
+     * Verification Routes
+     */
+//    Route::get('/email/verify', function () {
+//        return view('emails.emailVerificationEmail');
+//    })->middleware('auth')->name('verification.email-ver-notice');
+
+    Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+    Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+
+//    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//        $request->fulfill();
 //
+//        return redirect('/home');
+//    })->middleware(['auth', 'signed'])->name('verification.verify');
+
+
+    //only verified account can access with this group
+    Route::group(['middleware' => ['verified']], function() {
+        /**
+         * Dashboard Routes
+         */
+        Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
+    });
+});
+
+////only authenticated can access this group
+//Route::group(['middleware' => ['auth']], function() {
+//    //only verified account can access with this group
+//    Route::group(['middleware' => ['verified']], function() {
+//        /**
+//         * Dashboard Routes
+//         */
+//        Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
+//    });
+//});
+
+
 //Route::post('/login',[App\Http\Controllers\Auth\UserAuthController::class,'login']);
 //Route::resource('/user',AuthController::class)->middleware('auth');
 

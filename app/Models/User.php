@@ -9,10 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new Notifications\UserVerificationEmail);
+    }
 
     public const ROLE_ADMIN = 'admin';
     public const ROLE_STUDENT = 'student';

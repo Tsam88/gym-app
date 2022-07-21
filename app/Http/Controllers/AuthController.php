@@ -31,9 +31,11 @@ class AuthController extends Controller
         $data = $request->post();
 
         // register user
-        $this->userService->register($data);
+        $token = $this->userService->register($data);
 
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return new Response($token, Response::HTTP_OK);
+
+//        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**

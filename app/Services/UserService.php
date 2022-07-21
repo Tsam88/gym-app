@@ -18,6 +18,7 @@ use App\Rules\CheckPassword;
 use App\Validators\UserValidation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -85,9 +86,9 @@ class UserService
      *
      * @param array $input User data
      *
-     * @return User
+     * @return array
      */
-    public function register(array $input): User
+    public function register(array $input): array
     {
         // we need to lowercase email if exists, to validate uniqueness later
         if (!empty($input['email'])) {
@@ -104,6 +105,12 @@ class UserService
             $data['password'] = bcrypt($data['password']);
 
             $user = User::create($data);
+
+            event(new Registered($user));
+
+            auth()->login($user);
+
+            $token = $user->createToken('API Token')->accessToken;
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
             DB::rollBack();
@@ -116,7 +123,8 @@ class UserService
 
 //        UserRegisterEvent::dispatch($user);
 
-        return $user;
+        return ['token' => $token];
+//        return $user;
     }
 
 //    /**
