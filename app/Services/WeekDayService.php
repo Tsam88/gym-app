@@ -78,7 +78,6 @@ class WeekDayService
         $weekDays = WeekDay::orderBy('start_time')
             ->get();
 
-
         foreach ($weekDays as $weekDay) {
             $weekCalendar[$weekDay->day][] = [
                 'gym_class_id' => $weekDay->gym_class_id,
@@ -89,14 +88,14 @@ class WeekDayService
             ];
         }
 
-        $fromDate = Carbon::now()->setTimezone('Europe/Athens');
-        $toDate = Carbon::today()->setTimezone('Europe/Athens')->endOfMonth();
+        $fromDate = Carbon::now('Europe/Athens');
+        $toDate = Carbon::today('Europe/Athens')->endOfMonth();
         $period = CarbonPeriod::create($fromDate, $toDate);
 
         $calendar = [];
         foreach ($period as $date) {
             foreach ($weekCalendar[$date->dayName] as $key => $gymClass) {
-                $gymClassDateTimeUTC = Carbon::parse("{$date->format('Y-m-d')} {$gymClass['start_time']}")->setTimezone('UTC');
+                $gymClassDateTime = Carbon::parse("{$date->format('Y-m-d')} {$gymClass['start_time']}");
 //                $gymClassDateTime = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
 
                 $dailyGymClasses[$key] = [
@@ -111,11 +110,11 @@ class WeekDayService
                 $reservation = Reservation::where('user_id', $user->id)
                     ->where('gym_class_id', $gymClass['gym_class_id'])
                     ->where('week_day_id', $gymClass['week_day_id'])
-                    ->where('date', $gymClassDateTimeUTC)
+                    ->where('date', $gymClassDateTime)
                     ->get()
                     ->first();
 
-                if (!$reservation) {
+                if ($reservation) {
                     $dailyGymClasses[$key]['has_reservation'] = true;
                     $dailyGymClasses[$key]['canceled'] = $reservation->canceled;
                     $dailyGymClasses[$key]['declined'] = $reservation->declined;

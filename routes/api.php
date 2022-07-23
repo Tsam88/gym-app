@@ -132,6 +132,14 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::get('{subscription}', 'Admin\SubscriptionController@show')->name('admin.subscriptions.show');
             Route::delete('{subscription}', 'Admin\SubscriptionController@delete')->name('admin.subscriptions.delete');
         });
+        // reservations
+        Route::group(['prefix' => 'reservations'], function () {
+            Route::get('/', 'Admin\AdminReservationController@index')->name('admin.reservations.index');
+            Route::post('/', 'Admin\AdminReservationController@store')->name('admin.reservations.store');
+            Route::patch('{reservation}', 'Admin\AdminReservationController@update')->name('admin.reservations.update');
+            Route::get('{reservation}', 'Admin\AdminReservationController@show')->name('admin.reservations.show');
+            Route::delete('{reservation}', 'Admin\AdminReservationController@delete')->name('admin.reservations.delete');
+        });
     });
 });
 

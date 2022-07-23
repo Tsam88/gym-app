@@ -69,8 +69,7 @@ class SubscriptionService
             $data['price'] = $subscriptionPlanData['plan_price'];
             $data['remaining_sessions'] = $subscriptionPlanData['number_of_sessions'];
             $data['unlimited_sessions'] = $subscriptionPlanData['unlimited_sessions'];
-            $data['starts_at'] = Carbon::today();
-            $data['expires_at'] = Carbon::today()->addMonths($subscriptionPlanData['number_of_months']);
+            $data['expires_at'] = Carbon::parse($data['starts_at'], 'Europe/Athens')->addMonths($subscriptionPlanData['number_of_months']);
 
             $subscription = Subscription::create($data);
         } catch (\Exception $e) {

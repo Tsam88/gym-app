@@ -65,8 +65,11 @@ class AdminReservationController extends Controller
         // get the payload
         $data = $request->post();
 
+        // get user
+        $user = $request->user();
+
         // create reservation
-        $reservation = $this->reservationService->create($data);
+        $reservation = $this->reservationService->create($data, $user);
 
         $response = new Response(null, Response::HTTP_CREATED);
         $response->headers->set('Location', route('admin.reservation.show', ['reservation' => $reservation]));

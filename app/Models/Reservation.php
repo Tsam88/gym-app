@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    public const ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE = 12;
+
     /**
      * The attributes that are mass assignable.
      *

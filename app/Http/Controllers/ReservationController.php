@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Reservation\ReservationSingle;
@@ -77,11 +77,14 @@ class ReservationController extends Controller
         // get the payload
         $data = $request->post();
 
+        // get user
+        $user = $request->user();
+
         // create reservation
-        $reservation = $this->reservationService->create($data);
+        $reservation = $this->reservationService->create($data, $user);
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $response->headers->set('Location', route('admin.reservation.show', ['reservation' => $reservation]));
+        $response->headers->set('Location', route('reservation.show', ['reservation' => $reservation]));
 
         return $response;
     }
@@ -110,24 +113,6 @@ class ReservationController extends Controller
 
         // cancel reservation
         $this->reservationService->cancel($data, $reservation);
-
-        return new Response(null, Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * Delete reservation
-     *
-     * @param Reservation $reservation
-     *
-     * @throws AuthorizationException
-     *
-     * @return Response
-     */
-    public function delete(Reservation $reservation)
-    {
-        $this->userService->hasAccess($reservation->user_id);
-
-        $this->reservationService->delete($reservation);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

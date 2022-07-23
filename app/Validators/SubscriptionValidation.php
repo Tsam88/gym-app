@@ -93,6 +93,7 @@ class SubscriptionValidation extends AbstractValidation
         $validationRules = [
             'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
             'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
+            'starts_at' => $this->getRule(self::VALIDATION_RULES, 'starts_at', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
