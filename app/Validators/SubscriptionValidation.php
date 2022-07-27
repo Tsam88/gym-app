@@ -113,7 +113,7 @@ class SubscriptionValidation extends AbstractValidation
     {
         // build the rules for update
         $validationRules = [
-//            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
+            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
 //            'subscription_plan_id' => $this->getRule(self::VALIDATION_RULES, 'subscription_plan_id', []),
             'price' => $this->getRule(self::VALIDATION_RULES, 'price', []),
             'remaining_sessions' => $this->getRule(self::VALIDATION_RULES, 'remaining_sessions', []),

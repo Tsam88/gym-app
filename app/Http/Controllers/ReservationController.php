@@ -58,8 +58,6 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
-        $this->userService->hasAccess($reservation->user_id);
-
         $response = new Response(new ReservationSingle($reservation), Response::HTTP_OK);
 
         return $response;
@@ -84,7 +82,7 @@ class ReservationController extends Controller
         $reservation = $this->reservationService->create($data, $user);
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $response->headers->set('Location', route('reservation.show', ['reservation' => $reservation]));
+        $response->headers->set('Location', route('reservations.show', ['reservation' => $reservation]));
 
         return $response;
     }
@@ -92,27 +90,16 @@ class ReservationController extends Controller
     /**
      * Cancel reservation
      *
-     * @param Request $request
      * @param Reservation $reservation
      *
      * @throws AuthorizationException
      *
      * @return Response
      */
-    public function cancel(Request $request, Reservation $reservation)
+    public function cancel(Reservation $reservation)
     {
-        $this->userService->hasAccess($reservation->user_id);
-
-        // get the payload
-        $data = $request->post();
-
-        // if data is empty nothing to update
-        if (empty($data)) {
-            return new Response(null, Response::HTTP_NO_CONTENT);
-        }
-
         // cancel reservation
-        $this->reservationService->cancel($data, $reservation);
+        $this->reservationService->cancel($reservation);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

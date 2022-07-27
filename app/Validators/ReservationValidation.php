@@ -26,14 +26,6 @@ class ReservationValidation extends AbstractValidation
             'required',
             'date',
         ],
-        'declined' => [
-            'required',
-            'boolean',
-        ],
-        'canceled' => [
-            'required',
-            'boolean',
-        ],
         'users' => [
             'array',
         ],
@@ -81,46 +73,6 @@ class ReservationValidation extends AbstractValidation
             'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
             'gym_class_id' => $this->getRule(self::VALIDATION_RULES, 'gym_class_id', []),
             'date' => $this->getRule(self::VALIDATION_RULES, 'date', []),
-        ];
-
-        $validator = $this->getValidator($input, $validationRules);
-        $data = $validator->validate();
-
-        return $data;
-    }
-
-    /**
-     * Decline reservation
-     *
-     * @param array $input
-     *
-     * @return array
-     */
-    public function reservationDecline(array $input)
-    {
-        // build the rules for update
-        $validationRules = [
-            'declined' => $this->getRule(self::VALIDATION_RULES, 'declined', []),
-        ];
-
-        $validator = $this->getValidator($input, $validationRules);
-        $data = $validator->validate();
-
-        return $data;
-    }
-
-    /**
-     * Cancel reservation
-     *
-     * @param array $input
-     *
-     * @return array
-     */
-    public function reservationCancel(array $input)
-    {
-        // build the rules for update
-        $validationRules = [
-            'canceled' => $this->getRule(self::VALIDATION_RULES, 'canceled', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

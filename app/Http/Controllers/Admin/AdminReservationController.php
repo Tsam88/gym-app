@@ -72,7 +72,7 @@ class AdminReservationController extends Controller
         $reservation = $this->reservationService->create($data, $user);
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $response->headers->set('Location', route('admin.reservation.show', ['reservation' => $reservation]));
+        $response->headers->set('Location', route('admin.reservations.show', ['reservation' => $reservation]));
 
         return $response;
     }
@@ -80,23 +80,14 @@ class AdminReservationController extends Controller
     /**
      * Decline reservation
      *
-     * @param Request $request
      * @param Reservation $reservation
      *
      * @return Response
      */
-    public function decline(Request $request, Reservation $reservation)
+    public function decline(Reservation $reservation)
     {
-        // get the payload
-        $data = $request->post();
-
-        // if data is empty nothing to update
-        if (empty($data)) {
-            return new Response(null, Response::HTTP_NO_CONTENT);
-        }
-
         // decline reservation
-        $this->reservationService->decline($data, $reservation);
+        $this->reservationService->decline($reservation);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

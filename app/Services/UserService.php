@@ -45,22 +45,6 @@ class UserService
     }
 
     /**
-     * check if the given user_id is equal to the logged-in user's id
-     *
-     * @param array $input
-     *
-     * @throws AuthorizationException
-     *
-     * @return void
-     */
-    public function hasAccess(int $userId): bool
-    {
-        if ($userId !== Auth::id()) {
-            throw new AuthorizationException();
-        }
-    }
-
-    /**
      * Return all users.
      *
      * @param array $input

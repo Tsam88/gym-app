@@ -86,6 +86,14 @@ Route::group(['middleware' => ['auth:api']], function () {
 //        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
         Route::patch('profile', 'UserController@update')->name('users.update-profile');
     });
+
+    // reservations
+    Route::group(['prefix' => 'reservations'], function () {
+        Route::get('/', 'ReservationController@index')->name('reservations.index');
+        Route::get('/{reservation}', 'ReservationController@show')->name('reservations.show');
+        Route::post('/', 'ReservationController@store')->name('reservations.store');
+        Route::post('/{reservation}/cancel', 'ReservationController@cancel')->name('reservations.cancel');
+    });
 });
 
 // subscription plans
@@ -93,7 +101,6 @@ Route::group(['prefix' => 'subscription-plans'], function () {
     Route::get('/', 'SubscriptionPlanController@index')->name('subscription-plans.index');
     Route::get('{subscriptionPlan}', 'SubscriptionPlanController@show')->name('subscription-plans.show');
 });
-
 
 
 Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
@@ -138,6 +145,7 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::post('/', 'Admin\AdminReservationController@store')->name('admin.reservations.store');
             Route::patch('{reservation}', 'Admin\AdminReservationController@update')->name('admin.reservations.update');
             Route::get('{reservation}', 'Admin\AdminReservationController@show')->name('admin.reservations.show');
+            Route::post('/{reservation}/decline', 'Admin\AdminReservationController@decline')->name('admin.reservations.decline');
             Route::delete('{reservation}', 'Admin\AdminReservationController@delete')->name('admin.reservations.delete');
         });
     });
