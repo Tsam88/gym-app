@@ -14,8 +14,8 @@ class AlterReservationsTable extends Migration
     public function up()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->boolean('declined')->default(false)->change();
-            $table->boolean('canceled')->default(false)->change();
+            $table->boolean('declined')->default(false);
+            $table->boolean('canceled')->default(false);
 
             $table->unique(['user_id', 'date']);
         });
@@ -29,9 +29,6 @@ class AlterReservationsTable extends Migration
     public function down()
     {
         Schema::table('reservations', function (Blueprint $table) {
-//            $table->integer('declined')->change();
-//            $table->integer('canceled')->change();
-
             $table->dropUnique(['user_id', 'date']);
         });
     }

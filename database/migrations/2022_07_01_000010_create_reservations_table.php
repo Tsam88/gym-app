@@ -18,8 +18,8 @@ class CreateReservationsTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('gym_class_id')->index();
             $table->dateTime('date')->index();
-            $table->integer('declined');
-            $table->integer('canceled');
+            $table->boolean('declined')->default(false);
+            $table->boolean('canceled')->default(false);
             $table->timestamps();
 
             $table->foreign('user_id')
