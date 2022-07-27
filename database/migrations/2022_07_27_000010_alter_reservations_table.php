@@ -16,8 +16,8 @@ class AlterReservationsTable extends Migration
         Schema::table('reservations', function (Blueprint $table) {
             $table->dropColumn('declined');
             $table->dropColumn('canceled');
-            $table->boolean('declined')->default(false);
-            $table->boolean('canceled')->default(false);
+//            $table->boolean('declined')->default(false);
+//            $table->boolean('canceled')->default(false);
 
             $table->unique(['user_id', 'date']);
         });
