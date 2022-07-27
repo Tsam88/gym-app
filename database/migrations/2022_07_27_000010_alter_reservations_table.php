@@ -31,10 +31,10 @@ class AlterReservationsTable extends Migration
     public function down()
     {
         Schema::table('reservations', function (Blueprint $table) {
-            $table->dropColumn('declined');
-            $table->dropColumn('canceled');
-            $table->integer('declined');
-            $table->integer('canceled');
+//            $table->dropColumn('declined');
+//            $table->dropColumn('canceled');
+//            $table->integer('declined');
+//            $table->integer('canceled');
 
             $table->dropUnique(['user_id', 'date']);
         });
