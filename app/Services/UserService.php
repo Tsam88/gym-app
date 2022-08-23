@@ -335,7 +335,10 @@ class UserService
 //        $token = $user->createToken('token')->accessToken;
         $token = $user->createToken('API Token')->accessToken;
 
-        return ['token' => $token];
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
     }
 
     /**

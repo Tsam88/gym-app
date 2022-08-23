@@ -14,7 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
-//Auth::routes();
+Route::get('/{catchall?}', function () {
+    return response()->view('index');
+})->where('catchall', '(.*)');
+
+//Route::get('/?{name}', function(){
+//    return redirect('index');
+//})->where('name', '[A-Za-z]+');
+
+//Auth2::routes();
