@@ -1,0 +1,25 @@
+.background-color-wave {
+    background-color: #4CAF50 !important;
+}
+
+.color-wave {
+    color: #4CAF50 !important;
+}
+
+.button-color-wave {
+    background-color: #4CAF50 !important;
+    border-color: #35913A !important;
+    color: #fff !important;
+}
+
+.sidebar-item.active .sidebar-link:hover, .sidebar-item.active>.sidebar-link {
+    background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent) !important;
+    border-left-color: #4CAF50 !important;
+    color: #4CAF50 !important;
+}
+
+.wave-check-input:checked {
+    background-color: #4CAF50 !important;
+    border-color: #35913A !important;
+}
+
