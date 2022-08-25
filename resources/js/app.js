@@ -30,41 +30,71 @@ const router = new VueRouter({
     base: __dirname,
     routes: [
         /* MAIN */
-        { path: '/', component: MainPage },
-        { path: '/login', component: Login },
+        { path: '/', name: 'MainPage', component: MainPage },
+        { path: '/login', name: 'Login', component: Login },
 
         /* ADMIN */
-        { path: '/admin', component: AdminHome,
+        { path: '/admin', name: 'AdminHome', component: AdminHome,
             redirect: '/admin/show-subscription-plans',
             children: [
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
-                    path: '/admin/show-subscription-plans',
-                    component: ShowSubscriptionPlans,
+                    path: '/admin/show-subscription-plans', name: 'ShowSubscriptionPlans', component: ShowSubscriptionPlans,
                 },
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
-                    path: '/admin/create-subscription-plans',
-                    component: CreateSubscriptionPlans,
+                    path: '/admin/create-subscription-plans', name: 'CreateSubscriptionPlans', component: CreateSubscriptionPlans,
                 },
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
-                    path: '/admin/show-gym-classes',
-                    component: ShowGymClasses,
+                    path: '/admin/show-gym-classes', name: 'ShowGymClasses', component: ShowGymClasses,
                 },
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
-                    path: '/admin/create-gym-classes',
-                    component: CreateGymClasses,
+                    path: '/admin/create-gym-classes', name: 'CreateGymClasses', component: CreateGymClasses,
                 },
             ]
         },
-        { path: '/home', component: Home },
+        { path: '/home', name: 'Home', component: Home },
     ]
+});
+
+/**
+ * Routes without authorization
+ */
+const routesWithoutAuthorization = [
+    'Login',
+    'Home',
+];
+
+/**
+ * MIDDLEWARE
+ */
+router.beforeEach((to, from, next) => {
+    // Routes that require Admin role
+    if (to.path === '/admin/*') {
+        if (Auth.isAdmin === true) {
+            next();
+        } else {
+            next({ name: 'Login' });
+        }
+    }
+
+    // Routes that require authorization
+    if (routesWithoutAuthorization.includes(to.name)) {
+        next();
+    } else {
+        if (Auth.isAuthorized() === true) {
+            next();
+        }
+        else {
+            next({ name: 'Login' })
+        }
+    }
 });
 
 /**

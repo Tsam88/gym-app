@@ -26,6 +26,9 @@
                                 <div class="mt-3">
                                     <input id="login" name="login" class="btn btn-primary button-color-wave" type="submit" value="login">
                                 </div>
+                                <div class="mt-3">
+                                    <input @click="logout" id="logout" name="logout" class="btn btn-primary button-color-wave" type="button" value="logout">
+                                </div>
 
                             </div>
                         </form>
@@ -58,12 +61,26 @@
 
                 axios.post('/login', data)
                     .then(({data}) => {
+                        console.log(data.user);
+
                         Auth.login(data.token, data.user);
-                        this.$router.push('/admin/');
+                        this.$router.push({ name: 'AdminHome' })
                     })
                     .catch((error) => {
                         console.log(error);
                     });
+            },
+            logout() {
+                if (Auth.isAuthorized()) {
+                    axios.post('/users/logout')
+                        .then(({data}) => {
+                            Auth.logout();
+                            this.$router.push({ name: 'Home' })
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             }
         }
     }

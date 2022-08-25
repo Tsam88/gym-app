@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('profile', 'UserController@profile')->name('users.get-profile');
 //        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
         Route::patch('profile', 'UserController@update')->name('users.update-profile');
+        Route::post('logout', 'AuthController@logout')->name('users.logout');
     });
 
     // reservations

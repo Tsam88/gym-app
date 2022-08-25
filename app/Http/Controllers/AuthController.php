@@ -67,7 +67,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         try {
-            $user->currentAccessToken()->delete();
+            $user->token()->revoke();
         } catch (\Exception $e) {
             // do nothing
         }

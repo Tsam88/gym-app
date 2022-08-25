@@ -18,8 +18,15 @@ class Auth {
         this.token = token;
         this.user = user;
     }
-    check () {
+    isAuthorized () {
         return !! this.token;
+    }
+    isAdmin () {
+        if (this.user) {
+            return this.user.role === 'admin';
+        } else {
+            return false;
+        }
     }
     logout () {
         // window.localStorage.clear();
