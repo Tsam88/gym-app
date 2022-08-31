@@ -24,6 +24,7 @@ class SubscriptionPlanSingle extends JsonResource
             'plan_price' => $parent['plan_price'],
             'number_of_sessions' => $parent['number_of_sessions'],
             'number_of_months' => $parent['number_of_months'],
+            'sessions_per_week' => $parent['sessions_per_week'],
             'unlimited_sessions' => $parent['unlimited_sessions'],
             'display_on_page' => $parent['display_on_page'],
         ];

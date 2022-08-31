@@ -23,12 +23,6 @@
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
-                        <router-link to="/" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Επεξεργασία Προγράμματος Συνδρομής</span>
-                        </router-link>
-                    </li>
-
                     <li class="sidebar-header">
                         Τμήματα
                     </li>
@@ -45,11 +39,6 @@
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
-                        <router-link to="/" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="book-open"></i> <span class="align-middle">Επεξεργασία Τμήματος</span>
-                        </router-link>
-                    </li>
                 </ul>
             </div>
         </nav>

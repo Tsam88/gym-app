@@ -1,11 +1,78 @@
 <template>
-    <h1>Προγράμματα Συνδρομής</h1>
+    <div>
+        <div class="mb-3">
+            <h1 class="h1 d-inline align-middle">Προγράμματα Συνδρομής</h1>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Τίτλος</th>
+                    <th class="text-center" scope="col">Τιμή</th>
+                    <th class="text-center" scope="col">Μήνες</th>
+                    <th class="text-center" scope="col">Επισκέψεις</th>
+                    <th class="text-center" scope="col">Επισκέψεις ανά εβδομάδα</th>
+                    <th class="text-center" scope="col">Απεριόριστο</th>
+                    <th class="text-center" scope="col">Εμφάνιση στη σελίδα</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="subscription in subscriptions" @click="updateSubscription(subscription.id)">
+                        <th scope="row">{{ subscription.id }}</th>
+                        <td>{{ subscription.name }}</td>
+                        <td class="text-center">{{ subscription.plan_price }} </td>
+                        <td class="text-center">{{ subscription.number_of_months }}</td>
+                        <td class="text-center" >{{ subscription.number_of_sessions }}</td>
+                        <td class="text-center" >{{ subscription.sessions_per_week }}</td>
+                        <td>
+                            <label class="form-check d-flex justify-content-center">
+                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.unlimited_sessions == true" disabled>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check d-flex justify-content-center">
+                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.display_on_page == true" disabled>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </template>
 
 <script>
     export default {
+        name: 'PostFormAxios',
+        data() {
+            return {
+                subscriptions: []
+            }
+        },
         mounted() {
-            console.log('Component About TEST mounted.')
+            axios.get('/admin/subscription-plans', this.form)
+                .then((results) => {
+                    results.data.data.forEach((value, index) => {
+                        this.subscriptions.push(value);
+                    });
+                })
+                .catch((error) => {
+                    // error.response.status Check status code
+                    // alert(error.response.data.errors['name'][0]);
+                    // for each errors -> display
+                    console.log(error);
+                    // console.log(error.response.data.errors['name'][0]);
+                }).finally(() => {
+                //Perform action in always
+            });
+        },
+        methods:{
+            updateSubscription(subscriptionId) {
+                this.$router.push({ name: 'UpdateSubscriptionPlans', params: { id: subscriptionId } })
+            }
         }
     }
 </script>

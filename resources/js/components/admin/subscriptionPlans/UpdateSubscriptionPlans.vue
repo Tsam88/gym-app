@@ -2,7 +2,7 @@
 
     <div>
         <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Δημιουργία Προγράμματος Συνδρομής</h1>
+            <h1 class="h1 d-inline align-middle">Επεξεργασία Προγράμματος Συνδρομής</h1>
         </div>
 
         <div class="row">
@@ -73,7 +73,6 @@
 
 <script>
     export default {
-        name: 'PostFormAxios',
         data() {
             return {
                 form: {
@@ -83,9 +82,31 @@
                     number_of_sessions: 0,
                     sessions_per_week: 0,
                     unlimited_sessions: false,
-                    display_on_page: true
-                }
+                    display_on_page: false
+                },
+                id: this.$route.params.id,
             }
+        },
+        mounted() {
+            axios.get('/admin/subscription-plans/' + this.id)
+                .then(({data}) => {
+                    //Perform Success Action
+                    this.form.name = data.name;
+                    this.form.plan_price = data.plan_price;
+                    this.form.number_of_months = data.number_of_months;
+                    this.form.number_of_sessions = data.number_of_sessions;
+                    this.form.sessions_per_week = data.sessions_per_week;
+                    this.form.unlimited_sessions = data.unlimited_sessions;
+                    this.form.display_on_page = data.display_on_page;
+                })
+                .catch((error) => {
+                    // for each errors -> display
+                    console.log('errorAlert');
+                    console.log(error);
+                    // console.log(error.response.data.errors);
+                }).finally(() => {
+                //Perform action in always
+            });
         },
         methods:{
             submitForm() {
@@ -94,7 +115,7 @@
                 this.form.number_of_sessions = parseInt(this.form.number_of_sessions);
                 this.form.sessions_per_week = parseInt(this.form.sessions_per_week);
 
-                axios.post('/admin/subscription-plans', this.form)
+                axios.patch('/admin/subscription-plans/' + this.id, this.form)
                     .then((res) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowSubscriptionPlans' });
@@ -103,7 +124,7 @@
                         // error.response.status Check status code
                         // for each errors -> display
                         console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // console.log(error.response.data.errors);
                     }).finally(() => {
                     //Perform action in always
                 });

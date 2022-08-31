@@ -5285,10 +5285,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _auth_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../auth.js */ "./resources/js/auth.js");
-
-console.log('auth: ' + _auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].isAuthorized());
-console.log('admin: ' + _auth_js__WEBPACK_IMPORTED_MODULE_0__["default"].isAdmin());
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
 
 /***/ }),
@@ -5378,8 +5374,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       form: {
-        name: '',
+        name: null,
         plan_price: 0,
+        number_of_months: 0,
+        number_of_sessions: 0,
+        sessions_per_week: 0,
         unlimited_sessions: false,
         display_on_page: true
       }
@@ -5387,17 +5386,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     submitForm: function submitForm() {
-      this.form.plan_price = parseInt(this.form.plan_price);
+      var _this = this;
+
+      this.form.plan_price = parseFloat(this.form.plan_price);
+      this.form.number_of_months = parseInt(this.form.number_of_months);
+      this.form.number_of_sessions = parseInt(this.form.number_of_sessions);
+      this.form.sessions_per_week = parseInt(this.form.sessions_per_week);
       axios.post('/admin/subscription-plans', this.form).then(function (res) {
         //Perform Success Action
-        console.log(res);
-        console.log(res.response.message);
+        _this.$router.push({
+          name: 'ShowSubscriptionPlans'
+        });
       })["catch"](function (error) {
         // error.response.status Check status code
-        alert(error.response.data.errors['name'][0]); // for each errors -> display
-
-        console.log(error.response.status);
-        console.log(error.response.data.errors['name'][0]);
+        // for each errors -> display
+        console.log(error.response); // console.log(error.response.data.errors['name'][0]);
       })["finally"](function () {//Perform action in always
       });
     }
@@ -5418,8 +5421,107 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'PostFormAxios',
+  data: function data() {
+    return {
+      subscriptions: []
+    };
+  },
   mounted: function mounted() {
-    console.log('Component About TEST mounted.');
+    var _this = this;
+
+    axios.get('/admin/subscription-plans', this.form).then(function (results) {
+      results.data.data.forEach(function (value, index) {
+        _this.subscriptions.push(value);
+      });
+    })["catch"](function (error) {
+      // error.response.status Check status code
+      // alert(error.response.data.errors['name'][0]);
+      // for each errors -> display
+      console.log(error); // console.log(error.response.data.errors['name'][0]);
+    })["finally"](function () {//Perform action in always
+    });
+  },
+  methods: {
+    updateSubscription: function updateSubscription(subscriptionId) {
+      this.$router.push({
+        name: 'UpdateSubscriptionPlans',
+        params: {
+          id: subscriptionId
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      form: {
+        name: null,
+        plan_price: 0,
+        number_of_months: 0,
+        number_of_sessions: 0,
+        sessions_per_week: 0,
+        unlimited_sessions: false,
+        display_on_page: false
+      },
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/admin/subscription-plans/' + this.id).then(function (_ref) {
+      var data = _ref.data;
+      //Perform Success Action
+      _this.form.name = data.name;
+      _this.form.plan_price = data.plan_price;
+      _this.form.number_of_months = data.number_of_months;
+      _this.form.number_of_sessions = data.number_of_sessions;
+      _this.form.sessions_per_week = data.sessions_per_week;
+      _this.form.unlimited_sessions = data.unlimited_sessions;
+      _this.form.display_on_page = data.display_on_page;
+    })["catch"](function (error) {
+      // for each errors -> display
+      console.log('errorAlert');
+      console.log(error); // console.log(error.response.data.errors);
+    })["finally"](function () {//Perform action in always
+    });
+  },
+  methods: {
+    submitForm: function submitForm() {
+      var _this2 = this;
+
+      this.form.plan_price = parseFloat(this.form.plan_price);
+      this.form.number_of_months = parseInt(this.form.number_of_months);
+      this.form.number_of_sessions = parseInt(this.form.number_of_sessions);
+      this.form.sessions_per_week = parseInt(this.form.sessions_per_week);
+      axios.patch('/admin/subscription-plans/' + this.id, this.form).then(function (res) {
+        //Perform Success Action
+        _this2.$router.push({
+          name: 'ShowSubscriptionPlans'
+        });
+      })["catch"](function (error) {
+        // error.response.status Check status code
+        // for each errors -> display
+        console.log(error.response); // console.log(error.response.data.errors);
+      })["finally"](function () {//Perform action in always
+      });
+    }
   }
 });
 
@@ -5603,20 +5705,6 @@ var render = function render() {
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
   }, [_vm._v("Δημιουργία Προγράμματος Συνδρομής")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
-  }, [_c("router-link", {
-    staticClass: "nav-link sidebar-link",
-    attrs: {
-      to: "/"
-    }
-  }, [_c("i", {
-    staticClass: "align-middle",
-    attrs: {
-      "data-feather": "dollar-sign"
-    }
-  }), _vm._v(" "), _c("span", {
-    staticClass: "align-middle"
-  }, [_vm._v("Επεξεργασία Προγράμματος Συνδρομής")])])], 1), _vm._v(" "), _c("li", {
     staticClass: "sidebar-header"
   }, [_vm._v("\n                        Τμήματα\n                    ")]), _vm._v(" "), _c("li", {
     staticClass: "sidebar-item"
@@ -5646,21 +5734,7 @@ var render = function render() {
     }
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
-  }, [_vm._v("Δημιουργία Τμήματος")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
-  }, [_c("router-link", {
-    staticClass: "nav-link sidebar-link",
-    attrs: {
-      to: "/"
-    }
-  }, [_c("i", {
-    staticClass: "align-middle",
-    attrs: {
-      "data-feather": "book-open"
-    }
-  }), _vm._v(" "), _c("span", {
-    staticClass: "align-middle"
-  }, [_vm._v("Επεξεργασία Τμήματος")])])], 1)])], 1)]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Δημιουργία Τμήματος")])])], 1)])], 1)]), _vm._v(" "), _c("div", {
     staticClass: "main"
   }, [_vm._m(0), _vm._v(" "), _c("main", {
     staticClass: "content"
@@ -5888,7 +5962,8 @@ var render = function render() {
       id: "name",
       name: "name",
       type: "text",
-      placeholder: "Όνομα"
+      placeholder: "Όνομα",
+      required: ""
     },
     domProps: {
       value: _vm.form.name
@@ -5919,7 +5994,9 @@ var render = function render() {
       name: "plan_price",
       type: "number",
       min: "0",
-      placeholder: "Τιμή"
+      step: "0.01",
+      placeholder: "Τιμή",
+      required: ""
     },
     domProps: {
       value: _vm.form.plan_price
@@ -5929,6 +6006,105 @@ var render = function render() {
         if ($event.target.composing) return;
 
         _vm.$set(_vm.form, "plan_price", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_months"
+    }
+  }, [_vm._v("Μήνες")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_months,
+      expression: "form.number_of_months"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_months",
+      name: "number_of_months",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Μήνες",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_months
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_months", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_sessions"
+    }
+  }, [_vm._v("Αριθμός επισκέψεων")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_sessions,
+      expression: "form.number_of_sessions"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_sessions",
+      name: "number_of_sessions",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Αριθμός επισκέψεων",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_sessions
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_sessions", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "sessions_per_week"
+    }
+  }, [_vm._v("Αριθμός επισκέψεων ανά εβδομάδα")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.sessions_per_week,
+      expression: "form.sessions_per_week"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "sessions_per_week",
+      name: "sessions_per_week",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Αριθμός επισκέψεων ανά εβδομάδα",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.sessions_per_week
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "sessions_per_week", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -6041,7 +6217,7 @@ var staticRenderFns = [function () {
       id: "submit_subscription_plan",
       name: "submit_subscription_plan",
       type: "submit",
-      value: "Δημιουργία"
+      value: "Αποθήκευση"
     }
   })]);
 }];
@@ -6066,10 +6242,427 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("h1", [_vm._v("Προγράμματα Συνδρομής")]);
+  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-hover"
+  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.subscriptions, function (subscription) {
+    return _c("tr", {
+      on: {
+        click: function click($event) {
+          return _vm.updateSubscription(subscription.id);
+        }
+      }
+    }, [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(subscription.id))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.name))]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(subscription.plan_price) + " ")]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(subscription.number_of_months))]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(subscription.number_of_sessions))]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(subscription.sessions_per_week))]), _vm._v(" "), _c("td", [_c("label", {
+      staticClass: "form-check d-flex justify-content-center"
+    }, [_c("input", {
+      staticClass: "form-check-input wave-check-input-disabled",
+      attrs: {
+        type: "checkbox",
+        value: "",
+        disabled: ""
+      },
+      domProps: {
+        checked: subscription.unlimited_sessions == true
+      }
+    })])]), _vm._v(" "), _c("td", [_c("label", {
+      staticClass: "form-check d-flex justify-content-center"
+    }, [_c("input", {
+      staticClass: "form-check-input wave-check-input-disabled",
+      attrs: {
+        type: "checkbox",
+        value: "",
+        disabled: ""
+      },
+      domProps: {
+        checked: subscription.display_on_page == true
+      }
+    })])])]);
+  }), 0)])])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mb-3"
+  }, [_c("h1", {
+    staticClass: "h1 d-inline align-middle"
+  }, [_vm._v("Προγράμματα Συνδρομής")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("thead", {
+    staticClass: "thead-dark"
+  }, [_c("tr", [_c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("ID")]), _vm._v(" "), _c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Τίτλος")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Τιμή")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Μήνες")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Επισκέψεις")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Επισκέψεις ανά εβδομάδα")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Απεριόριστο")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Εμφάνιση στη σελίδα")])])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567&":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567& ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-lg-6"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submitForm.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Όνομα")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.name,
+      expression: "form.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "name",
+      name: "name",
+      type: "text",
+      placeholder: "Όνομα",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "name", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "plan_price"
+    }
+  }, [_vm._v("Τιμή")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.plan_price,
+      expression: "form.plan_price"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "plan_price",
+      name: "plan_price",
+      type: "number",
+      min: "0",
+      step: "0.01",
+      placeholder: "Τιμή",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.plan_price
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "plan_price", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_months"
+    }
+  }, [_vm._v("Μήνες")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_months,
+      expression: "form.number_of_months"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_months",
+      name: "number_of_months",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Μήνες",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_months
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_months", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_sessions"
+    }
+  }, [_vm._v("Αριθμός επισκέψεων")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_sessions,
+      expression: "form.number_of_sessions"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_sessions",
+      name: "number_of_sessions",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Αριθμός επισκέψεων",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_sessions
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_sessions", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "sessions_per_week"
+    }
+  }, [_vm._v("Αριθμός επισκέψεων ανά εβδομάδα")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.sessions_per_week,
+      expression: "form.sessions_per_week"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "sessions_per_week",
+      name: "sessions_per_week",
+      type: "number",
+      min: "0",
+      step: "1",
+      placeholder: "Αριθμός επισκέψεων ανά εβδομάδα",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.sessions_per_week
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "sessions_per_week", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    staticClass: "form-check"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.unlimited_sessions,
+      expression: "form.unlimited_sessions"
+    }],
+    staticClass: "form-check-input wave-check-input",
+    attrs: {
+      id: "unlimited_sessions",
+      name: "unlimited_sessions",
+      type: "checkbox",
+      value: ""
+    },
+    domProps: {
+      checked: Array.isArray(_vm.form.unlimited_sessions) ? _vm._i(_vm.form.unlimited_sessions, "") > -1 : _vm.form.unlimited_sessions
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.form.unlimited_sessions,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = "",
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.form, "unlimited_sessions", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.form, "unlimited_sessions", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.form, "unlimited_sessions", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "form-check-label"
+  }, [_vm._v("\n                                          Απεριόριστες επισκέψεις\n                                    ")])])]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    staticClass: "form-check"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.display_on_page,
+      expression: "form.display_on_page"
+    }],
+    staticClass: "form-check-input wave-check-input",
+    attrs: {
+      id: "display_on_page",
+      name: "display_on_page",
+      type: "checkbox",
+      value: "true"
+    },
+    domProps: {
+      checked: Array.isArray(_vm.form.display_on_page) ? _vm._i(_vm.form.display_on_page, "true") > -1 : _vm.form.display_on_page
+    },
+    on: {
+      change: function change($event) {
+        var $$a = _vm.form.display_on_page,
+            $$el = $event.target,
+            $$c = $$el.checked ? true : false;
+
+        if (Array.isArray($$a)) {
+          var $$v = "true",
+              $$i = _vm._i($$a, $$v);
+
+          if ($$el.checked) {
+            $$i < 0 && _vm.$set(_vm.form, "display_on_page", $$a.concat([$$v]));
+          } else {
+            $$i > -1 && _vm.$set(_vm.form, "display_on_page", $$a.slice(0, $$i).concat($$a.slice($$i + 1)));
+          }
+        } else {
+          _vm.$set(_vm.form, "display_on_page", $$c);
+        }
+      }
+    }
+  }), _vm._v(" "), _c("span", {
+    staticClass: "form-check-label"
+  }, [_vm._v("\n                                          Εμφάνιση στη σελίδα\n                                    ")])])]), _vm._v(" "), _vm._m(1)])])])])])])]);
+};
+
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mb-3"
+  }, [_c("h1", {
+    staticClass: "h1 d-inline align-middle"
+  }, [_vm._v("Επεξεργασία Προγράμματος Συνδρομής")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mt-3"
+  }, [_c("input", {
+    staticClass: "btn btn-primary button-color-wave",
+    attrs: {
+      id: "submit_subscription_plan",
+      name: "submit_subscription_plan",
+      type: "submit",
+      value: "Αποθήκευση"
+    }
+  })]);
+}];
 render._withStripped = true;
 
 
@@ -6240,8 +6833,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_Home_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/admin/Home.vue */ "./resources/js/components/admin/Home.vue");
 /* harmony import */ var _components_admin_subscriptionPlans_ShowSubscriptionPlans_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/ShowSubscriptionPlans.vue");
 /* harmony import */ var _components_admin_subscriptionPlans_CreateSubscriptionPlans_vue__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/admin/subscriptionPlans/CreateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue");
-/* harmony import */ var _components_admin_gymClasses_ShowGymClasses_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/admin/gymClasses/ShowGymClasses.vue */ "./resources/js/components/admin/gymClasses/ShowGymClasses.vue");
-/* harmony import */ var _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/admin/gymClasses/CreateGymClasses.vue */ "./resources/js/components/admin/gymClasses/CreateGymClasses.vue");
+/* harmony import */ var _components_admin_subscriptionPlans_UpdateSubscriptionPlans_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue");
+/* harmony import */ var _components_admin_gymClasses_ShowGymClasses_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/admin/gymClasses/ShowGymClasses.vue */ "./resources/js/components/admin/gymClasses/ShowGymClasses.vue");
+/* harmony import */ var _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/admin/gymClasses/CreateGymClasses.vue */ "./resources/js/components/admin/gymClasses/CreateGymClasses.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -6259,6 +6853,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 
 
 /* Admin */
+
 
 
 
@@ -6300,15 +6895,25 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
     }, {
       // UserProfile will be rendered inside User's <router-view>
       // when /user/:id/profile is matched
+      path: '/admin/update-subscription-plans/:id',
+      name: 'UpdateSubscriptionPlans',
+      component: _components_admin_subscriptionPlans_UpdateSubscriptionPlans_vue__WEBPACK_IMPORTED_MODULE_9__["default"],
+      props: {
+        "default": true,
+        sidebar: false
+      }
+    }, {
+      // UserProfile will be rendered inside User's <router-view>
+      // when /user/:id/profile is matched
       path: '/admin/show-gym-classes',
       name: 'ShowGymClasses',
-      component: _components_admin_gymClasses_ShowGymClasses_vue__WEBPACK_IMPORTED_MODULE_9__["default"]
+      component: _components_admin_gymClasses_ShowGymClasses_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
     }, {
       // UserProfile will be rendered inside User's <router-view>
       // when /user/:id/profile is matched
       path: '/admin/create-gym-classes',
       name: 'CreateGymClasses',
-      component: _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_10__["default"]
+      component: _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
     }]
   }, {
     path: '/home',
@@ -6320,12 +6925,13 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
  * Routes without authorization
  */
 
-var routesWithoutAuthorization = ['Login', 'Home'];
+var routesWithoutAuthorization = ['Login', 'Home', 'MainPage'];
 /**
- * AUTH MIDDLEWARE
+ * MIDDLEWARE
  */
 
 router.beforeEach(function (to, from, next) {
+  // Routes that require Admin role
   if (to.path === '/admin/*') {
     if (_auth_js__WEBPACK_IMPORTED_MODULE_1__["default"].isAdmin === true) {
       next();
@@ -6334,7 +6940,8 @@ router.beforeEach(function (to, from, next) {
         name: 'Login'
       });
     }
-  }
+  } // Routes that require authorization
+
 
   if (routesWithoutAuthorization.includes(to.name)) {
     next();
@@ -6348,10 +6955,6 @@ router.beforeEach(function (to, from, next) {
     }
   }
 });
-/**
- * ADMIN MIDDLEWARE
- */
-
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -6368,6 +6971,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('login', (__webpack_requir
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('admin-home', (__webpack_require__(/*! ./components/admin/Home.vue */ "./resources/js/components/admin/Home.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('show-subscription-plans', (__webpack_require__(/*! ./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/ShowSubscriptionPlans.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-subscription-plans', (__webpack_require__(/*! ./components/admin/subscriptionPlans/CreateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-subscription-plans', (__webpack_require__(/*! ./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('show-gym-classes', (__webpack_require__(/*! ./components/admin/gymClasses/ShowGymClasses.vue */ "./resources/js/components/admin/gymClasses/ShowGymClasses.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-gym-classes', (__webpack_require__(/*! ./components/admin/gymClasses/CreateGymClasses.vue */ "./resources/js/components/admin/gymClasses/CreateGymClasses.vue")["default"]));
 /**
@@ -29440,6 +30044,45 @@ component.options.__file = "resources/js/components/admin/subscriptionPlans/Show
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567& */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567&");
+/* harmony import */ var _UpdateSubscriptionPlans_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateSubscriptionPlans.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UpdateSubscriptionPlans_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__.render,
+  _UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/main/auth/Login.vue":
 /*!*****************************************************!*\
   !*** ./resources/js/components/main/auth/Login.vue ***!
@@ -29591,6 +30234,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateSubscriptionPlans_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateSubscriptionPlans.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateSubscriptionPlans_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/main/auth/Login.vue?vue&type=script&lang=js&":
 /*!******************************************************************************!*\
   !*** ./resources/js/components/main/auth/Login.vue?vue&type=script&lang=js& ***!
@@ -29722,6 +30381,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowSubscriptionPlans_vue_vue_type_template_id_41ec3b1a___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowSubscriptionPlans_vue_vue_type_template_id_41ec3b1a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ShowSubscriptionPlans.vue?vue&type=template&id=41ec3b1a& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/ShowSubscriptionPlans.vue?vue&type=template&id=41ec3b1a&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567&":
+/*!********************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567& ***!
+  \********************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateSubscriptionPlans_vue_vue_type_template_id_4f250567___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue?vue&type=template&id=4f250567&");
 
 
 /***/ }),

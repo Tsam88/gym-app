@@ -18,7 +18,32 @@
     color: #4CAF50 !important;
 }
 
-.wave-check-input:checked {
+.wave-check-input:checked,
+.wave-check-input-disabled:checked {
     background-color: #4CAF50 !important;
     border-color: #35913A !important;
 }
+
+.wave-check-input-disabled:disabled {
+    opacity: 1 !important;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: #e3ffe1;
+    cursor: pointer;
+}
+
+
+
+.resetAll a {
+    all: initial;
+}
+
+.resetAll * {
+    all: unset
+}
+
+/*.wave-table-td-checkbox {*/
+/*    horizontal-align: middle;*/
+/*}*/
+

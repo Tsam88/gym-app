@@ -22,6 +22,7 @@ import Login from './components/main/auth/Login.vue';
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
 import CreateSubscriptionPlans from './components/admin/subscriptionPlans/CreateSubscriptionPlans.vue';
+import UpdateSubscriptionPlans from './components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue';
 import ShowGymClasses from './components/admin/gymClasses/ShowGymClasses.vue';
 import CreateGymClasses from './components/admin/gymClasses/CreateGymClasses.vue';
 
@@ -50,6 +51,11 @@ const router = new VueRouter({
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
+                    path: '/admin/update-subscription-plans/:id', name: 'UpdateSubscriptionPlans', component: UpdateSubscriptionPlans, props: { default: true, sidebar: false }
+                },
+                {
+                    // UserProfile will be rendered inside User's <router-view>
+                    // when /user/:id/profile is matched
                     path: '/admin/show-gym-classes', name: 'ShowGymClasses', component: ShowGymClasses,
                 },
                 {
@@ -69,6 +75,7 @@ const router = new VueRouter({
 const routesWithoutAuthorization = [
     'Login',
     'Home',
+    'MainPage',
 ];
 
 /**
@@ -113,6 +120,7 @@ Vue.component('login', require('./components/main/auth/Login.vue').default);
 Vue.component('admin-home', require('./components/admin/Home.vue').default);
 Vue.component('show-subscription-plans', require('./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue').default);
 Vue.component('create-subscription-plans', require('./components/admin/subscriptionPlans/CreateSubscriptionPlans.vue').default);
+Vue.component('update-subscription-plans', require('./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue').default);
 Vue.component('show-gym-classes', require('./components/admin/gymClasses/ShowGymClasses.vue').default);
 Vue.component('create-gym-classes', require('./components/admin/gymClasses/CreateGymClasses.vue').default);
 
