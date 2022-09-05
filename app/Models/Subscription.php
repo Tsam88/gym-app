@@ -10,6 +10,16 @@ class Subscription extends Model
     use SoftDeletes;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'starts_at' => 'date:Y-m-d',
+        'expires_at' => 'date:Y-m-d',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

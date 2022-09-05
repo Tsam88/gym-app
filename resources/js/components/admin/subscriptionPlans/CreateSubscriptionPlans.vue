@@ -35,7 +35,7 @@
 
                                 <div class="my-3">
                                     <label for="sessions_per_week">Αριθμός επισκέψεων ανά εβδομάδα</label>
-                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα" required>
+                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
                                 </div>
 
                                 <div class="my-3">
@@ -81,7 +81,7 @@
                     plan_price: 0,
                     number_of_months: 0,
                     number_of_sessions: 0,
-                    sessions_per_week: 0,
+                    sessions_per_week: null,
                     unlimited_sessions: false,
                     display_on_page: true
                 }

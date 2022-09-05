@@ -14,7 +14,7 @@ class AddSessionsPerWeekToSubscriptionsTable extends Migration
     public function up()
     {
         Schema::table('subscriptions', function (Blueprint $table) {
-            $table->string('sessions_per_week')->nullable();
+            $table->unsignedInteger('sessions_per_week')->nullable();
         });
     }
 

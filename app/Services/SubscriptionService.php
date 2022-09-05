@@ -44,7 +44,8 @@ class SubscriptionService
         $data = $this->subscriptionValidation->subscriptionGetSubscriptions($input);
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $subscriptions = Subscription::paginate($itemsPerPage);
+        $subscriptions = Subscription::with('user')
+            ->paginate($itemsPerPage);
 
         return $subscriptions;
     }
@@ -70,6 +71,7 @@ class SubscriptionService
             $data['price'] = $subscriptionPlanData['plan_price'];
             $data['remaining_sessions'] = $subscriptionPlanData['number_of_sessions'];
             $data['unlimited_sessions'] = $subscriptionPlanData['unlimited_sessions'];
+            $data['sessions_per_week'] = $subscriptionPlanData['sessions_per_week'];
             $data['expires_at'] = Carbon::parse($data['starts_at'], 'Europe/Athens')->addMonths($subscriptionPlanData['number_of_months'])->format('Y-m-d');
 
             // get active subscription based on the reservation date

@@ -18,7 +18,7 @@ class CreateSubscriptionsTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('subscription_plan_id')->index();
             $table->float('price');
-            $table->integer('remaining_sessions')->default(0);
+            $table->unsignedInteger('remaining_sessions')->default(0);
             $table->boolean('unlimited_sessions')->default(false);
             $table->dateTime('starts_at')->nullable()->index();
             $table->dateTime('expires_at')->nullable()->index();

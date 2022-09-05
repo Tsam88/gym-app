@@ -25,6 +25,9 @@ import CreateSubscriptionPlans from './components/admin/subscriptionPlans/Create
 import UpdateSubscriptionPlans from './components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue';
 import ShowGymClasses from './components/admin/gymClasses/ShowGymClasses.vue';
 import CreateGymClasses from './components/admin/gymClasses/CreateGymClasses.vue';
+import ShowSubscriptions from './components/admin/subscriptions/ShowSubscriptions.vue';
+import CreateSubscriptions from './components/admin/subscriptions/CreateSubscriptions.vue';
+import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
 
 const router = new VueRouter({
     mode: 'history',
@@ -38,30 +41,34 @@ const router = new VueRouter({
         { path: '/admin', name: 'AdminHome', component: AdminHome,
             redirect: '/admin/show-subscription-plans',
             children: [
+                // Subscription Plans
                 {
                     // UserProfile will be rendered inside User's <router-view>
                     // when /user/:id/profile is matched
                     path: '/admin/show-subscription-plans', name: 'ShowSubscriptionPlans', component: ShowSubscriptionPlans,
                 },
                 {
-                    // UserProfile will be rendered inside User's <router-view>
-                    // when /user/:id/profile is matched
                     path: '/admin/create-subscription-plans', name: 'CreateSubscriptionPlans', component: CreateSubscriptionPlans,
                 },
                 {
-                    // UserProfile will be rendered inside User's <router-view>
-                    // when /user/:id/profile is matched
                     path: '/admin/update-subscription-plans/:id', name: 'UpdateSubscriptionPlans', component: UpdateSubscriptionPlans, props: { default: true, sidebar: false }
                 },
+                // Gym Classes
                 {
-                    // UserProfile will be rendered inside User's <router-view>
-                    // when /user/:id/profile is matched
                     path: '/admin/show-gym-classes', name: 'ShowGymClasses', component: ShowGymClasses,
                 },
                 {
-                    // UserProfile will be rendered inside User's <router-view>
-                    // when /user/:id/profile is matched
                     path: '/admin/create-gym-classes', name: 'CreateGymClasses', component: CreateGymClasses,
+                },
+                // Subscriptions
+                {
+                    path: '/admin/show-subscriptions', name: 'ShowSubscriptions', component: ShowSubscriptions,
+                },
+                {
+                    path: '/admin/create-subscriptions', name: 'CreateSubscriptions', component: CreateSubscriptions,
+                },
+                {
+                    path: '/admin/update-subscriptions/:id', name: 'UpdateSubscriptions', component: UpdateSubscriptions, props: { default: true, sidebar: false }
                 },
             ]
         },
@@ -123,6 +130,9 @@ Vue.component('create-subscription-plans', require('./components/admin/subscript
 Vue.component('update-subscription-plans', require('./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue').default);
 Vue.component('show-gym-classes', require('./components/admin/gymClasses/ShowGymClasses.vue').default);
 Vue.component('create-gym-classes', require('./components/admin/gymClasses/CreateGymClasses.vue').default);
+Vue.component('show-subscriptions', require('./components/admin/subscriptions/ShowSubscriptions.vue').default);
+Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
+Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

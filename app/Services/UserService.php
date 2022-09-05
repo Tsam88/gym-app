@@ -58,7 +58,9 @@ class UserService
         $data = $this->userValidation->userGetUsers($input);
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $users = User::paginate($itemsPerPage);
+        $users = User::orderBy('name', 'ASC')
+            ->orderBy('surname', 'ASC')
+            ->paginate($itemsPerPage);
 
         $users->load($loadModels);
 

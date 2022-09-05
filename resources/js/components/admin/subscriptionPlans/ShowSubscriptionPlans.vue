@@ -20,21 +20,21 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="subscription in subscriptions" @click="updateSubscription(subscription.id)">
-                        <th scope="row">{{ subscription.id }}</th>
-                        <td>{{ subscription.name }}</td>
-                        <td class="text-center">{{ subscription.plan_price }} </td>
-                        <td class="text-center">{{ subscription.number_of_months }}</td>
-                        <td class="text-center" >{{ subscription.number_of_sessions }}</td>
-                        <td class="text-center" >{{ subscription.sessions_per_week }}</td>
+                    <tr v-for="subscriptionPlan in subscriptionPlans" @click="updateSubscriptionPlan(subscriptionPlan.id)">
+                        <th scope="row">{{ subscriptionPlan.id }}</th>
+                        <td>{{ subscriptionPlan.name }}</td>
+                        <td class="text-center">{{ subscriptionPlan.plan_price }} </td>
+                        <td class="text-center">{{ subscriptionPlan.number_of_months }}</td>
+                        <td class="text-center" >{{ subscriptionPlan.number_of_sessions }}</td>
+                        <td class="text-center" >{{ subscriptionPlan.sessions_per_week }}</td>
                         <td>
                             <label class="form-check d-flex justify-content-center">
-                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.unlimited_sessions == true" disabled>
+                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.unlimited_sessions == true" disabled>
                             </label>
                         </td>
                         <td>
                             <label class="form-check d-flex justify-content-center">
-                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.display_on_page == true" disabled>
+                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.display_on_page == true" disabled>
                             </label>
                         </td>
                     </tr>
@@ -49,14 +49,14 @@
         name: 'PostFormAxios',
         data() {
             return {
-                subscriptions: []
+                subscriptionPlans: []
             }
         },
         mounted() {
             axios.get('/admin/subscription-plans', this.form)
                 .then((results) => {
                     results.data.data.forEach((value, index) => {
-                        this.subscriptions.push(value);
+                        this.subscriptionPlans.push(value);
                     });
                 })
                 .catch((error) => {
@@ -70,8 +70,8 @@
             });
         },
         methods:{
-            updateSubscription(subscriptionId) {
-                this.$router.push({ name: 'UpdateSubscriptionPlans', params: { id: subscriptionId } })
+            updateSubscriptionPlan(subscriptionPlanId) {
+                this.$router.push({ name: 'UpdateSubscriptionPlans', params: { id: subscriptionPlanId } })
             }
         }
     }
