@@ -63,12 +63,13 @@ class ReservationService
     /**
      * Create a reservation
      *
-     * @param array $input Reservation data
-     * @param User $user
+     * @param array             $input Reservation data
+     * @param User              $user
+     * @param Subscription|null $activeSubscription
      *
      * @return Reservation
      */
-    public function create(array $input, User $user): Reservation
+    public function create(array $input, User $user, ?Subscription $activeSubscription): Reservation
     {
         // if the logged-in user is student, then use as user_id his id
         if ($user->isStudent) {
@@ -106,18 +107,15 @@ class ReservationService
                 throw new ReservationIsDeclinedException();
             }
 
-            // get subscription based on the reservation date
-            $subscription = $this->getSubscriptionBasedOnReservationDate($data['user_id'], $data['date']);
-
             // if there is no active subscription for the requested date throw exception
-            if (!$subscription) {
+            if (empty($activeSubscription)) {
                 throw new NoActiveSubscriptionForTheRequestedDateException();
             }
 
             // check if subscription has no unlimited sessions
-            if (!$subscription->unlimited_sessions) {
+            if (!$activeSubscription->unlimited_sessions) {
                 // check if subscription has sessions per week
-                if ($subscription->sessions_per_week) {
+                if ($activeSubscription->sessions_per_week) {
                     $now = Carbon::now('Europe/Athens');
                     $firstDayOfWeek = $now->startOfWeek(Carbon::MONDAY);
                     $lastDayOfWeek = $now->endOfWeek(Carbon::SUNDAY);
@@ -129,15 +127,15 @@ class ReservationService
                         ->count();
 
                     // check if sessions week limit has been exceeded
-                    if ($reservedWeekSessions >= $subscription->sessions_per_week) {
+                    if ($reservedWeekSessions >= $activeSubscription->sessions_per_week) {
                         throw new SessionsWeekLimitExceededException();
                     }
                 } else {
                     // check if there are remaining sessions
-                    if ($subscription->remaining_sessions > 0) {
+                    if ($activeSubscription->remaining_sessions > 0) {
                         // decrease remaining sessions by one
-                        $subscription->remaining_sessions--;
-                        $subscription->save();
+                        $activeSubscription->remaining_sessions--;
+                        $activeSubscription->save();
                     } else {
                         // sessions limit has been exceeded
                         throw new SessionsLimitExceededException();
@@ -164,11 +162,12 @@ class ReservationService
     /**
      * Cancel a reservation
      *
-     * @param Reservation $reservation
+     * @param Reservation       $reservation
+     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function cancel(Reservation $reservation)
+    public function cancel(Reservation $reservation, ?Subscription $activeSubscription)
     {
         // start db transaction
         DB::beginTransaction();
@@ -195,13 +194,15 @@ class ReservationService
                 throw new ReservationCancellationIsNotAllowedException;
             }
 
-            // get subscription based on the reservation date
-            $subscription = $this->getSubscriptionBasedOnReservationDate($reservation->user_id, $reservation->date);
+            // if there is no active subscription for the requested date throw exception
+            if (empty($activeSubscription)) {
+                throw new NoActiveSubscriptionForTheRequestedDateException();
+            }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$subscription->unlimited_sessions && !$subscription->sessions_per_week) {
-                $subscription->remaining_sessions++;
-                $subscription->save();
+            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+                $activeSubscription->remaining_sessions++;
+                $activeSubscription->save();
             }
 
             $reservation->canceled = true;
@@ -220,11 +221,12 @@ class ReservationService
     /**
      * Decline a reservation
      *
-     * @param Reservation $reservation
+     * @param Reservation       $reservation
+     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function decline(Reservation $reservation)
+    public function decline(Reservation $reservation, ?Subscription $activeSubscription)
     {
         // start db transaction
         DB::beginTransaction();
@@ -241,13 +243,15 @@ class ReservationService
                 throw new ReservationAlreadyCanceledException();
             }
 
-            // get subscription based on the reservation date
-            $subscription = $this->getSubscriptionBasedOnReservationDate($reservation->user_id, $reservation->date);
+            // if there is no active subscription for the requested date throw exception
+            if (empty($activeSubscription)) {
+                throw new NoActiveSubscriptionForTheRequestedDateException();
+            }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$subscription->unlimited_sessions && !$subscription->sessions_per_week) {
-                $subscription->remaining_sessions++;
-                $subscription->save();
+            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+                $activeSubscription->remaining_sessions++;
+                $activeSubscription->save();
             }
 
             $reservation->declined = true;
@@ -266,23 +270,26 @@ class ReservationService
     /**
      * Delete reservation
      *
-     * @param Reservation $reservation
+     * @param Reservation       $reservation
+     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function delete(Reservation $reservation)
+    public function delete(Reservation $reservation, Subscription $activeSubscription)
     {
         // start db transaction
         DB::beginTransaction();
 
         try {
-            // get subscription based on the reservation date
-            $subscription = $this->getSubscriptionBasedOnReservationDate($reservation->user_id, $reservation->date);
+            // if there is no active subscription for the requested date throw exception
+            if (empty($activeSubscription)) {
+                throw new NoActiveSubscriptionForTheRequestedDateException();
+            }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$subscription->unlimited_sessions && !$subscription->sessions_per_week) {
-                $subscription->remaining_sessions++;
-                $subscription->save();
+            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+                $activeSubscription->remaining_sessions++;
+                $activeSubscription->save();
             }
 
             $reservation->delete();
@@ -295,25 +302,6 @@ class ReservationService
 
         // commit database changes
         DB::commit();
-    }
-
-    /**
-     * get subscription based on reservation date
-     *
-     * @param int    $userId
-     * @param string $date
-     *
-     * @return Subscription|null
-     */
-    private function getSubscriptionBasedOnReservationDate(int $userId, string $date)
-    {
-        // get active subscription based on the reservation date
-        $subscription = Subscription::where('user_id', $userId)
-            ->where('starts_at', '<=', $date)
-            ->where('expires_at', '>=', $date)
-            ->first();
-
-        return $subscription;
     }
 
     /**
@@ -407,5 +395,25 @@ class ReservationService
         } else {
             return false;
         }
+    }
+
+    /**
+     * Get user's last reservation date
+     *
+     * @param int $userId
+     *
+     * @return Carbon|null
+     */
+    public function getLastReservationDate(int $userId): ?Carbon
+    {
+        $lastReservation = Reservation::where('user_id', $userId)
+            ->where('canceled', false)
+            ->where('declined', false)
+            ->orderBy('date', 'DESC')
+            ->first();
+
+        $lastReservationDate = $lastReservation ? Carbon::parse($lastReservation->date) : null;
+
+        return $lastReservationDate;
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Reservation\ReservationSingle;
 use App\Models\Reservation;
 use App\Services\ReservationService;
+use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -16,9 +17,15 @@ class AdminReservationController extends Controller
      */
     private $reservationService;
 
-    public function __construct(ReservationService $reservationService)
+    /**
+     * @var SubscriptionService
+     */
+    private $subscriptionService;
+
+    public function __construct(ReservationService $reservationService, SubscriptionService $subscriptionService)
     {
         $this->reservationService = $reservationService;
+        $this->subscriptionService = $subscriptionService;
     }
 
     /**
@@ -68,8 +75,14 @@ class AdminReservationController extends Controller
         // get user
         $user = $request->user();
 
+        // get last reservation date
+        $lastReservationDate = $this->reservationService->getLastReservationDate($data['user_id']);
+
+        // get active subscription
+        $activeSubscription = $this->subscriptionService->getActiveSubscription($data['user_id'], $lastReservationDate);
+
         // create reservation
-        $reservation = $this->reservationService->create($data, $user);
+        $reservation = $this->reservationService->create($data, $user, $activeSubscription);
 
         $response = new Response(null, Response::HTTP_CREATED);
         $response->headers->set('Location', route('admin.reservations.show', ['reservation' => $reservation]));
@@ -86,8 +99,14 @@ class AdminReservationController extends Controller
      */
     public function decline(Reservation $reservation)
     {
+        // get last reservation date
+        $lastReservationDate = $this->reservationService->getLastReservationDate($reservation->user_id);
+
+        // get active subscription
+        $activeSubscription = $this->subscriptionService->getActiveSubscription($reservation->user_id, $lastReservationDate);
+
         // decline reservation
-        $this->reservationService->decline($reservation);
+        $this->reservationService->decline($reservation, $activeSubscription);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
@@ -101,7 +120,13 @@ class AdminReservationController extends Controller
      */
     public function delete(Reservation $reservation)
     {
-        $this->reservationService->delete($reservation);
+        // get last reservation date
+        $lastReservationDate = $this->reservationService->getLastReservationDate($reservation->user_id);
+
+        // get active subscription
+        $activeSubscription = $this->subscriptionService->getActiveSubscription($reservation->user_id, $lastReservationDate);
+
+        $this->reservationService->delete($reservation, $activeSubscription);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

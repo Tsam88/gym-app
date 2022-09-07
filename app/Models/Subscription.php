@@ -17,6 +17,7 @@ class Subscription extends Model
     protected $casts = [
         'starts_at' => 'date:Y-m-d',
         'expires_at' => 'date:Y-m-d',
+        'unlimited_sessions' => 'boolean',
     ];
 
     /**
