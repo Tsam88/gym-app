@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Reservation\ReservationSingle;
 use App\Models\Reservation;
 use App\Services\ReservationService;
-use App\Services\SubscriptionService;
-use App\Services\UserService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,21 +16,9 @@ class ReservationController extends Controller
      */
     private $reservationService;
 
-    /**
-     * @var UserService
-     */
-    private $userService;
-
-    /**
-     * @var SubscriptionService
-     */
-    private $subscriptionService;
-
-    public function __construct(ReservationService $reservationService, UserService $userService, SubscriptionService $subscriptionService)
+    public function __construct(ReservationService $reservationService)
     {
         $this->reservationService = $reservationService;
-        $this->userService = $userService;
-        $this->subscriptionService = $subscriptionService;
     }
 
     /**
@@ -46,6 +32,7 @@ class ReservationController extends Controller
     {
         $data = $request->query();
 
+        // get reservations
         $reservations = $this->reservationService->getReservations($data);
 
         $response = new Response($reservations, Response::HTTP_OK);
@@ -64,6 +51,7 @@ class ReservationController extends Controller
      */
     public function show(Reservation $reservation)
     {
+        // get reservation
         $response = new Response(new ReservationSingle($reservation), Response::HTTP_OK);
 
         return $response;
@@ -84,14 +72,8 @@ class ReservationController extends Controller
         // get user
         $user = $request->user();
 
-        // get last reservation date
-        $lastReservationDate = $this->reservationService->getLastReservationDate($data['user_id']);
-
-        // get active subscription
-        $activeSubscription = $this->subscriptionService->getActiveSubscription($data['user_id'], $lastReservationDate);
-
         // create reservation
-        $reservation = $this->reservationService->create($data, $user, $activeSubscription);
+        $reservation = $this->reservationService->create($data, $user);
 
         $response = new Response(null, Response::HTTP_CREATED);
         $response->headers->set('Location', route('reservations.show', ['reservation' => $reservation]));
@@ -110,14 +92,8 @@ class ReservationController extends Controller
      */
     public function cancel(Reservation $reservation)
     {
-        // get last reservation date
-        $lastReservationDate = $this->reservationService->getLastReservationDate($reservation->user_id);
-
-        // get active subscription
-        $activeSubscription = $this->subscriptionService->getActiveSubscription($reservation->user_id, $lastReservationDate);
-
         // cancel reservation
-        $this->reservationService->cancel($reservation, $activeSubscription);
+        $this->reservationService->cancel($reservation);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

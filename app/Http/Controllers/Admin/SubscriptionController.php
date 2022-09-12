@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Subscription\SubscriptionSingle;
 use App\Models\Subscription;
-use App\Services\ReservationService;
 use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,15 +16,9 @@ class SubscriptionController extends Controller
      */
     private $subscriptionService;
 
-    /**
-     * @var ReservationService
-     */
-    private $reservationService;
-
-    public function __construct(SubscriptionService $subscriptionService, ReservationService $reservationService)
+    public function __construct(SubscriptionService $subscriptionService)
     {
         $this->subscriptionService = $subscriptionService;
-        $this->reservationService = $reservationService;
     }
 
     /**
@@ -72,11 +65,8 @@ class SubscriptionController extends Controller
         // get the payload
         $data = $request->post();
 
-        // get last reservation date
-        $lastReservationDate = $this->reservationService->getLastReservationDate($data['user_id']);
-
         // create subscription
-        $subscription = $this->subscriptionService->create($data, $lastReservationDate);
+        $subscription = $this->subscriptionService->create($data);
 
         $response = new Response(null, Response::HTTP_CREATED);
         $response->headers->set('Location', route('admin.subscriptions.show', ['subscription' => $subscription]));
@@ -97,16 +87,13 @@ class SubscriptionController extends Controller
         // get the payload
         $data = $request->post();
 
-        // get last reservation date
-        $lastReservationDate = $this->reservationService->getLastReservationDate($data['user_id']);
-
         // if data is empty nothing to update
         if (empty($data)) {
             return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
         // update subscription
-        $this->subscriptionService->update($data, $subscription, $lastReservationDate);
+        $this->subscriptionService->update($data, $subscription);
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

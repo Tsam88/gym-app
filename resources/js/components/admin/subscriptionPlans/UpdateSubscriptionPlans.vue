@@ -25,7 +25,7 @@
 
                                 <div class="my-3">
                                     <label for="number_of_months">Μήνες</label>
-                                    <input v-model="form.number_of_months" id="number_of_months" name="number_of_months" type="number" min="0" step="1" class="form-control" placeholder="Μήνες" required>
+                                    <input v-model="form.number_of_months" id="number_of_months" name="number_of_months" type="number" min="1" step="1" class="form-control" placeholder="Μήνες" required>
                                 </div>
 
                                 <div class="my-3">

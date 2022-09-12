@@ -13,9 +13,9 @@ use App\Exceptions\ReservationDateNotFoundException;
 use App\Exceptions\ReservationIsDeclinedException;
 use App\Exceptions\SessionsLimitExceededException;
 use App\Exceptions\SessionsWeekLimitExceededException;
+use App\Libraries\ReservationSubscriptionHelper;
 use App\Models\GymClass;
 use App\Models\Reservation;
-use App\Models\Subscription;
 use App\Models\User;
 use App\Models\WeekDay;
 use App\Validators\ReservationValidation;
@@ -37,9 +37,15 @@ class ReservationService
      */
     private $reservationValidation;
 
-    public function __construct(ReservationValidation $reservationValidation)
+    /**
+     * @var ReservationSubscriptionHelper
+     */
+    private $reservationSubscriptionHelper;
+
+    public function __construct(ReservationValidation $reservationValidation, ReservationSubscriptionHelper $reservationSubscriptionHelper)
     {
         $this->reservationValidation = $reservationValidation;
+        $this->reservationSubscriptionHelper = $reservationSubscriptionHelper;
     }
 
     /**
@@ -63,13 +69,11 @@ class ReservationService
     /**
      * Create a reservation
      *
-     * @param array             $input Reservation data
-     * @param User              $user
-     * @param Subscription|null $activeSubscription
-     *
+     * @param array $input Reservation data
+     * @param User  $user
      * @return Reservation
      */
-    public function create(array $input, User $user, ?Subscription $activeSubscription): Reservation
+    public function create(array $input, User $user): Reservation
     {
         // if the logged-in user is student, then use as user_id his id
         if ($user->isStudent) {
@@ -106,6 +110,9 @@ class ReservationService
             if ($isDeclined) {
                 throw new ReservationIsDeclinedException();
             }
+
+            // get active subscription
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($data['user_id']);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -163,11 +170,10 @@ class ReservationService
      * Cancel a reservation
      *
      * @param Reservation       $reservation
-     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function cancel(Reservation $reservation, ?Subscription $activeSubscription)
+    public function cancel(Reservation $reservation)
     {
         // start db transaction
         DB::beginTransaction();
@@ -193,6 +199,9 @@ class ReservationService
             if ($hoursBeforeReservationDate < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE) {
                 throw new ReservationCancellationIsNotAllowedException;
             }
+
+            // get active subscription
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -222,11 +231,10 @@ class ReservationService
      * Decline a reservation
      *
      * @param Reservation       $reservation
-     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function decline(Reservation $reservation, ?Subscription $activeSubscription)
+    public function decline(Reservation $reservation)
     {
         // start db transaction
         DB::beginTransaction();
@@ -242,6 +250,9 @@ class ReservationService
             if ($reservation->canceled || $reservation->declined) {
                 throw new ReservationAlreadyCanceledException();
             }
+
+            // get active subscription
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -271,16 +282,18 @@ class ReservationService
      * Delete reservation
      *
      * @param Reservation       $reservation
-     * @param Subscription|null $activeSubscription
      *
      * @return void
      */
-    public function delete(Reservation $reservation, Subscription $activeSubscription)
+    public function delete(Reservation $reservation)
     {
         // start db transaction
         DB::beginTransaction();
 
         try {
+            // get active subscription
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
+
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
                 throw new NoActiveSubscriptionForTheRequestedDateException();
@@ -395,25 +408,5 @@ class ReservationService
         } else {
             return false;
         }
-    }
-
-    /**
-     * Get user's last reservation date
-     *
-     * @param int $userId
-     *
-     * @return Carbon|null
-     */
-    public function getLastReservationDate(int $userId): ?Carbon
-    {
-        $lastReservation = Reservation::where('user_id', $userId)
-            ->where('canceled', false)
-            ->where('declined', false)
-            ->orderBy('date', 'DESC')
-            ->first();
-
-        $lastReservationDate = $lastReservation ? Carbon::parse($lastReservation->date) : null;
-
-        return $lastReservationDate;
     }
 }
