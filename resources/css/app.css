@@ -15,7 +15,7 @@
 /*#04646a*/
 
 
-
+/*In admin side bar*/
 /*0f3650*/
 
 
@@ -89,4 +89,37 @@
 /*.wave-table-td-checkbox {*/
 /*    horizontal-align: middle;*/
 /*}*/
+
+
+/*CALENDAR*/
+.calendar-header {
+    background-color: #0f3650;
+}
+
+.calendar-header h5 {
+    color: #ffffff;
+}
+
+@media (max-width:575px) {
+    .display-4 {
+        font-size: 1.5rem;
+    }
+    .day h5 {
+        background-color: #f8f9fa;
+        padding: 3px 5px 5px;
+        margin: -8px -8px 8px -8px;
+        height: auto;
+    }
+    .date {
+        padding-left: 4px;
+    }
+}
+
+@media (min-width: 576px) {
+    .day {
+        /*height: 14.2857vw;*/
+        height: auto;
+    }
+}
+
 

@@ -22,6 +22,11 @@ class ReservationValidation extends AbstractValidation
             'integer',
             'gt:0',
         ],
+        'week_day_id' => [
+            'required',
+            'integer',
+            'gt:0',
+        ],
         'date' => [
             'required',
             'date',
@@ -72,6 +77,7 @@ class ReservationValidation extends AbstractValidation
         $validationRules = [
             'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', []),
             'gym_class_id' => $this->getRule(self::VALIDATION_RULES, 'gym_class_id', []),
+            'week_day_id' => $this->getRule(self::VALIDATION_RULES, 'week_day_id', []),
             'date' => $this->getRule(self::VALIDATION_RULES, 'date', []),
         ];
 

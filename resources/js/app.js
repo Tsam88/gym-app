@@ -29,6 +29,7 @@ import UpdateGymClasses from './components/admin/gymClasses/UpdateGymClasses.vue
 import ShowSubscriptions from './components/admin/subscriptions/ShowSubscriptions.vue';
 import CreateSubscriptions from './components/admin/subscriptions/CreateSubscriptions.vue';
 import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
+import AdminCalendar from './components/admin/reservations/AdminCalendar.vue';
 
 const router = new VueRouter({
     mode: 'history',
@@ -73,6 +74,10 @@ const router = new VueRouter({
                 },
                 {
                     path: '/admin/update-subscriptions/:id', name: 'UpdateSubscriptions', component: UpdateSubscriptions, props: { default: true, sidebar: false }
+                },
+                // Reservations
+                {
+                    path: '/admin/calendar', name: 'AdminCalendar', component: AdminCalendar,
                 },
             ]
         },
@@ -138,6 +143,7 @@ Vue.component('update-gym-classes', require('./components/admin/gymClasses/Updat
 Vue.component('show-subscriptions', require('./components/admin/subscriptions/ShowSubscriptions.vue').default);
 Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
 Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);
+Vue.component('admin-calendar', require('./components/admin/reservations/AdminCalendar.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

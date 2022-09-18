@@ -64,7 +64,7 @@
                     </li>
 
                     <li @click="selected = 'reservations'" :class="{active:selected === 'reservations'}" class="sidebar-item">
-                        <router-link to="/admin/show-gym-classes" class="nav-link sidebar-link">
+                        <router-link to="/admin/calendar" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Κρατήσεις</span>
                         </router-link>
                     </li>

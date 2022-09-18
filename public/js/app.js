@@ -5454,11 +5454,9 @@ __webpack_require__.r(__webpack_exports__);
       _this.form.description = data.description;
       _this.form.teacher = data.teacher;
       _this.form.number_of_students = data.number_of_students;
-      console.log(data.week_days);
       data.week_days.forEach(function (value, index) {
         _this.form.week_days.push(value);
       });
-      console.log(_this.form.week_days);
     })["catch"](function (error) {
       // for each errors -> display
       console.log(error); // console.log(error.response.data.errors);
@@ -5470,7 +5468,6 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.form.number_of_students = parseInt(this.form.number_of_students);
-      console.log(this.form);
       axios.patch('/admin/gym-classes/' + this.id, this.form).then(function (res) {
         //Perform Success Action
         _this2.$router.push({
@@ -5495,6 +5492,74 @@ __webpack_require__.r(__webpack_exports__);
         this.form.week_days.splice(index, 1);
       }
     }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      calendarDates: [],
+      changeLineCalendarDateIndexes: [],
+      reservations: [],
+      currentMonth: null,
+      currentYear: null
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    var today = new Date();
+    this.currentMonth = today.toLocaleString('default', {
+      month: 'long'
+    }); // this.currentMonth = today.toLocaleString('el-GR', { month: 'long' });
+
+    this.currentYear = today.getFullYear();
+    axios.get('/admin/reservations', this.form).then(function (results) {
+      results.data.data.forEach(function (value, index) {
+        _this.reservations.push(value);
+      });
+    })["catch"](function (error) {
+      // error.response.status Check status code
+      // for each errors -> display
+      console.log(error); // console.log(error.response.data.errors['name'][0]);
+    })["finally"](function () {//Perform action in always
+    });
+    axios.get('/calendar', this.form).then(function (results) {
+      results.data.forEach(function (value, index) {
+        _this.calendarDates.push(value);
+
+        if ((index + 1) % 7 === 0) {
+          _this.changeLineCalendarDateIndexes.push(index);
+        }
+      });
+    })["catch"](function (error) {
+      // error.response.status Check status code
+      // for each errors -> display
+      console.log(error); // console.log(error.response.data.errors['name'][0]);
+    })["finally"](function () {
+      //Perform action in always
+      _this.changeLineCalendarDateIndexes.forEach(function (value, index) {
+        var d1 = document.getElementById('calendar_date' + value);
+        d1.insertAdjacentHTML('afterend', '<div class="w-100"></div>');
+      });
+    });
+  },
+  methods: {// updateGymClass(gymClassId) {
+    //     this.$router.push({ name: 'UpdateGymClasses', params: { id: gymClassId } })
+    // }
   }
 });
 
@@ -6162,7 +6227,7 @@ var render = function render() {
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
-      to: "/admin/show-gym-classes"
+      to: "/admin/calendar"
     }
   }, [_c("i", {
     staticClass: "align-middle",
@@ -7098,6 +7163,80 @@ var staticRenderFns = [function () {
       value: "Αποθήκευση"
     }
   })]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230&":
+/*!**************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230& ***!
+  \**************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "container-fluid calendar"
+  }, [_c("header", [_c("h4", {
+    staticClass: "display-6 mb-4 text-center"
+  }, [_vm._v(_vm._s(_vm.currentMonth) + " " + _vm._s(_vm.currentYear))]), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c("div", {
+    staticClass: "row border border-right-0 border-bottom-0"
+  }, _vm._l(_vm.calendarDates, function (calendarDate, index) {
+    return _c("div", {
+      staticClass: "day col-sm p-2 border border-left-0 border-top-0 text-truncate",
+      attrs: {
+        id: "calendar_date" + index
+      }
+    }, [_c("h5", {
+      staticClass: "row align-items-center"
+    }, [_c("span", {
+      staticClass: "date col-1"
+    }, [_vm._v(_vm._s(calendarDate.date_number) + " " + _vm._s(calendarDate.month_name))]), _vm._v(" "), _c("small", {
+      staticClass: "col d-sm-none text-center text-muted"
+    }, [_vm._v(_vm._s(calendarDate.day_name))]), _vm._v(" "), _c("span", {
+      staticClass: "col-1"
+    })]), _vm._v(" "), _vm._l(calendarDate.gym_classes, function (gym_class) {
+      return _c("a", {
+        staticClass: "event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-success text-white",
+        attrs: {
+          title: "Test Event 2"
+        }
+      }, [_vm._v(_vm._s(gym_class.start_time) + " " + _vm._s(gym_class.gym_class_name))]);
+    })], 2);
+  }), 0)]);
+};
+
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "row d-none d-sm-flex p-1 text-white calendar-header"
+  }, [_c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Monday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Tuesday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Wednesday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Thursday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Friday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Saturday")]), _vm._v(" "), _c("h5", {
+    staticClass: "col-sm p-1 text-center"
+  }, [_vm._v("Sunday")])]);
 }];
 render._withStripped = true;
 
@@ -8637,6 +8776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_subscriptions_ShowSubscriptions_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/admin/subscriptions/ShowSubscriptions.vue */ "./resources/js/components/admin/subscriptions/ShowSubscriptions.vue");
 /* harmony import */ var _components_admin_subscriptions_CreateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/admin/subscriptions/CreateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/CreateSubscriptions.vue");
 /* harmony import */ var _components_admin_subscriptions_UpdateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/admin/subscriptions/UpdateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/UpdateSubscriptions.vue");
+/* harmony import */ var _components_admin_reservations_AdminCalendar_vue__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/admin/reservations/AdminCalendar.vue */ "./resources/js/components/admin/reservations/AdminCalendar.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -8654,6 +8794,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 
 
 /* Admin */
+
 
 
 
@@ -8738,6 +8879,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
         "default": true,
         sidebar: false
       }
+    }, // Reservations
+    {
+      path: '/admin/calendar',
+      name: 'AdminCalendar',
+      component: _components_admin_reservations_AdminCalendar_vue__WEBPACK_IMPORTED_MODULE_16__["default"]
     }]
   }, {
     path: '/home',
@@ -8802,6 +8948,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-gym-classes', (__w
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('show-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/ShowSubscriptions.vue */ "./resources/js/components/admin/subscriptions/ShowSubscriptions.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/CreateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/CreateSubscriptions.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/UpdateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/UpdateSubscriptions.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('admin-calendar', (__webpack_require__(/*! ./components/admin/reservations/AdminCalendar.vue */ "./resources/js/components/admin/reservations/AdminCalendar.vue")["default"]));
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -31833,6 +31980,45 @@ component.options.__file = "resources/js/components/admin/gymClasses/UpdateGymCl
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/reservations/AdminCalendar.vue":
+/*!**********************************************************************!*\
+  !*** ./resources/js/components/admin/reservations/AdminCalendar.vue ***!
+  \**********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AdminCalendar.vue?vue&type=template&id=607c1230& */ "./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230&");
+/* harmony import */ var _AdminCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AdminCalendar.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AdminCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__.render,
+  _AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/reservations/AdminCalendar.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue":
 /*!*************************************************************************************!*\
   !*** ./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue ***!
@@ -32202,6 +32388,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminCalendar.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCalendar_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************!*\
   !*** ./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue?vue&type=script&lang=js& ***!
@@ -32412,6 +32614,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateGymClasses.vue?vue&type=template&id=c60d0046& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230& ***!
+  \*****************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_AdminCalendar_vue_vue_type_template_id_607c1230___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./AdminCalendar.vue?vue&type=template&id=607c1230& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/reservations/AdminCalendar.vue?vue&type=template&id=607c1230&");
 
 
 /***/ }),

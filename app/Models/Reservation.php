@@ -19,6 +19,7 @@ class Reservation extends Model
         'date',
         'declined',
         'canceled',
+        'week_day_id',
     ];
 
     /**

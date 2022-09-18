@@ -95,6 +95,10 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/', 'ReservationController@store')->name('reservations.store');
         Route::post('/{reservation}/cancel', 'ReservationController@cancel')->name('reservations.cancel');
     });
+    // week days
+    Route::group(['prefix' => 'calendar'], function () {
+        Route::get('/', 'WeekDayController@calendar')->name('week-days.calendar');
+    });
 });
 
 // subscription plans

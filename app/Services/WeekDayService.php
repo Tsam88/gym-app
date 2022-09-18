@@ -67,16 +67,23 @@ class WeekDayService
      */
     public function getCalendar(User $user): array
     {
-        $weekDays = WeekDay::orderBy('start_time')
-            ->get();
+        // if the logged-in user is not student, then set user as null, so we can get the subscriptions of all students
+        if (!$user->isStudent) {
+            $user = null;
+        }
+
+        $weekDays = WeekDay::with('gymClass')
+            ->orderBy('start_time')
+            ->get()
+            ->toArray();
 
         foreach ($weekDays as $weekDay) {
-            $weekCalendar[$weekDay->day][] = [
-                'gym_class_id' => $weekDay->gym_class_id,
-                'week_day_id' => $weekDay->week_day_id,
-                'gym_class_name' => $weekDay->gymClass->name,
-                'start_time' => $weekDay->start_time,
-                'end_time' => $weekDay->end_time,
+            $weekCalendar[$weekDay['day']][] = [
+                'gym_class_id' => $weekDay['gym_class_id'],
+                'week_day_id' => $weekDay['id'],
+                'gym_class_name' => $weekDay['gym_class']['name'],
+                'start_time' => $weekDay['start_time'],
+                'end_time' => $weekDay['end_time'],
             ];
         }
 
@@ -86,40 +93,84 @@ class WeekDayService
 
         $calendar = [];
         foreach ($period as $date) {
-            foreach ($weekCalendar[$date->dayName] as $key => $gymClass) {
+            $calendar[$date->format('Y-m-d')] = [
+                'date' => $date->format('Y-m-d'),
+                'day_name' => $date->dayName,
+                'month_name' => $date->format('M'),
+                'date_number' => $date->day,
+                'gym_classes' => [],
+                'disabled' => true,
+            ];
+
+            $dayName = strtoupper($date->dayName);
+
+            if (!isset($weekCalendar[$dayName])) {
+                continue;
+            }
+
+            $dailyGymClasses = [];
+
+            foreach ($weekCalendar[$dayName] as $key => $gymClass) {
                 $gymClassDateTime = Carbon::parse("{$date->format('Y-m-d')} {$gymClass['start_time']}");
-//                $gymClassDateTime = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
 
                 $dailyGymClasses[$key] = [
+                    'gym_class_id' => $gymClass['gym_class_id'],
+                    'week_day_id' => $gymClass['week_day_id'],
                     'gym_class_name' => $gymClass['gym_class_name'],
                     'start_time' => $gymClass['start_time'],
                     'end_time' => $gymClass['end_time'],
-                    'has_reservation' => false,
-                    'canceled' => false,
-                    'declined' => false,
+                    'users' => [],
                 ];
 
-                $reservation = Reservation::where('user_id', $user->id)
+                if ($user) {
+                    $dailyGymClasses[$key]['users'] = [
+                        'user_id' => $user->id,
+                        'has_reservation' => false,
+                        'canceled' => false,
+                        'declined' => false,
+                    ];
+                }
+
+                $reservations = Reservation::when($user, function ($query) use ($user) {
+                        $query->where('user_id', $user->id);
+                    })
                     ->where('gym_class_id', $gymClass['gym_class_id'])
                     ->where('week_day_id', $gymClass['week_day_id'])
                     ->where('date', $gymClassDateTime)
-                    ->get()
-                    ->first();
+                    ->get();
 
-                if ($reservation) {
-                    $dailyGymClasses[$key]['has_reservation'] = true;
-                    $dailyGymClasses[$key]['canceled'] = $reservation->canceled;
-                    $dailyGymClasses[$key]['declined'] = $reservation->declined;
+                foreach ($reservations as $reservation) {
+                    $dailyGymClasses[$key]['users'][] = [
+                        'user_id' => $reservation->user_id,
+                        'has_reservation' => true,
+                        'canceled' => $reservation->canceled,
+                        'declined' => $reservation->declined,
+                    ];
                 }
             }
 
-            $calendar[] = [
-                'date' => $date->format('Y-m-d'),
-                'gym_classes' => $dailyGymClasses,
-            ];
+            $calendar[$date->format('Y-m-d')]['day_name'] = $date->dayName;
+            $calendar[$date->format('Y-m-d')]['month_name'] = $date->format('M');
+            $calendar[$date->format('Y-m-d')]['date_number'] = $date->day;
+            $calendar[$date->format('Y-m-d')]['gym_classes'] = $dailyGymClasses;
+            $calendar[$date->format('Y-m-d')]['disabled'] = false;
+
+            while (count($calendar) % 7 !== 0) {
+                $lastDate = array_key_last ($calendar);
+                $nextDate = Carbon::parse($lastDate)->addDay();
+
+                $calendar[$nextDate->format('Y-m-d')] = [
+                    'date' => $nextDate->format('Y-m-d'),
+                    'day_name' => $nextDate->dayName,
+                    'month_name' => $nextDate->format('M'),
+                    'date_number' => $nextDate->day,
+                    'gym_classes' => [],
+                    'disabled' => true,
+                ];
+            }
         }
 
-        return $calendar;
+        return array_values($calendar);
     }
 
     /**

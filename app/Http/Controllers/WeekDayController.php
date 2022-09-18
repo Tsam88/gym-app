@@ -2,57 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\SubscriptionPlan\SubscriptionPlanSingle;
-use App\Models\SubscriptionPlan;
-use App\Services\SubscriptionPlanService;
+use App\Services\WeekDayService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Auth\Access\AuthorizationException;
 
 class WeekDayController extends Controller
 {
     /**
-     * @var SubscriptionPlanService
+     * @var WeekDayService
      */
-    private $subscriptionPlanService;
+    private $weekDayService;
 
-    public function __construct(SubscriptionPlanService $subscriptionPlanService)
+    public function __construct(WeekDayService $weekDayService)
     {
-        $this->subscriptionPlanService = $subscriptionPlanService;
+        $this->weekDayService = $weekDayService;
     }
 
     /**
-     * Display subscription plans.
+     * Display gym classes.
      *
      * @param Request $request
      *
      * @return Response
      */
-    public function index(Request $request)
+    public function calendar(Request $request)
     {
-        $data = $request->query();
+        // get user
+        $user = $request->user();
 
-        $subscriptionPlans = $this->subscriptionPlanService->getAllowedSubscriptionPlansOnPage($data);
+        $gymClasses = $this->weekDayService->getCalendar($user);
 
-        $response = new Response($subscriptionPlans, Response::HTTP_OK);
-
-        return $response;
-    }
-
-    /**
-     * Display single subscription plan.
-     *
-     * @param SubscriptionPlan $subscriptionPlan
-     *
-     * @return Response
-     */
-    public function show(SubscriptionPlan $subscriptionPlan)
-    {
-        if (!$subscriptionPlan->display_on_page) {
-            throw new AuthorizationException();
-        }
-
-        $response = new Response(new SubscriptionPlanSingle($subscriptionPlan), Response::HTTP_OK);
+        $response = new Response($gymClasses, Response::HTTP_OK);
 
         return $response;
     }
