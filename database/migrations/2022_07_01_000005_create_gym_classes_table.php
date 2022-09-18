@@ -16,8 +16,8 @@ class CreateGymClassesTable extends Migration
         Schema::create('gym_classes', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('description');
-            $table->string('teacher');
+            $table->string('description')->nullable();
+            $table->string('teacher')->nullable();
             $table->integer('number_of_students');
             $table->timestamps();
             $table->softDeletes();

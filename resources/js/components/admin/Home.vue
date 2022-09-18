@@ -12,13 +12,13 @@
                         Προγράμματα Συνδρομής
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li @click="selected = 'subscription_plans'" :class="{active:selected === 'subscription_plans'}" class="sidebar-item">
                         <router-link to="/admin/show-subscription-plans" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Προγράμματα Συνδρομής</span>
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'create_subscription_plans'" :class="{active:selected === 'create_subscription_plans'}" class="sidebar-item">
                         <router-link to="/admin/create-subscription-plans" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Δημιουργία Προγράμματος Συνδρομής</span>
                         </router-link>
@@ -29,13 +29,13 @@
                         Τμήματα
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'gym_classes'" :class="{active:selected === 'gym_classes'}" class="sidebar-item">
                         <router-link to="/admin/show-gym-classes" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="home"></i> <span class="align-middle">Τμήματα</span>
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'create_gym_classes'" :class="{active:selected === 'create_gym_classes'}" class="sidebar-item">
                         <router-link to="/admin/create-gym-classes" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="home"></i> <span class="align-middle">Δημιουργία Τμήματος</span>
                         </router-link>
@@ -46,13 +46,13 @@
                         Συνδρομές Χρηστών
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'subscriptions'" :class="{active:selected === 'subscriptions'}" class="sidebar-item">
                         <router-link to="/admin/show-subscriptions" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Συνδρομές</span>
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'create_subscriptions'" :class="{active:selected === 'create_subscriptions'}" class="sidebar-item">
                         <router-link to="/admin/create-subscriptions" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Δημιουργία Συνδρομής</span>
                         </router-link>
@@ -63,13 +63,13 @@
                         Κρατήσεις
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'reservations'" :class="{active:selected === 'reservations'}" class="sidebar-item">
                         <router-link to="/admin/show-gym-classes" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Κρατήσεις</span>
                         </router-link>
                     </li>
 
-                    <li class="sidebar-item">
+                    <li @click="selected = 'create_reservations'" :class="{active:selected === 'create_reservations'}" class="sidebar-item">
                         <router-link to="/admin/create-gym-classes" class="nav-link sidebar-link">
                             <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Δημιουργία Κράτησης</span>
                         </router-link>
@@ -425,18 +425,10 @@
     import Vue from "vue";
 
     export default {
-        // mounted() {
-            // const adminContent = new Vue({
-            //     router,
-            // });
-
-            // const plugin = document.createElement("script");
-            // plugin.setAttribute(
-            //     "src",
-            //     "../../adminApp.js"
-            // );
-            // plugin.async = true;
-            // document.head.appendChild(plugin);
-        // }
+        data() {
+            return {
+                selected: 'subscription_plans'
+            }
+        }
     }
 </script>

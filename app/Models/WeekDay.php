@@ -17,6 +17,16 @@ class WeekDay extends Model
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_time' => 'date:H:i',
+        'end_time' => 'date:H:i',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array

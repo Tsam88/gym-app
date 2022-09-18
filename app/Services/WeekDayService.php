@@ -4,14 +4,13 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
+use App\Models\GymClass;
 use App\Models\Reservation;
-use App\Models\Subscription;
 use App\Models\User;
 use App\Models\WeekDay;
-use App\Validators\SubscriptionValidation;
+use App\Validators\WeekDayValidation;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
 class WeekDayService
@@ -23,35 +22,28 @@ class WeekDayService
      */
     private const DEFAULT_ITEMS_PER_PAGE = 0;
 
-//    /**
-//     * @var SubscriptionValidation
-//     */
-//    private $subscriptionValidation;
-//
-//    public function __construct(SubscriptionValidation $subscriptionValidation)
-//    {
-//        $this->subscriptionValidation = $subscriptionValidation;
-//    }
+    /**
+     * @var WeekDayValidation
+     */
+    private $weekDayValidation;
+
+    public function __construct(WeekDayValidation $weekDayValidation)
+    {
+        $this->weekDayValidation = $weekDayValidation;
+    }
 
     /**
      * Return week calendar
      *
-     * @return Response
+     * @return array
      */
-    public function getWeekCalendar(): Response
+    public function getWeekCalendar(): array
     {
 
         $weekDays = WeekDay::orderBy('start_time')
             ->get();
 
         $weekCalendar = WeekDay::WEEK_DAYS;
-
-//        protected $fillable = [
-//        'gym_class_id',
-//        'day',
-//        'start_time',
-//        'end_time',
-//    ];
 
         foreach ($weekDays as $weekDay) {
             $weekCalendar[$weekDay->day][] = [
@@ -61,9 +53,9 @@ class WeekDayService
             ];
         }
 
-        $response = new Response($weekCalendar, Response::HTTP_OK);
+//        $response = new Response($weekCalendar, Response::HTTP_OK);
 
-        return $response;
+        return $weekCalendar;
     }
 
     /**
@@ -129,87 +121,127 @@ class WeekDayService
 
         return $calendar;
     }
-//
-//    /**
-//     * Create a subscription
-//     *
-//     * @param array $input Subscription data
-//     *
-//     * @return Subscription
-//     */
-//    public function create(array $input): Subscription
-//    {
-//        // data validation
-//        $data = $this->subscriptionValidation->subscriptionCreate($input);
-//
-//        // start db transaction
-//        DB::beginTransaction();
-//
-//        try {
-//            $subscription = Subscription::create($data);
-//        } catch (\Exception $e) {
-//            // something went wrong, rollback and throw same exception
-//            DB::rollBack();
-//
-//            throw $e;
-//        }
-//
-//        // commit database changes
-//        DB::commit();
-//
-//        return $subscription;
-//    }
-//
-//    /**
-//     * Update a subscription
-//     *
-//     * @param array $input Subscription data
-//     *
-//     * @return void
-//     */
-//    public function update(array $input, Subscription $subscription)
-//    {
-//        // data validation
-//        $data = $this->subscriptionValidation->subscriptionUpdate($input);
-//
-//        // start db transaction
-//        DB::beginTransaction();
-//
-//        try {
-//            $subscription->update($data);
-//        } catch (\Exception $e) {
-//            // something went wrong, rollback and throw same exception
-//            DB::rollBack();
-//
-//            throw $e;
-//        }
-//
-//        // commit database changes
-//        DB::commit();
-//    }
-//
-//    /**
-//     * Delete subscription
-//     *
-//     * @param Subscription $subscription
-//     *
-//     * @return void
-//     */
-//    public function delete(Subscription $subscription)
-//    {
-//        // start db transaction
-//        DB::beginTransaction();
-//
-//        try {
-//            $subscription->delete();
-//        } catch (\Exception $e) {
-//            // something went wrong, rollback and throw same exception
-//            DB::rollBack();
-//
-//            throw $e;
-//        }
-//
-//        // commit database changes
-//        DB::commit();
-//    }
+
+    /**
+     * Create week days for a gym class.
+     *
+     * @param array $input WeekDay data
+     *
+     * @return void
+     */
+    public function createMany(array $input): void
+    {
+        // data validation
+        $data = $this->weekDayValidation->weekDayCreate($input);
+
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            WeekDay::insert($data);
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
+    }
+
+    /**
+     * Delete week days.
+     *
+     * @param array $input $weekDayIds
+     *
+     * @return void
+     */
+    public function deleteMany(array $weekDayIds): void
+    {
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            WeekDay::whereIn('id', $weekDayIds)->delete();
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
+    }
+
+    /**
+     * Get the valid new week days to create, by comparing the old week days with new ones
+     *
+     * @param array    $newWeekDays
+     * @param GymClass $gymClass
+     *
+     * @return array
+     */
+    public function getWeekDaysToCreate(array $newWeekDays, GymClass $gymClass): array
+    {
+        $oldWeekDays = WeekDay::where('gym_class_id', $gymClass->id)
+            ->get()
+            ->toArray();
+
+        // find week days to create
+        foreach ($newWeekDays as $key => $newWeekDay) {
+            foreach ($oldWeekDays as $oldWeekDay) {
+                $tempOldWeekDay = [
+                    'day' => $oldWeekDay['day'],
+                    'start_time' => $oldWeekDay['start_time'],
+                    'end_time' => $oldWeekDay['end_time'],
+                ];
+
+                if ($tempOldWeekDay === $newWeekDay) {
+                    unset($newWeekDays[$key]);
+                }
+            }
+        }
+
+        return $newWeekDays;
+    }
+
+    /**
+     * Get the valid new week days to create, by comparing the old week days with new ones
+     *
+     * @param array    $newWeekDays
+     * @param GymClass $gymClass
+     *
+     * @return array
+     */
+    public function getWeekDayIdsToDelete(array $newWeekDays, GymClass $gymClass): array
+    {
+        $weekDayIdsToDelete = [];
+
+        $oldWeekDays = WeekDay::where('gym_class_id', $gymClass->id)
+            ->get()
+            ->toArray();
+
+        // find week days to delete
+        foreach ($oldWeekDays as $key => $oldWeekDay) {
+            $tempOldWeekDay = [
+                'day' => $oldWeekDay['day'],
+                'start_time' => $oldWeekDay['start_time'],
+                'end_time' => $oldWeekDay['end_time'],
+            ];
+
+            foreach ($newWeekDays as $newWeekDay) {
+                if ($tempOldWeekDay === $newWeekDay) {
+                    unset($oldWeekDays[$key]);
+                }
+            }
+        }
+
+        foreach ($oldWeekDays as $oldWeekDay) {
+            $weekDayIdsToDelete[] = $oldWeekDay['id'];
+        }
+
+        return $weekDayIdsToDelete;
+    }
 }

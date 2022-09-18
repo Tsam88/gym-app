@@ -11,7 +11,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Όνομα</th>
                     <th scope="col">Επίθετο</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Τηλέφωνο</th>
                     <th class="text-center" scope="col">Τιμή</th>
                     <th class="text-center" scope="col">Υπόλοιπες επισκέψεις </th>
                     <th class="text-center" scope="col">Επισκέψεις ανά εβδομάδα</th>
@@ -24,9 +24,9 @@
                 <tbody>
                     <tr v-for="subscription in subscriptions" @click="updateSubscription(subscription.id)">
                         <th scope="row">{{ subscription.id }}</th>
-                        <td>{{ subscription.user.name }}</td>
-                        <td>{{ subscription.user.surname }}</td>
-                        <td>{{ subscription.user.email }}</td>
+                        <td>{{ subscription.user_name }}</td>
+                        <td>{{ subscription.user_surname }}</td>
+                        <td>{{ subscription.user_phone_number }}</td>
                         <td class="text-center">{{ subscription.price }} </td>
                         <td class="text-center">{{ subscription.remaining_sessions }}</td>
                         <td class="text-center" >{{ subscription.sessions_per_week }}</td>
@@ -46,7 +46,6 @@
 
 <script>
     export default {
-        name: 'PostFormAxios',
         data() {
             return {
                 subscriptions: []
@@ -61,7 +60,6 @@
                 })
                 .catch((error) => {
                     // error.response.status Check status code
-                    // alert(error.response.data.errors['name'][0]);
                     // for each errors -> display
                     console.log(error);
                     // console.log(error.response.data.errors['name'][0]);

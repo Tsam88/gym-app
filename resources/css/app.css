@@ -1,27 +1,56 @@
 .background-color-wave {
-    background-color: #4CAF50 !important;
+    background-color: #4ecdb5 !important;
 }
 
+/*GREEN*/
+/*#4CAF50*/
+/*#35913A*/
+/*border*/
+/*#35913A*/
+
+/*WAVE*/
+/*#003152*/
+/*#05d9b1*/
+/*border*/
+/*#04646a*/
+
+
+
+/*0f3650*/
+
+
+/*button*/
+/*#327478*/
+/*borede*/
+/*#35566a*/
+
+
 .color-wave {
-    color: #4CAF50 !important;
+    color: #4ecdb5 !important;
 }
 
 .button-color-wave {
-    background-color: #4CAF50 !important;
-    border-color: #35913A !important;
-    color: #fff !important;
+    background-color: #04646a !important;
+    border-color: #204d6a !important;
+    color: #d9d9d9 !important;
+}
+
+.danger-button-color-wave {
+    background-color: #af2c1c !important;
+    border-color: #912b1a !important;
+    color: #d9d9d9 !important;
 }
 
 .sidebar-item.active .sidebar-link:hover, .sidebar-item.active>.sidebar-link {
     background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent) !important;
-    border-left-color: #4CAF50 !important;
-    color: #4CAF50 !important;
+    border-left-color: #4ecdb5 !important;
+    color: #4ecdb5 !important;
 }
 
 .wave-check-input:checked,
 .wave-check-input-disabled:checked {
-    background-color: #4CAF50 !important;
-    border-color: #35913A !important;
+    background-color: #04646a !important;
+    border-color: #204d6a !important;
 }
 
 .wave-check-input-disabled:disabled {
@@ -29,11 +58,25 @@
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-    background-color: #e3ffe1;
+    /*background-color: #e3ffe1;*/
+    /*background-color: #cffbf3;*/
+    background-color: #d9d9d9;
+    /*background-color: #baefe5;*/
     cursor: pointer;
 }
 
+.wave-group-dates {
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: grey;
+    /*padding-inline: 15px;*/
+}
 
+
+.float-right {
+    float: right;
+}
 
 .resetAll a {
     all: initial;

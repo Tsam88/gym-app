@@ -31,13 +31,6 @@ class CreateReservationsTable extends Migration
                 ->references('id')->on('gym_classes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-
-//            $table->foreign('week_day_id')
-//                ->references('id')->on('week_days')
-//                ->onUpdate('cascade')
-//                ->onDelete('cascade');
-
-//            $table->unique(['user_id', 'gym_class_id', 'week_day_id']);
         });
     }
 

@@ -18,12 +18,22 @@ class GymClassSingle extends JsonResource
     {
         $parent = parent::toArray($request);
 
+        $weekDays = [];
+        foreach ($parent['week_days'] as $key => $weekDay) {
+            $weekDays[] = [
+                'day' => $weekDay['day'],
+                'start_time' => $weekDay['start_time'],
+                'end_time' => $weekDay['end_time'],
+            ];
+        }
+
         return [
             'id' => $parent['id'],
             'name' => $parent['name'],
             'description' => $parent['description'],
             'teacher' => $parent['teacher'],
             'number_of_students' => $parent['number_of_students'],
+            'week_days' => $weekDays,
         ];
     }
 }

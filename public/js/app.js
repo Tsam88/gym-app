@@ -5304,18 +5304,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _adminApp_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_adminApp_js__WEBPACK_IMPORTED_MODULE_0__);
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({// mounted() {
-  // const adminContent = new Vue({
-  //     router,
-  // });
-  // const plugin = document.createElement("script");
-  // plugin.setAttribute(
-  //     "src",
-  //     "../../adminApp.js"
-  // );
-  // plugin.async = true;
-  // document.head.appendChild(plugin);
-  // }
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      selected: 'subscription_plans'
+    };
+  }
 });
 
 /***/ }),
@@ -5332,8 +5326,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  mounted: function mounted() {
-    console.log('Component About TEST mounted.');
+  data: function data() {
+    return {
+      form: {
+        name: null,
+        description: null,
+        teacher: null,
+        number_of_students: 0,
+        week_days: [{
+          day: null,
+          start_time: null,
+          end_time: null
+        }]
+      }
+    };
+  },
+  methods: {
+    submitForm: function submitForm() {
+      var _this = this;
+
+      this.form.number_of_students = parseInt(this.form.number_of_students);
+      axios.post('/admin/gym-classes', this.form).then(function (res) {
+        //Perform Success Action
+        _this.$router.push({
+          name: 'ShowGymClasses'
+        });
+      })["catch"](function (error) {
+        // error.response.status Check status code
+        // for each errors -> display
+        console.log(error.response); // console.log(error.response.data.errors['name'][0]);
+      })["finally"](function () {//Perform action in always
+      });
+    },
+    addDate: function addDate() {
+      this.form.week_days.push({
+        day: null,
+        start_time: null,
+        end_time: null
+      }); // what to push unto the rows array?
+    },
+    removeDate: function removeDate(index) {
+      if (this.form.week_days.length > 1) {
+        this.form.week_days.splice(index, 1);
+      }
+    }
   }
 });
 
@@ -5351,8 +5387,114 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      gymClasses: []
+    };
+  },
   mounted: function mounted() {
-    console.log('Component About TEST2 mounted.');
+    var _this = this;
+
+    axios.get('/admin/gym-classes', this.form).then(function (results) {
+      results.data.data.forEach(function (value, index) {
+        _this.gymClasses.push(value);
+      });
+    })["catch"](function (error) {
+      // error.response.status Check status code
+      // for each errors -> display
+      console.log(error); // console.log(error.response.data.errors['name'][0]);
+    })["finally"](function () {//Perform action in always
+    });
+  },
+  methods: {
+    updateGymClass: function updateGymClass(gymClassId) {
+      this.$router.push({
+        name: 'UpdateGymClasses',
+        params: {
+          id: gymClassId
+        }
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js&":
+/*!****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  data: function data() {
+    return {
+      form: {
+        name: null,
+        description: null,
+        teacher: null,
+        number_of_students: 0,
+        week_days: []
+      },
+      id: this.$route.params.id
+    };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get('/admin/gym-classes/' + this.id).then(function (_ref) {
+      var data = _ref.data;
+      //Perform Success Action
+      _this.form.name = data.name;
+      _this.form.description = data.description;
+      _this.form.teacher = data.teacher;
+      _this.form.number_of_students = data.number_of_students;
+      console.log(data.week_days);
+      data.week_days.forEach(function (value, index) {
+        _this.form.week_days.push(value);
+      });
+      console.log(_this.form.week_days);
+    })["catch"](function (error) {
+      // for each errors -> display
+      console.log(error); // console.log(error.response.data.errors);
+    })["finally"](function () {//Perform action in always
+    });
+  },
+  methods: {
+    submitForm: function submitForm() {
+      var _this2 = this;
+
+      this.form.number_of_students = parseInt(this.form.number_of_students);
+      console.log(this.form);
+      axios.patch('/admin/gym-classes/' + this.id, this.form).then(function (res) {
+        //Perform Success Action
+        _this2.$router.push({
+          name: 'ShowGymClasses'
+        });
+      })["catch"](function (error) {
+        // error.response.status Check status code
+        // for each errors -> display
+        console.log(error.response); // console.log(error.response.data.errors);
+      })["finally"](function () {//Perform action in always
+      });
+    },
+    addDate: function addDate() {
+      this.form.week_days.push({
+        day: null,
+        start_time: null,
+        end_time: null
+      }); // what to push unto the rows array?
+    },
+    removeDate: function removeDate(index) {
+      if (this.form.week_days.length > 1) {
+        this.form.week_days.splice(index, 1);
+      }
+    }
   }
 });
 
@@ -5370,7 +5512,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'PostFormAxios',
   data: function data() {
     return {
       form: {
@@ -5421,7 +5562,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'PostFormAxios',
   data: function data() {
     return {
       subscriptionPlans: []
@@ -5436,7 +5576,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     })["catch"](function (error) {
       // error.response.status Check status code
-      // alert(error.response.data.errors['name'][0]);
       // for each errors -> display
       console.log(error); // console.log(error.response.data.errors['name'][0]);
     })["finally"](function () {//Perform action in always
@@ -5539,7 +5678,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'PostFormAxios',
   data: function data() {
     return {
       form: {
@@ -5561,7 +5699,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     })["catch"](function (error) {
       // error.response.status Check status code
-      // alert(error.response.data.errors['name'][0]);
       // for each errors -> display
       console.log(error); // console.log(error.response.data.errors['name'][0]);
     })["finally"](function () {//Perform action in always
@@ -5573,7 +5710,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     })["catch"](function (error) {
       // error.response.status Check status code
-      // alert(error.response.data.errors['name'][0]);
       // for each errors -> display
       console.log(error); // console.log(error.response.data.errors['name'][0]);
     })["finally"](function () {//Perform action in always
@@ -5612,7 +5748,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'PostFormAxios',
   data: function data() {
     return {
       subscriptions: []
@@ -5627,7 +5762,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     })["catch"](function (error) {
       // error.response.status Check status code
-      // alert(error.response.data.errors['name'][0]);
       // for each errors -> display
       console.log(error); // console.log(error.response.data.errors['name'][0]);
     })["finally"](function () {//Perform action in always
@@ -5659,7 +5793,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: 'PostFormAxios',
   data: function data() {
     return {
       form: {
@@ -5702,10 +5835,8 @@ __webpack_require__.r(__webpack_exports__);
       _this.form.unlimited_sessions = data.unlimited_sessions;
       _this.form.starts_at = data.starts_at;
       _this.form.expires_at = data.expires_at;
-      console.log(data.starts_at);
     })["catch"](function (error) {
       // for each errors -> display
-      console.log('errorAlert');
       console.log(error); // console.log(error.response.data.errors);
     })["finally"](function () {//Perform action in always
     });
@@ -5881,7 +6012,15 @@ var render = function render() {
   }, [_c("li", {
     staticClass: "sidebar-header"
   }, [_vm._v("\n                        Προγράμματα Συνδρομής\n                    ")]), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item active"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "subscription_plans"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "subscription_plans";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5895,7 +6034,15 @@ var render = function render() {
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
   }, [_vm._v("Προγράμματα Συνδρομής")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "create_subscription_plans"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "create_subscription_plans";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5911,7 +6058,15 @@ var render = function render() {
   }, [_vm._v("Δημιουργία Προγράμματος Συνδρομής")])])], 1), _vm._v(" "), _c("li", {
     staticClass: "sidebar-header"
   }, [_vm._v("\n                        Τμήματα\n                    ")]), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "gym_classes"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "gym_classes";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5925,7 +6080,15 @@ var render = function render() {
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
   }, [_vm._v("Τμήματα")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "create_gym_classes"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "create_gym_classes";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5941,7 +6104,15 @@ var render = function render() {
   }, [_vm._v("Δημιουργία Τμήματος")])])], 1), _vm._v(" "), _c("li", {
     staticClass: "sidebar-header"
   }, [_vm._v("\n                        Συνδρομές Χρηστών\n                    ")]), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "subscriptions"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "subscriptions";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5955,7 +6126,15 @@ var render = function render() {
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
   }, [_vm._v("Συνδρομές")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "create_subscriptions"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "create_subscriptions";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5971,7 +6150,15 @@ var render = function render() {
   }, [_vm._v("Δημιουργία Συνδρομής")])])], 1), _vm._v(" "), _c("li", {
     staticClass: "sidebar-header"
   }, [_vm._v("\n                        Κρατήσεις\n                    ")]), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "reservations"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "reservations";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -5985,7 +6172,15 @@ var render = function render() {
   }), _vm._v(" "), _c("span", {
     staticClass: "align-middle"
   }, [_vm._v("Κρατήσεις")])])], 1), _vm._v(" "), _c("li", {
-    staticClass: "sidebar-item"
+    staticClass: "sidebar-item",
+    "class": {
+      active: _vm.selected === "create_reservations"
+    },
+    on: {
+      click: function click($event) {
+        _vm.selected = "create_reservations";
+      }
+    }
   }, [_c("router-link", {
     staticClass: "nav-link sidebar-link",
     attrs: {
@@ -6141,10 +6336,337 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("h1", [_vm._v("About TEST")]);
+  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-lg-6"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submitForm.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Όνομα")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.name,
+      expression: "form.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "name",
+      name: "name",
+      type: "text",
+      placeholder: "Όνομα",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "name", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "description"
+    }
+  }, [_vm._v("Περιγραφή")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.description,
+      expression: "form.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "description",
+      name: "description",
+      type: "text",
+      placeholder: "Περιγραφή"
+    },
+    domProps: {
+      value: _vm.form.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "description", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "teacher"
+    }
+  }, [_vm._v("Δάσκαλος")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.teacher,
+      expression: "form.teacher"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "teacher",
+      name: "teacher",
+      type: "text",
+      placeholder: "Δάσκαλος"
+    },
+    domProps: {
+      value: _vm.form.teacher
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "teacher", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_months"
+    }
+  }, [_vm._v("Αριθμός μαθητών")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_students,
+      expression: "form.number_of_students"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_months",
+      name: "number_of_months",
+      type: "number",
+      min: "1",
+      step: "1",
+      placeholder: "Αριθμός μαθητών",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_students
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_students", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "group_dates"
+    }
+  }, [_vm._v("Ημέρες και ώρες")]), _vm._v(" "), _vm._l(_vm.form.week_days, function (week_day, index) {
+    return _c("div", {
+      staticClass: "form-group wave-group-dates mx-0 mb-3 row",
+      attrs: {
+        id: "group_dates"
+      }
+    }, [_c("div", {
+      staticClass: "mt-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "day" + index
+      }
+    }, [_vm._v("Ημέρα")]), _vm._v(" "), _c("select", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.day,
+        expression: "week_day.day"
+      }],
+      staticClass: "form-select mb-3",
+      attrs: {
+        id: "day" + index,
+        name: "day" + index,
+        required: ""
+      },
+      on: {
+        change: function change($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+            return o.selected;
+          }).map(function (o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val;
+          });
+
+          _vm.$set(week_day, "day", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        }
+      }
+    }, [_c("option", {
+      attrs: {
+        value: "null",
+        selected: ""
+      }
+    }, [_vm._v("Επιλογή ημέρας")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "MONDAY"
+      }
+    }, [_vm._v("Δευτέρα")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "TUESDAY"
+      }
+    }, [_vm._v("Τρίτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "WEDNESDAY"
+      }
+    }, [_vm._v("Τετάρτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "THURSDAY"
+      }
+    }, [_vm._v("Πέμπτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "FRIDAY"
+      }
+    }, [_vm._v("Παρασκευή")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "SATURDAY"
+      }
+    }, [_vm._v("Σάββατο")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "SUNDAY"
+      }
+    }, [_vm._v("Κυριακή")])])]), _vm._v(" "), _c("div", {
+      staticClass: "my-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "start_time" + index
+      }
+    }, [_vm._v("Ώρα έναρξης")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.start_time,
+        expression: "week_day.start_time"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        id: "start_time" + index,
+        name: "start_time" + index,
+        type: "time",
+        placeholder: "Ώρα έναρξης",
+        required: ""
+      },
+      domProps: {
+        value: week_day.start_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+
+          _vm.$set(week_day, "start_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "my-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "end_time" + index
+      }
+    }, [_vm._v("Ώρα λήξης")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.end_time,
+        expression: "week_day.end_time"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        id: "end_time" + index,
+        name: "end_time" + index,
+        type: "time",
+        placeholder: "Ώρα λήξης",
+        required: ""
+      },
+      domProps: {
+        value: week_day.end_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+
+          _vm.$set(week_day, "end_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "mb-3"
+    }, [_c("button", {
+      staticClass: "btn btn-primary danger-button-color-wave float-right",
+      attrs: {
+        disabled: _vm.form.week_days.length === 1
+      },
+      on: {
+        click: function click($event) {
+          return _vm.removeDate(index);
+        }
+      }
+    }, [_vm._v("\n                                            Αφαίρεση\n                                        ")])])]);
+  })], 2), _vm._v(" "), _c("div", {}, [_c("input", {
+    staticClass: "btn btn-primary button-color-wave float-right",
+    attrs: {
+      id: "add_date",
+      name: "add_date",
+      type: "button",
+      value: "Πρόσθεσε ημερομηνία"
+    },
+    on: {
+      click: _vm.addDate
+    }
+  })]), _vm._v(" "), _vm._m(1)])])])])])])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mb-3"
+  }, [_c("h1", {
+    staticClass: "h1 d-inline align-middle"
+  }, [_vm._v("Δημιουργία Τμήματος")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mt-5"
+  }, [_c("input", {
+    staticClass: "btn btn-primary button-color-wave",
+    attrs: {
+      id: "submit_subscription_plan",
+      name: "submit_subscription_plan",
+      type: "submit",
+      value: "Αποθήκευση"
+    }
+  })]);
+}];
 render._withStripped = true;
 
 
@@ -6166,10 +6688,417 @@ var render = function render() {
   var _vm = this,
       _c = _vm._self._c;
 
-  return _c("h1", [_vm._v("About TEST2")]);
+  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-hover"
+  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.gymClasses, function (gymClass) {
+    return _c("tr", {
+      on: {
+        click: function click($event) {
+          return _vm.updateGymClass(gymClass.id);
+        }
+      }
+    }, [_c("th", {
+      attrs: {
+        scope: "row"
+      }
+    }, [_vm._v(_vm._s(gymClass.id))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(gymClass.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(gymClass.description))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(gymClass.teacher))]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(gymClass.number_of_students) + " ")])]);
+  }), 0)])])]);
 };
 
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mb-3"
+  }, [_c("h1", {
+    staticClass: "h1 d-inline align-middle"
+  }, [_vm._v("Τμήματα")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("thead", {
+    staticClass: "thead-dark"
+  }, [_c("tr", [_c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("ID")]), _vm._v(" "), _c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Τίτλος")]), _vm._v(" "), _c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Περιγραφή")]), _vm._v(" "), _c("th", {
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Δάσκαλος")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center",
+    attrs: {
+      scope: "col"
+    }
+  }, [_vm._v("Αριθμός μαθητών")])])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render),
+/* harmony export */   "staticRenderFns": () => (/* binding */ staticRenderFns)
+/* harmony export */ });
+var render = function render() {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 col-lg-6"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-body"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submitForm.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("div", {
+    staticClass: "mb-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "name"
+    }
+  }, [_vm._v("Όνομα")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.name,
+      expression: "form.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "name",
+      name: "name",
+      type: "text",
+      placeholder: "Όνομα",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.name
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "name", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "description"
+    }
+  }, [_vm._v("Περιγραφή")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.description,
+      expression: "form.description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "description",
+      name: "description",
+      type: "text",
+      placeholder: "Περιγραφή"
+    },
+    domProps: {
+      value: _vm.form.description
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "description", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "teacher"
+    }
+  }, [_vm._v("Δάσκαλος")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.teacher,
+      expression: "form.teacher"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "teacher",
+      name: "teacher",
+      type: "text",
+      placeholder: "Δάσκαλος"
+    },
+    domProps: {
+      value: _vm.form.teacher
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "teacher", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "number_of_months"
+    }
+  }, [_vm._v("Αριθμός μαθητών")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.form.number_of_students,
+      expression: "form.number_of_students"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "number_of_months",
+      name: "number_of_months",
+      type: "number",
+      min: "1",
+      step: "1",
+      placeholder: "Αριθμός μαθητών",
+      required: ""
+    },
+    domProps: {
+      value: _vm.form.number_of_students
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+
+        _vm.$set(_vm.form, "number_of_students", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "my-3"
+  }, [_c("label", {
+    attrs: {
+      "for": "group_dates"
+    }
+  }, [_vm._v("Ημέρες και ώρες")]), _vm._v(" "), _vm._l(_vm.form.week_days, function (week_day, index) {
+    return _c("div", {
+      staticClass: "form-group wave-group-dates mx-0 mb-3 row",
+      attrs: {
+        id: "group_dates"
+      }
+    }, [_c("div", {
+      staticClass: "mt-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "day" + index
+      }
+    }, [_vm._v("Ημέρα")]), _vm._v(" "), _c("select", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.day,
+        expression: "week_day.day"
+      }],
+      staticClass: "form-select mb-3",
+      attrs: {
+        id: "day" + index,
+        name: "day" + index,
+        required: ""
+      },
+      on: {
+        change: function change($event) {
+          var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+            return o.selected;
+          }).map(function (o) {
+            var val = "_value" in o ? o._value : o.value;
+            return val;
+          });
+
+          _vm.$set(week_day, "day", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        }
+      }
+    }, [_c("option", {
+      attrs: {
+        value: "null",
+        selected: ""
+      }
+    }, [_vm._v("Επιλογή ημέρας")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "MONDAY"
+      }
+    }, [_vm._v("Δευτέρα")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "TUESDAY"
+      }
+    }, [_vm._v("Τρίτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "WEDNESDAY"
+      }
+    }, [_vm._v("Τετάρτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "THURSDAY"
+      }
+    }, [_vm._v("Πέμπτη")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "FRIDAY"
+      }
+    }, [_vm._v("Παρασκευή")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "SATURDAY"
+      }
+    }, [_vm._v("Σάββατο")]), _vm._v(" "), _c("option", {
+      attrs: {
+        value: "SUNDAY"
+      }
+    }, [_vm._v("Κυριακή")])])]), _vm._v(" "), _c("div", {
+      staticClass: "my-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "start_time" + index
+      }
+    }, [_vm._v("Ώρα έναρξης")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.start_time,
+        expression: "week_day.start_time"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        id: "start_time" + index,
+        name: "start_time" + index,
+        type: "time",
+        placeholder: "Ώρα έναρξης",
+        required: ""
+      },
+      domProps: {
+        value: week_day.start_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+
+          _vm.$set(week_day, "start_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "my-sm-3 col-sm-12 col-lg-4"
+    }, [_c("label", {
+      attrs: {
+        "for": "end_time" + index
+      }
+    }, [_vm._v("Ώρα λήξης")]), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: week_day.end_time,
+        expression: "week_day.end_time"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        id: "end_time" + index,
+        name: "end_time" + index,
+        type: "time",
+        placeholder: "Ώρα λήξης",
+        required: ""
+      },
+      domProps: {
+        value: week_day.end_time
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+
+          _vm.$set(week_day, "end_time", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("div", {
+      staticClass: "mb-3"
+    }, [_c("button", {
+      staticClass: "btn btn-primary danger-button-color-wave float-right",
+      attrs: {
+        disabled: _vm.form.week_days.length === 1
+      },
+      on: {
+        click: function click($event) {
+          return _vm.removeDate(index);
+        }
+      }
+    }, [_vm._v("\n                                            Αφαίρεση\n                                        ")])])]);
+  })], 2), _vm._v(" "), _c("div", {}, [_c("input", {
+    staticClass: "btn btn-primary button-color-wave float-right",
+    attrs: {
+      id: "add_date",
+      name: "add_date",
+      type: "button",
+      value: "Πρόσθεσε ημερομηνία"
+    },
+    on: {
+      click: _vm.addDate
+    }
+  })]), _vm._v(" "), _vm._m(1)])])])])])])]);
+};
+
+var staticRenderFns = [function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mb-3"
+  }, [_c("h1", {
+    staticClass: "h1 d-inline align-middle"
+  }, [_vm._v("Επεξεργασία Τμήματος")])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("div", {
+    staticClass: "mt-5"
+  }, [_c("input", {
+    staticClass: "btn btn-primary button-color-wave",
+    attrs: {
+      id: "submit_subscription_plan",
+      name: "submit_subscription_plan",
+      type: "submit",
+      value: "Αποθήκευση"
+    }
+  })]);
+}];
 render._withStripped = true;
 
 
@@ -6290,7 +7219,7 @@ var render = function render() {
       id: "number_of_months",
       name: "number_of_months",
       type: "number",
-      min: "0",
+      min: "1",
       step: "1",
       placeholder: "Μήνες",
       required: ""
@@ -6325,8 +7254,7 @@ var render = function render() {
       type: "number",
       min: "0",
       step: "1",
-      placeholder: "Αριθμός επισκέψεων",
-      required: ""
+      placeholder: "Αριθμός επισκέψεων"
     },
     domProps: {
       value: _vm.form.number_of_sessions
@@ -6731,7 +7659,7 @@ var render = function render() {
       id: "number_of_months",
       name: "number_of_months",
       type: "number",
-      min: "0",
+      min: "1",
       step: "1",
       placeholder: "Μήνες",
       required: ""
@@ -7137,7 +8065,7 @@ var render = function render() {
       attrs: {
         scope: "row"
       }
-    }, [_vm._v(_vm._s(subscription.id))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user.name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user.surname))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user.email))]), _vm._v(" "), _c("td", {
+    }, [_vm._v(_vm._s(subscription.id))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user_name))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user_surname))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(subscription.user_phone_number))]), _vm._v(" "), _c("td", {
       staticClass: "text-center"
     }, [_vm._v(_vm._s(subscription.price) + " ")]), _vm._v(" "), _c("td", {
       staticClass: "text-center"
@@ -7194,7 +8122,7 @@ var staticRenderFns = [function () {
     attrs: {
       scope: "col"
     }
-  }, [_vm._v("Email")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Τηλέφωνο")]), _vm._v(" "), _c("th", {
     staticClass: "text-center",
     attrs: {
       scope: "col"
@@ -7705,9 +8633,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_admin_subscriptionPlans_UpdateSubscriptionPlans_vue__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue");
 /* harmony import */ var _components_admin_gymClasses_ShowGymClasses_vue__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/admin/gymClasses/ShowGymClasses.vue */ "./resources/js/components/admin/gymClasses/ShowGymClasses.vue");
 /* harmony import */ var _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/admin/gymClasses/CreateGymClasses.vue */ "./resources/js/components/admin/gymClasses/CreateGymClasses.vue");
-/* harmony import */ var _components_admin_subscriptions_ShowSubscriptions_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/admin/subscriptions/ShowSubscriptions.vue */ "./resources/js/components/admin/subscriptions/ShowSubscriptions.vue");
-/* harmony import */ var _components_admin_subscriptions_CreateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/admin/subscriptions/CreateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/CreateSubscriptions.vue");
-/* harmony import */ var _components_admin_subscriptions_UpdateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/admin/subscriptions/UpdateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/UpdateSubscriptions.vue");
+/* harmony import */ var _components_admin_gymClasses_UpdateGymClasses_vue__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/admin/gymClasses/UpdateGymClasses.vue */ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue");
+/* harmony import */ var _components_admin_subscriptions_ShowSubscriptions_vue__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/admin/subscriptions/ShowSubscriptions.vue */ "./resources/js/components/admin/subscriptions/ShowSubscriptions.vue");
+/* harmony import */ var _components_admin_subscriptions_CreateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/admin/subscriptions/CreateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/CreateSubscriptions.vue");
+/* harmony import */ var _components_admin_subscriptions_UpdateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/admin/subscriptions/UpdateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/UpdateSubscriptions.vue");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -7725,6 +8654,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].use(vue_router__WEBPACK_IMPORTED_MOD
 
 
 /* Admin */
+
 
 
 
@@ -7783,19 +8713,27 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
       path: '/admin/create-gym-classes',
       name: 'CreateGymClasses',
       component: _components_admin_gymClasses_CreateGymClasses_vue__WEBPACK_IMPORTED_MODULE_11__["default"]
+    }, {
+      path: '/admin/update-gym-classes/:id',
+      name: 'UpdateGymClasses',
+      component: _components_admin_gymClasses_UpdateGymClasses_vue__WEBPACK_IMPORTED_MODULE_12__["default"],
+      props: {
+        "default": true,
+        sidebar: false
+      }
     }, // Subscriptions
     {
       path: '/admin/show-subscriptions',
       name: 'ShowSubscriptions',
-      component: _components_admin_subscriptions_ShowSubscriptions_vue__WEBPACK_IMPORTED_MODULE_12__["default"]
+      component: _components_admin_subscriptions_ShowSubscriptions_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
     }, {
       path: '/admin/create-subscriptions',
       name: 'CreateSubscriptions',
-      component: _components_admin_subscriptions_CreateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_13__["default"]
+      component: _components_admin_subscriptions_CreateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_14__["default"]
     }, {
       path: '/admin/update-subscriptions/:id',
       name: 'UpdateSubscriptions',
-      component: _components_admin_subscriptions_UpdateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_14__["default"],
+      component: _components_admin_subscriptions_UpdateSubscriptions_vue__WEBPACK_IMPORTED_MODULE_15__["default"],
       props: {
         "default": true,
         sidebar: false
@@ -7860,6 +8798,7 @@ vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-subscription-plans
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-subscription-plans', (__webpack_require__(/*! ./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue */ "./resources/js/components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('show-gym-classes', (__webpack_require__(/*! ./components/admin/gymClasses/ShowGymClasses.vue */ "./resources/js/components/admin/gymClasses/ShowGymClasses.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-gym-classes', (__webpack_require__(/*! ./components/admin/gymClasses/CreateGymClasses.vue */ "./resources/js/components/admin/gymClasses/CreateGymClasses.vue")["default"]));
+vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-gym-classes', (__webpack_require__(/*! ./components/admin/gymClasses/UpdateGymClasses.vue */ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('show-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/ShowSubscriptions.vue */ "./resources/js/components/admin/subscriptions/ShowSubscriptions.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('create-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/CreateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/CreateSubscriptions.vue")["default"]));
 vue__WEBPACK_IMPORTED_MODULE_2__["default"].component('update-subscriptions', (__webpack_require__(/*! ./components/admin/subscriptions/UpdateSubscriptions.vue */ "./resources/js/components/admin/subscriptions/UpdateSubscriptions.vue")["default"]));
@@ -30855,6 +31794,45 @@ component.options.__file = "resources/js/components/admin/gymClasses/ShowGymClas
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue":
+/*!***********************************************************************!*\
+  !*** ./resources/js/components/admin/gymClasses/UpdateGymClasses.vue ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UpdateGymClasses.vue?vue&type=template&id=c60d0046& */ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046&");
+/* harmony import */ var _UpdateGymClasses_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UpdateGymClasses.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! !../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+;
+var component = (0,_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UpdateGymClasses_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__.render,
+  _UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/gymClasses/UpdateGymClasses.vue"
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (component.exports);
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue":
 /*!*************************************************************************************!*\
   !*** ./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue ***!
@@ -31208,6 +32186,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateGymClasses.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=script&lang=js&");
+ /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue?vue&type=script&lang=js&":
 /*!**************************************************************************************************************!*\
   !*** ./resources/js/components/admin/subscriptionPlans/CreateSubscriptionPlans.vue?vue&type=script&lang=js& ***!
@@ -31401,6 +32395,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowGymClasses_vue_vue_type_template_id_1c746f51___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ShowGymClasses_vue_vue_type_template_id_1c746f51___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./ShowGymClasses.vue?vue&type=template&id=1c746f51& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/ShowGymClasses.vue?vue&type=template&id=1c746f51&");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046& ***!
+  \******************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__.render),
+/* harmony export */   "staticRenderFns": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__.staticRenderFns)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_lib_index_js_vue_loader_options_UpdateGymClasses_vue_vue_type_template_id_c60d0046___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!../../../../../node_modules/vue-loader/lib/index.js??vue-loader-options!./UpdateGymClasses.vue?vue&type=template&id=c60d0046& */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/lib/loaders/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/lib/index.js??vue-loader-options!./resources/js/components/admin/gymClasses/UpdateGymClasses.vue?vue&type=template&id=c60d0046&");
 
 
 /***/ }),

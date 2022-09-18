@@ -46,7 +46,6 @@
 
 <script>
     export default {
-        name: 'PostFormAxios',
         data() {
             return {
                 subscriptionPlans: []
@@ -61,7 +60,6 @@
                 })
                 .catch((error) => {
                     // error.response.status Check status code
-                    // alert(error.response.data.errors['name'][0]);
                     // for each errors -> display
                     console.log(error);
                     // console.log(error.response.data.errors['name'][0]);

@@ -2,7 +2,7 @@
 
     <div>
         <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Δημιουργία Τμήματος</h1>
+            <h1 class="h1 d-inline align-middle">Επεξεργασία Τμήματος</h1>
         </div>
 
         <div class="row">
@@ -96,21 +96,37 @@
                     description: null,
                     teacher: null,
                     number_of_students: 0,
-                    week_days: [
-                        {
-                            day: null,
-                            start_time: null,
-                            end_time: null
-                        }
-                    ]
-                }
+                    week_days: []
+                },
+                id: this.$route.params.id,
             }
+        },
+        mounted() {
+            axios.get('/admin/gym-classes/' + this.id)
+                .then(({data}) => {
+                    //Perform Success Action
+                    this.form.name = data.name;
+                    this.form.description = data.description;
+                    this.form.teacher = data.teacher;
+                    this.form.number_of_students = data.number_of_students;
+
+                    data.week_days.forEach((value, index) => {
+                        this.form.week_days.push(value);
+                    });
+                })
+                .catch((error) => {
+                    // for each errors -> display
+                    console.log(error);
+                    // console.log(error.response.data.errors);
+                }).finally(() => {
+                //Perform action in always
+            });
         },
         methods:{
             submitForm() {
                 this.form.number_of_students = parseInt(this.form.number_of_students);
 
-                axios.post('/admin/gym-classes', this.form)
+                axios.patch('/admin/gym-classes/' + this.id, this.form)
                     .then((res) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowGymClasses' });
@@ -119,7 +135,7 @@
                         // error.response.status Check status code
                         // for each errors -> display
                         console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // console.log(error.response.data.errors);
                     }).finally(() => {
                     //Perform action in always
                 });

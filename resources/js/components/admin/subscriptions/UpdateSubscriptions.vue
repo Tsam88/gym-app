@@ -71,7 +71,6 @@
 
 <script>
     export default {
-        name: 'PostFormAxios',
         data() {
             return {
                 form: {
@@ -117,13 +116,9 @@
                     this.form.unlimited_sessions = data.unlimited_sessions;
                     this.form.starts_at = data.starts_at;
                     this.form.expires_at = data.expires_at;
-
-                    console.log(data.starts_at);
-
                 })
                 .catch((error) => {
                     // for each errors -> display
-                    console.log('errorAlert');
                     console.log(error);
                     // console.log(error.response.data.errors);
                 }).finally(() => {

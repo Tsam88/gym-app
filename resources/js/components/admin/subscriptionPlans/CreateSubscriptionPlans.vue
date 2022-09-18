@@ -30,7 +30,7 @@
 
                                 <div class="my-3">
                                     <label for="number_of_sessions">Αριθμός επισκέψεων</label>
-                                    <input v-model="form.number_of_sessions" id="number_of_sessions" name="number_of_sessions" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων" required>
+                                    <input v-model="form.number_of_sessions" id="number_of_sessions" name="number_of_sessions" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων">
                                 </div>
 
                                 <div class="my-3">
@@ -73,7 +73,6 @@
 
 <script>
     export default {
-        name: 'PostFormAxios',
         data() {
             return {
                 form: {

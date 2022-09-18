@@ -51,7 +51,11 @@ class SubscriptionService
         $data = $this->subscriptionValidation->subscriptionGetSubscriptions($input);
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $subscriptions = Subscription::with('user')
+        $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
+            ->join('users', 'users.id', '=', 'subscriptions.user_id')
+            ->orderBy('users.name', 'ASC')
+            ->orderBy('users.surname', 'ASC')
+            ->orderBy('subscriptions.id', 'DESC')
             ->paginate($itemsPerPage);
 
         return $subscriptions;

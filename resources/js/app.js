@@ -25,6 +25,7 @@ import CreateSubscriptionPlans from './components/admin/subscriptionPlans/Create
 import UpdateSubscriptionPlans from './components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue';
 import ShowGymClasses from './components/admin/gymClasses/ShowGymClasses.vue';
 import CreateGymClasses from './components/admin/gymClasses/CreateGymClasses.vue';
+import UpdateGymClasses from './components/admin/gymClasses/UpdateGymClasses.vue';
 import ShowSubscriptions from './components/admin/subscriptions/ShowSubscriptions.vue';
 import CreateSubscriptions from './components/admin/subscriptions/CreateSubscriptions.vue';
 import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
@@ -59,6 +60,9 @@ const router = new VueRouter({
                 },
                 {
                     path: '/admin/create-gym-classes', name: 'CreateGymClasses', component: CreateGymClasses,
+                },
+                {
+                    path: '/admin/update-gym-classes/:id', name: 'UpdateGymClasses', component: UpdateGymClasses, props: { default: true, sidebar: false }
                 },
                 // Subscriptions
                 {
@@ -130,6 +134,7 @@ Vue.component('create-subscription-plans', require('./components/admin/subscript
 Vue.component('update-subscription-plans', require('./components/admin/subscriptionPlans/UpdateSubscriptionPlans.vue').default);
 Vue.component('show-gym-classes', require('./components/admin/gymClasses/ShowGymClasses.vue').default);
 Vue.component('create-gym-classes', require('./components/admin/gymClasses/CreateGymClasses.vue').default);
+Vue.component('update-gym-classes', require('./components/admin/gymClasses/UpdateGymClasses.vue').default);
 Vue.component('show-subscriptions', require('./components/admin/subscriptions/ShowSubscriptions.vue').default);
 Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
 Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);

@@ -29,8 +29,8 @@ class SubscriptionPlanValidation extends AbstractValidation
         ],
         'number_of_sessions' => [
             'integer',
-            'gte:0',
-            'required_if:unlimited_sessions, true',
+            'gt:0',
+            'required_unless:unlimited_sessions, true',
             'nullable',
         ],
         'sessions_per_week' => [

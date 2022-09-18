@@ -20,6 +20,7 @@ use App\Models\User;
 use App\Models\WeekDay;
 use App\Validators\ReservationValidation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -281,7 +282,7 @@ class ReservationService
     /**
      * Delete reservation
      *
-     * @param Reservation       $reservation
+     * @param Reservation $reservation
      *
      * @return void
      */
@@ -408,5 +409,45 @@ class ReservationService
         } else {
             return false;
         }
+    }
+
+    /**
+     * get pending reservations of the selected gym class
+     *
+     * @param GymClass $gymClass
+     *
+     * @return Collection
+     */
+    public function getPendingReservationsOfGymClass(GymClass $gymClass): Collection
+    {
+        $now = Carbon::now('Europe/Athens');
+
+        $pendingReservations = Reservation::where('gym_class_id', $gymClass->id)
+            ->where('date', '>=', $now)
+            ->where('canceled', false)
+            ->where('declined', false)
+            ->get();
+
+        return $pendingReservations;
+    }
+
+    /**
+     * get pending reservations of the selected gym class
+     *
+     * @param array $weekDayIds
+     *
+     * @return Collection
+     */
+    public function getPendingReservationsBasedOnWeekDays(array $weekDayIds): Collection
+    {
+        $now = Carbon::now('Europe/Athens');
+
+        $pendingReservations = Reservation::whereIn('week_day_id', $weekDayIds)
+            ->where('date', '>=', $now)
+            ->where('canceled', false)
+            ->where('declined', false)
+            ->get();
+
+        return $pendingReservations;
     }
 }
