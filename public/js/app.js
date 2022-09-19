@@ -7193,21 +7193,24 @@ var render = function render() {
     staticClass: "row border border-right-0 border-bottom-0"
   }, _vm._l(_vm.calendarDates, function (calendarDate, index) {
     return _c("div", {
-      staticClass: "day col-sm p-2 border border-left-0 border-top-0 text-truncate",
+      staticClass: "day col-lg p-2 border border-left-0 border-top-0 text-truncate",
+      "class": {
+        "d-none d-sm-inline-block bg-light text-muted": calendarDate.disabled === true
+      },
       attrs: {
         id: "calendar_date" + index
       }
     }, [_c("h5", {
       staticClass: "row align-items-center"
-    }, [_c("span", {
-      staticClass: "date col-1"
-    }, [_vm._v(_vm._s(calendarDate.date_number) + " " + _vm._s(calendarDate.month_name))]), _vm._v(" "), _c("small", {
-      staticClass: "col d-sm-none text-center text-muted"
+    }, [_c("b", {
+      staticClass: "date col-1 text-muted"
+    }, [_vm._v(_vm._s(calendarDate.date_number) + " " + _vm._s(calendarDate.month_name))]), _vm._v(" "), _c("b", {
+      staticClass: "col d-lg-none text-center text-muted"
     }, [_vm._v(_vm._s(calendarDate.day_name))]), _vm._v(" "), _c("span", {
       staticClass: "col-1"
     })]), _vm._v(" "), _vm._l(calendarDate.gym_classes, function (gym_class) {
       return _c("a", {
-        staticClass: "event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small bg-success text-white",
+        staticClass: "event d-block p-1 pl-2 pr-2 mb-sm-2 mb-lg-1 rounded text-truncate small bg-success text-white",
         attrs: {
           title: "Test Event 2"
         }
@@ -7221,7 +7224,7 @@ var staticRenderFns = [function () {
       _c = _vm._self._c;
 
   return _c("div", {
-    staticClass: "row d-none d-sm-flex p-1 text-white calendar-header"
+    staticClass: "row d-none d-lg-flex p-1 text-white calendar-header"
   }, [_c("h5", {
     staticClass: "col-sm p-1 text-center"
   }, [_vm._v("Monday")]), _vm._v(" "), _c("h5", {

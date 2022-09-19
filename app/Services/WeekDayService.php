@@ -99,7 +99,7 @@ class WeekDayService
                 'month_name' => $date->format('M'),
                 'date_number' => $date->day,
                 'gym_classes' => [],
-                'disabled' => true,
+                'disabled' => false,
             ];
 
             $dayName = strtoupper($date->dayName);

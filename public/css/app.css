@@ -94,6 +94,7 @@
 /*CALENDAR*/
 .calendar-header {
     background-color: #0f3650;
+    border-radius: 4px 4px 0 0;
 }
 
 .calendar-header h5 {
@@ -104,11 +105,15 @@
     .display-4 {
         font-size: 1.5rem;
     }
+    .day {
+        background-color: #ffffff;
+        height: auto;
+        border-color: #cdd9e5;
+    }
     .day h5 {
         background-color: #f8f9fa;
         padding: 3px 5px 5px;
         margin: -8px -8px 8px -8px;
-        height: auto;
     }
     .date {
         padding-left: 4px;
@@ -118,7 +123,9 @@
 @media (min-width: 576px) {
     .day {
         /*height: 14.2857vw;*/
+        background-color: #ffffff;
         height: auto;
+        border-color: #cdd9e5;
     }
 }
 
