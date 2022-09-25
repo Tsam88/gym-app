@@ -95,7 +95,7 @@ class ReservationService
             }
 
             // check if the date is valid
-            $isValidDate = $this->isValidDate($data['gym_class_id'], $data['date']);
+            $isValidDate = $this->isValidDate($data['week_day_id'], $data['date']);
             if (!$isValidDate) {
                 throw new ReservationDateNotFoundException();
             }
@@ -107,9 +107,11 @@ class ReservationService
             }
 
             // check if reservation is declined for this date
-            $isDeclined = $this->isDeclined($data['user_id'], $data['gym_class_id'], $data['date']);
-            if ($isDeclined) {
-                throw new ReservationIsDeclinedException();
+            if ($user->isStudent) {
+                $isDeclined = $this->isDeclined($data['user_id'], $data['gym_class_id'], $data['week_day_id'], $data['date']);
+                if ($isDeclined) {
+                    throw new ReservationIsDeclinedException();
+                }
             }
 
             // get active subscription
@@ -152,6 +154,7 @@ class ReservationService
             }
 
             $data['canceled'] = false;
+            $data['declined'] = false;
 
             $reservation = Reservation::updateOrCreate(['user_id' => $data['user_id'], 'date' => $data['date']], $data);
         } catch (\Exception $e) {
@@ -344,14 +347,16 @@ class ReservationService
      *
      * @param int    $userId
      * @param int    $gymClassId
+     * @param int    $weekDayId
      * @param string $date
      *
      * @return bool
      */
-    private function isDeclined(int $userId, int $gymClassId, string $date): bool
+    private function isDeclined(int $userId, int $gymClassId, int $weekDayId, string $date): bool
     {
         $isDeclined = Reservation::where('user_id', $userId)
             ->where('gym_class_id', $gymClassId)
+            ->where('week_day_id', $weekDayId)
             ->where('date', $date)
             ->where('declined', true)
             ->exists();
@@ -362,29 +367,23 @@ class ReservationService
     /**
      * check if the date is valid
      *
-     * @param int    $gymClassId
+     * @param int    $weekDayId
      * @param string $date
      *
      * @return bool
      */
-    private function isValidDate(int $gymClassId, string $date): bool
+    private function isValidDate(int $weekDayId, string $date): bool
     {
-        $gymClass = GymClass::where('id', $gymClassId)->first();
+        $startTime = Carbon::parse($date, 'Europe/Athens')->format('H:i:s');
+        $nameOfDay = strtoupper(Carbon::parse($date, 'Europe/Athens')->format('l'));
 
-        if ($gymClass) {
-            $startTime = Carbon::parse($date, 'Europe/Athens')->format('H:i:s');
-            $nameOfDay = strtoupper(Carbon::parse($date, 'Europe/Athens')->format('l'));
+        $weekDay = WeekDay::where('id', $weekDayId)
+            ->where('day', $nameOfDay)
+            ->where('start_time', $startTime)
+            ->exists();
 
-            $weekDay = WeekDay::where('gym_class_id', $gymClass->id)
-                ->where('day', $nameOfDay)
-                ->where('start_time', $startTime)
-                ->exists();
-
-            if ($weekDay) {
-                return true;
-            } else {
-                return false;
-            }
+        if ($weekDay) {
+            return true;
         } else {
             return false;
         }

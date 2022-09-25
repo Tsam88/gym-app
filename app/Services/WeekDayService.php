@@ -20,7 +20,7 @@ class WeekDayService
      *
      * @var int
      */
-    private const DEFAULT_ITEMS_PER_PAGE = 0;
+    private const CALENDAR_TO_DATE_ON_LAST_WEEK_ADD_DAYS = 7;
 
     /**
      * @var WeekDayValidation
@@ -82,13 +82,23 @@ class WeekDayService
                 'gym_class_id' => $weekDay['gym_class_id'],
                 'week_day_id' => $weekDay['id'],
                 'gym_class_name' => $weekDay['gym_class']['name'],
+                'teacher' => $weekDay['gym_class']['teacher'],
+                'description' => $weekDay['gym_class']['description'],
                 'start_time' => $weekDay['start_time'],
                 'end_time' => $weekDay['end_time'],
             ];
         }
 
+        $lastDateOfMonth = Carbon::today()->endOfMonth()->day;
         $fromDate = Carbon::now('Europe/Athens');
-        $toDate = Carbon::today('Europe/Athens')->endOfMonth();
+        // if fromDate (current date) does not belong in the last 7 days of the month,
+        // then set as toDate the last date of the month
+        // else set as toDate the last day of the first week of the next month
+        if ($fromDate->day <= $lastDateOfMonth - 7 ) {
+            $toDate = Carbon::today('Europe/Athens')->endOfMonth();
+        } else {
+            $toDate = Carbon::today('Europe/Athens')->endOfMonth()->addDays(self::CALENDAR_TO_DATE_ON_LAST_WEEK_ADD_DAYS);
+        }
         $period = CarbonPeriod::create($fromDate, $toDate);
 
         $calendar = [];
@@ -117,6 +127,8 @@ class WeekDayService
                     'gym_class_id' => $gymClass['gym_class_id'],
                     'week_day_id' => $gymClass['week_day_id'],
                     'gym_class_name' => $gymClass['gym_class_name'],
+                    'teacher' => $gymClass['teacher'],
+                    'description' => $gymClass['description'],
                     'start_time' => $gymClass['start_time'],
                     'end_time' => $gymClass['end_time'],
                     'users' => [],
@@ -125,23 +137,34 @@ class WeekDayService
                 if ($user) {
                     $dailyGymClasses[$key]['users'] = [
                         'user_id' => $user->id,
+                        'user_name' => $user->name,
+                        'user_surname' => $user->surname,
+                        'reservation_id' => null,
                         'has_reservation' => false,
                         'canceled' => false,
                         'declined' => false,
                     ];
                 }
 
-                $reservations = Reservation::when($user, function ($query) use ($user) {
-                        $query->where('user_id', $user->id);
-                    })
-                    ->where('gym_class_id', $gymClass['gym_class_id'])
-                    ->where('week_day_id', $gymClass['week_day_id'])
-                    ->where('date', $gymClassDateTime)
-                    ->get();
+                $reservations = Reservation::with('user')
+                        ->when($user, function ($query) use ($user) {
+                            $query->where('user_id', $user->id);
+                        })
+                        // when the logged-in user is Admin, then do not get the canceled reservations
+                        ->when($user === null, function ($query) use ($user) {
+                            $query->where('canceled', false);
+                        })
+                        ->where('gym_class_id', $gymClass['gym_class_id'])
+                        ->where('week_day_id', $gymClass['week_day_id'])
+                        ->where('date', $gymClassDateTime)
+                        ->get();
 
                 foreach ($reservations as $reservation) {
                     $dailyGymClasses[$key]['users'][] = [
                         'user_id' => $reservation->user_id,
+                        'user_name' => $reservation->user->name,
+                        'user_surname' => $reservation->user->surname,
+                        'reservation_id' => $reservation->id,
                         'has_reservation' => true,
                         'canceled' => $reservation->canceled,
                         'declined' => $reservation->declined,
@@ -154,19 +177,61 @@ class WeekDayService
             $calendar[$date->format('Y-m-d')]['date_number'] = $date->day;
             $calendar[$date->format('Y-m-d')]['gym_classes'] = $dailyGymClasses;
             $calendar[$date->format('Y-m-d')]['disabled'] = false;
+        }
 
-            while (count($calendar) % 7 !== 0) {
-                $lastDate = array_key_last ($calendar);
-                $nextDate = Carbon::parse($lastDate)->addDay();
+        // fill missing dates at the start of the calendar
+        $firstDate = array_key_first($calendar);
+        $firstDay = Carbon::parse($firstDate)->dayName;
 
-                $calendar[$nextDate->format('Y-m-d')] = [
-                    'date' => $nextDate->format('Y-m-d'),
-                    'day_name' => $nextDate->dayName,
-                    'month_name' => $nextDate->format('M'),
-                    'date_number' => $nextDate->day,
-                    'gym_classes' => [],
-                    'disabled' => true,
-                ];
+        while (strtoupper($firstDay) !== WeekDay::WEEK_DAYS[0]) {
+            $previousDate = Carbon::parse($firstDate)->subDay();
+
+            $calendar[$previousDate->format('Y-m-d')] = [
+                'date' => $previousDate->format('Y-m-d'),
+                'day_name' => $previousDate->dayName,
+                'month_name' => $previousDate->format('M'),
+                'date_number' => $previousDate->day,
+                'gym_classes' => [],
+                'disabled' => true,
+            ];
+
+            // sort calendar array by key (date)
+            ksort($calendar);
+
+            $firstDate = array_key_first($calendar);
+            $firstDay = Carbon::parse($firstDate)->dayName;
+        }
+
+        // fill missing dates at the end of the calendar
+        while (count($calendar) % 7 !== 0) {
+            $lastDate = array_key_last ($calendar);
+            $nextDate = Carbon::parse($lastDate)->addDay();
+
+            $calendar[$nextDate->format('Y-m-d')] = [
+                'date' => $nextDate->format('Y-m-d'),
+                'day_name' => $nextDate->dayName,
+                'month_name' => $nextDate->format('M'),
+                'date_number' => $nextDate->day,
+                'gym_classes' => [],
+                'disabled' => true,
+            ];
+        }
+
+        // remove date keys from calendar
+        $calendar = array_values($calendar);
+
+        // check if first seven dates of calendar are empty
+        $fisrtSevenDatesAreEmpty = true;
+        for ($key = 0; $key <= 6; $key++) {
+            if (!empty($calendar[$key]['gym_classes'])) {
+                $fisrtSevenDatesAreEmpty = false;
+                break;
+            }
+        }
+        // if first seven dates are empty, then unset them from calendar
+        if ($fisrtSevenDatesAreEmpty) {
+            for ($key = 0; $key <= 6; $key++) {
+                unset($calendar[$key]);
             }
         }
 

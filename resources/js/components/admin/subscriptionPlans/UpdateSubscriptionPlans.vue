@@ -30,17 +30,17 @@
 
                                 <div class="my-3">
                                     <label for="number_of_sessions">Αριθμός επισκέψεων</label>
-                                    <input v-model="form.number_of_sessions" id="number_of_sessions" name="number_of_sessions" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων" required>
+                                    <input v-model="form.number_of_sessions" id="number_of_sessions" name="number_of_sessions" :disabled="this.form.unlimited_sessions === true" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων" :required="this.form.unlimited_sessions === false">
                                 </div>
 
                                 <div class="my-3">
                                     <label for="sessions_per_week">Αριθμός επισκέψεων ανά εβδομάδα</label>
-                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
+                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" :disabled="this.form.unlimited_sessions === false" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
                                 </div>
 
                                 <div class="my-3">
                                     <label class="form-check">
-                                        <input v-model="form.unlimited_sessions" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox" value="">
+                                        <input v-model="form.unlimited_sessions" @change="toggleUnlimitedSessionsCheckBox" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox">
                                         <span class="form-check-label">
                                               Απεριόριστες επισκέψεις
                                         </span>
@@ -77,9 +77,9 @@
             return {
                 form: {
                     name: null,
-                    plan_price: 0,
-                    number_of_months: 0,
-                    number_of_sessions: 0,
+                    plan_price: null,
+                    number_of_months: null,
+                    number_of_sessions: null,
                     sessions_per_week: null,
                     unlimited_sessions: false,
                     display_on_page: false
@@ -112,8 +112,8 @@
             submitForm() {
                 this.form.plan_price = parseFloat(this.form.plan_price);
                 this.form.number_of_months = parseInt(this.form.number_of_months);
-                this.form.number_of_sessions = parseInt(this.form.number_of_sessions);
-                this.form.sessions_per_week = parseInt(this.form.sessions_per_week);
+                this.form.number_of_sessions = this.form.number_of_sessions !== null ? parseInt(this.form.number_of_sessions) : null;
+                this.form.sessions_per_week = this.form.sessions_per_week !== null ? parseInt(this.form.sessions_per_week) : null;
 
                 axios.patch('/admin/subscription-plans/' + this.id, this.form)
                     .then((res) => {
@@ -128,7 +128,14 @@
                     }).finally(() => {
                     //Perform action in always
                 });
-            }
+            },
+            toggleUnlimitedSessionsCheckBox() {
+                if (this.form.unlimited_sessions === true) {
+                    this.form.number_of_sessions = null;
+                } else {
+                    this.form.sessions_per_week = null;
+                }
+            },
         }
     }
 </script>

@@ -9,6 +9,16 @@ class Reservation extends Model
     public const ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE = 12;
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'declined' => 'boolean',
+        'canceled' => 'boolean',
+    ];
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
