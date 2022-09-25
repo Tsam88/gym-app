@@ -105,8 +105,8 @@
         </div>
 
         <!--response message alert-->
-        <b-alert :show="alert.dismissCountDown" dismissible fade :variant="alert.variant" @dismiss-count-down="countDownChanged" class="message-alert">
-            {{ alert.responseMessage }}
+        <b-alert :show="$alertHandler.dismissCountDown" dismissible fade :variant="$alertHandler.variant" @dismissed="$alertHandler.dismissCountDown=0" @dismiss-count-down="$alertHandler.countDownChanged" class="message-alert">
+            {{$alertHandler.responseMessage}}
         </b-alert>
 
     </div>
@@ -136,12 +136,6 @@
                     week_day_id: null,
                     date: null,
                     // isPastDate -> fix it in reservation service
-                },
-                alert: {
-                    dismissSecs: 4,
-                    dismissCountDown: 0,
-                    variant: '',
-                    responseMessage: '',
                 },
             }
         },
@@ -224,11 +218,11 @@
                         }
 
                         // display success message
-                        this.showAlert('Booking for student completed successfully', 'success');
+                        this.$alertHandler.showAlert('Booking for student completed successfully', 'success');
                     })
                     .catch((error) => {
                         // display error message
-                        this.showAlert(error.response.data.message || error.message, 'danger');
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, 'danger');
                     }).finally(() => {
                     //Perform action in always
                     this.buildCalendar();
@@ -252,11 +246,11 @@
                         this.modalGymClass.users[modalGymClassUsersIndex].declined = true;
 
                         // display success message
-                        this.showAlert('Booking for student declined successfully', 'success');
+                        this.$alertHandler.showAlert('Booking for student declined successfully', 'success');
                     })
                     .catch((error) => {
                         // display error message
-                        this.showAlert(error.response.data.message || error.message, 'danger');
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, 'danger');
                     }).finally(() => {
                     //Perform action in always
                 });
@@ -277,14 +271,6 @@
                 this.validationMessages.user_id = 'Student is required';
                 return valid;
             },
-            countDownChanged(dismissCountDown) {
-                this.alert.dismissCountDown = dismissCountDown
-            },
-            showAlert(message, variant) {
-                this.alert.responseMessage = message;
-                this.alert.variant = variant;
-                this.alert.dismissCountDown = this.alert.dismissSecs
-            }
         }
     }
 </script>

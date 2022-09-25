@@ -43,6 +43,28 @@ import CreateSubscriptions from './components/admin/subscriptions/CreateSubscrip
 import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
 import AdminCalendar from './components/admin/reservations/AdminCalendar.vue';
 
+// response message alert handler
+Vue.prototype.$alertHandler = new Vue({
+    data() {
+        return {
+            dismissSecs: 5,
+            dismissCountDown: 0,
+            variant: '',
+            responseMessage: '',
+        }
+    },
+    methods: {
+        countDownChanged(dismissCountDown) {
+            this.dismissCountDown = dismissCountDown
+        },
+        showAlert(message, variant) {
+            this.responseMessage = message;
+            this.variant = variant;
+            this.dismissCountDown = this.dismissSecs;
+        },
+    }
+});
+
 const router = new VueRouter({
     mode: 'history',
     base: __dirname,
