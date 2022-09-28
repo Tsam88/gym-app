@@ -99,7 +99,7 @@
 /*}*/
 
 
-/*CALENDAR*/
+/*CALENDAR START*/
 .calendar-header {
     background-color: #0f3650;
     border-radius: 4px 4px 0 0;
@@ -147,8 +147,9 @@
         /*padding: 0 !important;*/
     }
 }
+/*CALENDAR END*/
 
-/*admin-calendar-modal*/
+/*admin-calendar-modal START*/
 .modal-header-close-button {
     color: #ffffff;
     cursor: pointer;
@@ -183,9 +184,10 @@
 .modal-reservation-list > li{
     padding-left: 3px !important;
 }
+/*admin-calendar-modal END*/
 
 
-/*error message alerts */
+/*error message alerts START*/
 .message-alert {
     position: fixed;
     top: 30px;
@@ -206,3 +208,14 @@
     font-size: 25px;
     border: none;
 }
+/*error message alerts END*/
+
+/*admin-calendar-modal START*/
+/*.b-dropdown-form > label {*/
+/*    padding: 20px !important;*/
+/*}*/
+
+/*!*dropdown b-dropdown m-2 show btn-group*!*/
+
+
+/*!*admin-calendar-modal END*!*/

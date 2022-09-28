@@ -94,15 +94,16 @@
                 this.form.sessions_per_week = this.form.sessions_per_week !== null ? parseInt(this.form.sessions_per_week) : null;
 
                 axios.post('/admin/subscription-plans', this.form)
-                    .then((res) => {
+                    .then((result) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowSubscriptionPlans' });
+
+                        // display success message
+                        this.$alertHandler.showAlert('Subscription plan created successfully', result.status);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
-                        console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // display error message
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                 });

@@ -111,15 +111,16 @@
                 this.form.number_of_students = parseInt(this.form.number_of_students);
 
                 axios.post('/admin/gym-classes', this.form)
-                    .then((res) => {
+                    .then((result) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowGymClasses' });
+
+                        // display success message
+                        this.$alertHandler.showAlert('Class created successfully', result.status);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
-                        console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // display error message
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                 });

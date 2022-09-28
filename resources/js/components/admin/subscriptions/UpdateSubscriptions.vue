@@ -96,11 +96,7 @@
                     });
                 })
                 .catch((error) => {
-                    // error.response.status Check status code
-                    // alert(error.response.data.errors['name'][0]);
-                    // for each errors -> display
                     console.log(error);
-                    // console.log(error.response.data.errors['name'][0]);
                 }).finally(() => {
                 //Perform action in always
             });
@@ -118,9 +114,7 @@
                     this.form.expires_at = data.expires_at;
                 })
                 .catch((error) => {
-                    // for each errors -> display
                     console.log(error);
-                    // console.log(error.response.data.errors);
                 }).finally(() => {
                 //Perform action in always
             });
@@ -128,9 +122,12 @@
         methods:{
             submitForm() {
                 axios.patch('/admin/subscriptions/' + this.id, this.form)
-                    .then((res) => {
+                    .then((result) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowSubscriptions' });
+
+                        // display success message
+                        this.$alertHandler.showAlert('Subscription updated successfully', result.status);
                     })
                     .catch((error) => {
                         // error.response.status Check status code

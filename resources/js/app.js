@@ -11,8 +11,12 @@ window.Vue = require('vue').default;
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
-import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap-grid.css'
+import 'bootstrap/dist/css/bootstrap-reboot.css'
 import '../css/adminApp.css'
 import '../css/app.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -22,6 +26,7 @@ Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin);
 
+import adminApp from './adminApp.js'
 import Auth from './auth.js'
 
 Vue.prototype.auth = Auth;
@@ -50,6 +55,9 @@ Vue.prototype.$alertHandler = new Vue({
             dismissSecs: 5,
             dismissCountDown: 0,
             variant: '',
+            successCodes: [201,204],
+            warningCodes: [],
+            dangerCodes: [404,409,412,422],
             responseMessage: '',
         }
     },
@@ -57,9 +65,18 @@ Vue.prototype.$alertHandler = new Vue({
         countDownChanged(dismissCountDown) {
             this.dismissCountDown = dismissCountDown
         },
-        showAlert(message, variant) {
+        showAlert(message, code) {
+            if (this.successCodes.includes(code)) {
+                this.variant = 'success';
+            } else if (this.dangerCodes.includes(code)) {
+                this.variant = 'danger';
+            } else if (this.warningCodes.includes(code)) {
+                this.variant = 'warning';
+            } else {
+                return;
+            }
+
             this.responseMessage = message;
-            this.variant = variant;
             this.dismissCountDown = this.dismissSecs;
         },
     }
@@ -178,6 +195,10 @@ Vue.component('show-subscriptions', require('./components/admin/subscriptions/Sh
 Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
 Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);
 Vue.component('admin-calendar', require('./components/admin/reservations/AdminCalendar.vue').default);
+/* General components */
+Vue.component('drop-down-login', require('./components/generalComponents/DropDownLogin.vue').default);
+
+/* Main page */
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

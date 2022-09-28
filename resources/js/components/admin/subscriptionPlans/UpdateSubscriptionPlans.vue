@@ -100,10 +100,8 @@
                     this.form.display_on_page = data.display_on_page;
                 })
                 .catch((error) => {
-                    // for each errors -> display
-                    console.log('errorAlert');
-                    console.log(error);
-                    // console.log(error.response.data.errors);
+                    // display error message
+                    this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                 }).finally(() => {
                 //Perform action in always
             });
@@ -116,15 +114,16 @@
                 this.form.sessions_per_week = this.form.sessions_per_week !== null ? parseInt(this.form.sessions_per_week) : null;
 
                 axios.patch('/admin/subscription-plans/' + this.id, this.form)
-                    .then((res) => {
+                    .then((result) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowSubscriptionPlans' });
+
+                        // display success message
+                        this.$alertHandler.showAlert('Subscription plan updated successfully', result.status);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
-                        console.log(error.response);
-                        // console.log(error.response.data.errors);
+                        // display error message
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                 });

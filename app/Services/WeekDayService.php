@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
+use App\Libraries\ReservationGymClassHelper;
 use App\Models\GymClass;
 use App\Models\Reservation;
 use App\Models\User;
@@ -27,9 +28,16 @@ class WeekDayService
      */
     private $weekDayValidation;
 
-    public function __construct(WeekDayValidation $weekDayValidation)
+    /**
+     * @var ReservationGymClassHelper
+     */
+    private $reservationGymClassHelper;
+
+
+    public function __construct(WeekDayValidation $weekDayValidation, ReservationGymClassHelper $reservationGymClassHelper)
     {
         $this->weekDayValidation = $weekDayValidation;
+        $this->reservationGymClassHelper = $reservationGymClassHelper;
     }
 
     /**
@@ -82,6 +90,7 @@ class WeekDayService
                 'gym_class_id' => $weekDay['gym_class_id'],
                 'week_day_id' => $weekDay['id'],
                 'gym_class_name' => $weekDay['gym_class']['name'],
+                'number_of_students' => $weekDay['gym_class']['number_of_students'],
                 'teacher' => $weekDay['gym_class']['teacher'],
                 'description' => $weekDay['gym_class']['description'],
                 'start_time' => $weekDay['start_time'],
@@ -121,16 +130,19 @@ class WeekDayService
             $dailyGymClasses = [];
 
             foreach ($weekCalendar[$dayName] as $key => $gymClass) {
-                $gymClassDateTime = Carbon::parse("{$date->format('Y-m-d')} {$gymClass['start_time']}");
+                $gymClassDateTimeString = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
+                $gymClassDateTime = Carbon::parse($gymClassDateTimeString);
 
                 $dailyGymClasses[$key] = [
                     'gym_class_id' => $gymClass['gym_class_id'],
                     'week_day_id' => $gymClass['week_day_id'],
                     'gym_class_name' => $gymClass['gym_class_name'],
+                    'number_of_students_limit' => $gymClass['number_of_students'],
                     'teacher' => $gymClass['teacher'],
                     'description' => $gymClass['description'],
                     'start_time' => $gymClass['start_time'],
                     'end_time' => $gymClass['end_time'],
+                    'number_of_reservations' => $this->reservationGymClassHelper->countGymClassReservations($gymClass['gym_class_id'], $gymClass['week_day_id'], $gymClassDateTimeString),
                     'users' => [],
                 ];
 

@@ -2,7 +2,7 @@
 
     <div>
         <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Login</h1>
+            <h1 class="h1 d-inline align-middle">Sign in</h1>
         </div>
 
         <div class="row">
@@ -19,15 +19,15 @@
                                 </div>
 
                                 <div class="my-3">
-                                    <label for="password">password</label>
-                                    <input v-model="password" id="password" name="password" type="password" class="form-control" placeholder="password">
+                                    <label for="password">Password</label>
+                                    <input v-model="password" id="password" name="password" type="password" class="form-control" placeholder="Password">
                                 </div>
 
                                 <div class="mt-3">
-                                    <input id="login" name="login" class="btn btn-primary button-color-wave" type="submit" value="login">
+                                    <input id="login" name="login" class="btn btn-primary button-color-wave" type="submit" value="Sign in">
                                 </div>
                                 <div class="mt-3">
-                                    <input @click="logout" id="logout" name="logout" class="btn btn-primary button-color-wave" type="button" value="logout">
+                                    <input @click="logout" id="logout" name="logout" class="btn btn-primary button-color-wave" type="button" value="Sign out">
                                 </div>
 
                             </div>
@@ -42,8 +42,6 @@
 </template>
 
 <script>
-    import Auth from '../../../auth.js';
-
     export default {
         data() {
             return {
@@ -63,7 +61,7 @@
                     .then(({data}) => {
                         console.log(data.user);
 
-                        Auth.login(data.token, data.user);
+                        this.auth.login(data.token, data.user);
                         this.$router.push({ name: 'AdminHome' })
                     })
                     .catch((error) => {
@@ -71,10 +69,10 @@
                     });
             },
             logout() {
-                if (Auth.isAuthorized()) {
+                if (this.auth.isAuthorized()) {
                     axios.post('/users/logout')
                         .then(({data}) => {
-                            Auth.logout();
+                            this.auth.logout();
                             this.$router.push({ name: 'Home' })
                         })
                         .catch((error) => {

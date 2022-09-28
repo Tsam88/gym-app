@@ -44,10 +44,10 @@
 
                     <p>{{modalGymClass.description}}</p>
 
-                    <div v-if="modalGymClass.users && modalGymClass.users.length > 0">
-                        <hr>
+                    <hr>
 
-                        <u><b>Students:</b></u>
+                    <u><b>Students ({{modalGymClass.number_of_reservations}}/{{modalGymClass.number_of_students_limit}}):</b></u>
+                    <div v-if="modalGymClass.users && modalGymClass.users.length > 0">
                         <ul class="list-group list-group-flush modal-reservation-list">
                             <li v-for="(user, modalGymClassUsersIndex) in modalGymClass.users" class="list-group-item">
                                 <span>{{user.user_name}} {{user.user_surname}}</span>
@@ -103,11 +103,6 @@
             </b-modal>
 
         </div>
-
-        <!--response message alert-->
-        <b-alert :show="$alertHandler.dismissCountDown" dismissible fade :variant="$alertHandler.variant" @dismissed="$alertHandler.dismissCountDown=0" @dismiss-count-down="$alertHandler.countDownChanged" class="message-alert">
-            {{$alertHandler.responseMessage}}
-        </b-alert>
 
     </div>
 </template>
@@ -199,7 +194,7 @@
             createReservation(modalGymClassUsersIndex = null) {
                 // create reservation
                 axios.post('/admin/reservations', this.form)
-                    .then((res) => {
+                    .then((result) => {
                         // clear form values
                         this.form.user_id = null;
                         // clear state values
@@ -209,6 +204,7 @@
                         // modalGymClassUsersIndex is not null the the action is coming from modal-admin-calendar
                         if (modalGymClassUsersIndex !== null) {
                             this.modalGymClass.users[modalGymClassUsersIndex].declined = false;
+                            ++this.modalGymClass.number_of_reservations;
                         } else {
                             // Hide the modals manually
                             this.$nextTick(() => {
@@ -218,11 +214,11 @@
                         }
 
                         // display success message
-                        this.$alertHandler.showAlert('Booking for student completed successfully', 'success');
+                        this.$alertHandler.showAlert('Booking for student completed successfully', result.status);
                     })
                     .catch((error) => {
                         // display error message
-                        this.$alertHandler.showAlert(error.response.data.message || error.message, 'danger');
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                     this.buildCalendar();
@@ -242,17 +238,19 @@
             },
             declineReservation(reservationId, modalGymClassUsersIndex) {
                 axios.post('/admin/reservations/' + reservationId + '/decline')
-                    .then((results) => {
+                    .then((result) => {
                         this.modalGymClass.users[modalGymClassUsersIndex].declined = true;
+                        --this.modalGymClass.number_of_reservations;
 
                         // display success message
-                        this.$alertHandler.showAlert('Booking for student declined successfully', 'success');
+                        this.$alertHandler.showAlert('Booking for student declined successfully', result.status);
                     })
                     .catch((error) => {
                         // display error message
-                        this.$alertHandler.showAlert(error.response.data.message || error.message, 'danger');
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
+                    this.buildCalendar();
                 });
             },
             handleOk(bvModalEvent) {

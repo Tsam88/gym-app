@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\CancelOrDeclineReservationDateHasPassedException;
 use App\Exceptions\DateIsAlreadyReservedException;
+use App\Exceptions\GymClassIsFullException;
 use App\Exceptions\NoActiveSubscriptionForTheRequestedDateException;
 use App\Exceptions\ReservationAlreadyCanceledException;
 use App\Exceptions\ReservationCancellationIsNotAllowedException;
@@ -13,6 +14,7 @@ use App\Exceptions\ReservationDateNotFoundException;
 use App\Exceptions\ReservationIsDeclinedException;
 use App\Exceptions\SessionsLimitExceededException;
 use App\Exceptions\SessionsWeekLimitExceededException;
+use App\Libraries\ReservationGymClassHelper;
 use App\Libraries\ReservationSubscriptionHelper;
 use App\Models\GymClass;
 use App\Models\Reservation;
@@ -43,10 +45,16 @@ class ReservationService
      */
     private $reservationSubscriptionHelper;
 
-    public function __construct(ReservationValidation $reservationValidation, ReservationSubscriptionHelper $reservationSubscriptionHelper)
+    /**
+     * @var ReservationGymClassHelper
+     */
+    private $reservationGymClassHelper;
+
+    public function __construct(ReservationValidation $reservationValidation, ReservationSubscriptionHelper $reservationSubscriptionHelper, ReservationGymClassHelper $reservationGymClassHelper)
     {
         $this->reservationValidation = $reservationValidation;
         $this->reservationSubscriptionHelper = $reservationSubscriptionHelper;
+        $this->reservationGymClassHelper = $reservationGymClassHelper;
     }
 
     /**
@@ -112,6 +120,12 @@ class ReservationService
                 if ($isDeclined) {
                     throw new ReservationIsDeclinedException();
                 }
+            }
+
+            // check if the class is full
+            $isGymClassFull = $this->reservationGymClassHelper->isGymClassFull($data['gym_class_id'], $data['week_day_id'], $data['date']);
+            if ($isGymClassFull) {
+                throw new GymClassIsFullException();
             }
 
             // get active subscription

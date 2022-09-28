@@ -69,12 +69,6 @@
                         </router-link>
                     </li>
 
-                    <li @click="selected = 'create_reservations'" :class="{active:selected === 'create_reservations'}" class="sidebar-item">
-                        <router-link to="/admin/create-gym-classes" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Δημιουργία Κράτησης</span>
-                        </router-link>
-                    </li>
-
                 </ul>
             </div>
         </nav>
@@ -88,22 +82,36 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         <li class="nav-item dropdown">
-                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                                <i class="align-middle" data-feather="settings"></i>
-                            </a>
+<!--                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">-->
+<!--                                <i class="align-middle" data-feather="settings"></i>-->
+<!--                            </a>-->
 
-                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                                <img src="img/avatars/avatar.jpg" class="avatar img-fluid rounded me-1" alt="Charles Hall" /> <span class="text-dark">Charles Hall</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-end">
-                                <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>
-                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Log out</a>
-                            </div>
+<!--                            <a @click="expandSettingsMenu = !expandSettingsMenu" class="nav-link dropdown-toggle d-none d-sm-inline-block" :class="{show:expandSettingsMenu === true}" href="#" data-bs-toggle="dropdown" :aria-expanded="expandSettingsMenu">-->
+<!--                                <i class="align-middle" data-feather="user"></i> <span class="text-dark">{{user.name}} {{user.surname}}</span>-->
+<!--                            </a>-->
+
+
+                            <i class="align-middle" data-feather="user"></i>
+                            <b-dropdown id="dropdown-right" right :text="user.name" variant="primary" class="m-2">
+                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="user"></i> Profile</b-dropdown-item>
+                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</b-dropdown-item>
+                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</b-dropdown-item>
+                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</b-dropdown-item>
+                                <b-dropdown-item href="#">Log out</b-dropdown-item>
+                            </b-dropdown>
+
+<!--                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block show" href="#" data-bs-toggle="dropdown" aria-expanded="true">-->
+<!--                                <i class="align-middle" data-feather="user"></i> <span class="text-dark">{{user.name}} {{user.surname}}</span>-->
+<!--                            </a>-->
+<!--                            <div class="dropdown-menu dropdown-menu-end">-->
+<!--                                <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>-->
+<!--                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>-->
+<!--                                <div class="dropdown-divider"></div>-->
+<!--                                <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>-->
+<!--                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>-->
+<!--                                <div class="dropdown-divider"></div>-->
+<!--                                <a class="dropdown-item" href="#">Log out</a>-->
+<!--                            </div>-->
                         </li>
                     </ul>
                 </div>
@@ -154,14 +162,21 @@
 
 
 <script>
-    import adminApp from '../../adminApp.js'
-    import Vue from "vue";
+    // import adminApp from '../../adminApp.js';
+    // import Vue from "vue";
+    import Auth from '../../auth.js';
 
     export default {
         data() {
             return {
-                selected: 'subscription_plans'
+                user: Auth.user,
+                selected: 'subscription_plans',
             }
-        }
+        },
+        // methods:{
+        //     expandSettingsMenu(gymClassId) {
+        //         this.$router.push({ name: 'UpdateGymClasses', params: { id: gymClassId } })
+        //     }
+        // }
     }
 </script>

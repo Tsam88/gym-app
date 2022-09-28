@@ -70,10 +70,7 @@
                     });
                 })
                 .catch((error) => {
-                    // error.response.status Check status code
-                    // for each errors -> display
                     console.log(error);
-                    // console.log(error.response.data.errors['name'][0]);
                 }).finally(() => {
                 //Perform action in always
             });
@@ -86,10 +83,7 @@
                     });
                 })
                 .catch((error) => {
-                    // error.response.status Check status code
-                    // for each errors -> display
                     console.log(error);
-                    // console.log(error.response.data.errors['name'][0]);
                 }).finally(() => {
                 //Perform action in always
             });
@@ -97,15 +91,16 @@
         methods:{
             submitForm() {
                 axios.post('/admin/subscriptions', this.form)
-                    .then((res) => {
+                    .then((result) => {
                         //Perform Success Action
                         this.$router.push({ name: 'ShowSubscriptions' });
+
+                        // display success message
+                        this.$alertHandler.showAlert('Subscription created successfully', result.status);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
-                        console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // display error message
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                 });
