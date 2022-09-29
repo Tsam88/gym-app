@@ -28,13 +28,17 @@ class SubscriptionValidation extends AbstractValidation
             'gte:0',
         ],
         'remaining_sessions' => [
+            'required_if:unlimited_sessions,"false"',
             'integer',
             'gte:0',
+            'nullable',
+            'prohibited_if:unlimited_sessions, "true"',
         ],
         'sessions_per_week' => [
             'integer',
             'gte:0',
             'nullable',
+            'prohibited_if:unlimited_sessions, "false"',
         ],
         'unlimited_sessions' => [
             'required',

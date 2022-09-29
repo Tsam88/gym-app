@@ -32,10 +32,31 @@ import Auth from './auth.js'
 Vue.prototype.auth = Auth;
 Vue.use(VueRouter,axios);
 
+
+/* import the fontawesome core */
+import { library } from '@fortawesome/fontawesome-svg-core'
+
+/* import font awesome icon component */
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+/* import specific icons */
+import { faHouse, faHouseUser, faDollarSign } from '@fortawesome/free-solid-svg-icons'
+import { faCreditCard, faUser, faCalendar } from '@fortawesome/free-regular-svg-icons'
+import { faTwitter, faFacebook, faStackOverflow, faGithub } from '@fortawesome/free-brands-svg-icons'
+
+/* add icons to the library */
+library.add( faHouse, faHouseUser, faDollarSign, faUser, faCreditCard, faCalendar);
+
+/* add font awesome icon component */
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
+Vue.config.productionTip = false;
+
+/* IMPORT COMPONENTS */
 import MainPage from './components/MainPage.vue';
 import Home from './components/Home.vue';
 import Login from './components/main/auth/Login.vue';
-/* Admin */
+/* ADMIN */
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
 import CreateSubscriptionPlans from './components/admin/subscriptionPlans/CreateSubscriptionPlans.vue';
@@ -47,6 +68,8 @@ import ShowSubscriptions from './components/admin/subscriptions/ShowSubscription
 import CreateSubscriptions from './components/admin/subscriptions/CreateSubscriptions.vue';
 import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
 import AdminCalendar from './components/admin/reservations/AdminCalendar.vue';
+/* GENERAL COMPONENTS */
+import DropDownLogin from './components/generalComponents/DropDownLogin.vue';
 
 // response message alert handler
 Vue.prototype.$alertHandler = new Vue({
@@ -87,52 +110,56 @@ const router = new VueRouter({
     base: __dirname,
     routes: [
         /* MAIN */
-        { path: '/', name: 'MainPage', component: MainPage },
-        { path: '/login', name: 'Login', component: Login },
-
-        /* ADMIN */
-        { path: '/admin', name: 'AdminHome', component: AdminHome,
-            redirect: '/admin/show-subscription-plans',
-            children: [
-                // Subscription Plans
-                {
-                    // UserProfile will be rendered inside User's <router-view>
-                    // when /user/:id/profile is matched
-                    path: '/admin/show-subscription-plans', name: 'ShowSubscriptionPlans', component: ShowSubscriptionPlans,
+        { path: '', name: 'MainPage', component: MainPage, children: [
+                /* MAIN PAGE */
+                { path: '/', name: 'Home', component: Home, children: [
+                        { path: '/login', name: 'Login', component: Login },
+                    ]
                 },
-                {
-                    path: '/admin/create-subscription-plans', name: 'CreateSubscriptionPlans', component: CreateSubscriptionPlans,
-                },
-                {
-                    path: '/admin/update-subscription-plans/:id', name: 'UpdateSubscriptionPlans', component: UpdateSubscriptionPlans, props: { default: true, sidebar: false }
-                },
-                // Gym Classes
-                {
-                    path: '/admin/show-gym-classes', name: 'ShowGymClasses', component: ShowGymClasses,
-                },
-                {
-                    path: '/admin/create-gym-classes', name: 'CreateGymClasses', component: CreateGymClasses,
-                },
-                {
-                    path: '/admin/update-gym-classes/:id', name: 'UpdateGymClasses', component: UpdateGymClasses, props: { default: true, sidebar: false }
-                },
-                // Subscriptions
-                {
-                    path: '/admin/show-subscriptions', name: 'ShowSubscriptions', component: ShowSubscriptions,
-                },
-                {
-                    path: '/admin/create-subscriptions', name: 'CreateSubscriptions', component: CreateSubscriptions,
-                },
-                {
-                    path: '/admin/update-subscriptions/:id', name: 'UpdateSubscriptions', component: UpdateSubscriptions, props: { default: true, sidebar: false }
-                },
-                // Reservations
-                {
-                    path: '/admin/calendar', name: 'AdminCalendar', component: AdminCalendar,
+                /* ADMIN */
+                { path: '/admin', name: 'AdminHome', component: AdminHome,
+                    redirect: '/admin/show-subscription-plans',
+                    children: [
+                        // Subscription Plans
+                        {
+                            // UserProfile will be rendered inside User's <router-view>
+                            // when /user/:id/profile is matched
+                            path: '/admin/show-subscription-plans', name: 'ShowSubscriptionPlans', component: ShowSubscriptionPlans,
+                        },
+                        {
+                            path: '/admin/create-subscription-plans', name: 'CreateSubscriptionPlans', component: CreateSubscriptionPlans,
+                        },
+                        {
+                            path: '/admin/update-subscription-plans/:id', name: 'UpdateSubscriptionPlans', component: UpdateSubscriptionPlans, props: { default: true, sidebar: false }
+                        },
+                        // Gym Classes
+                        {
+                            path: '/admin/show-gym-classes', name: 'ShowGymClasses', component: ShowGymClasses,
+                        },
+                        {
+                            path: '/admin/create-gym-classes', name: 'CreateGymClasses', component: CreateGymClasses,
+                        },
+                        {
+                            path: '/admin/update-gym-classes/:id', name: 'UpdateGymClasses', component: UpdateGymClasses, props: { default: true, sidebar: false }
+                        },
+                        // Subscriptions
+                        {
+                            path: '/admin/show-subscriptions', name: 'ShowSubscriptions', component: ShowSubscriptions,
+                        },
+                        {
+                            path: '/admin/create-subscriptions', name: 'CreateSubscriptions', component: CreateSubscriptions,
+                        },
+                        {
+                            path: '/admin/update-subscriptions/:id', name: 'UpdateSubscriptions', component: UpdateSubscriptions, props: { default: true, sidebar: false }
+                        },
+                        // Reservations
+                        {
+                            path: '/admin/calendar', name: 'AdminCalendar', component: AdminCalendar,
+                        },
+                    ]
                 },
             ]
         },
-        { path: '/home', name: 'Home', component: Home },
     ]
 });
 
@@ -216,6 +243,24 @@ Vue.component('drop-down-login', require('./components/generalComponents/DropDow
 const app = new Vue({
     router,
 }).$mount('#app');
+
+
+// function for validating forms in app
+// (function () {
+//     'use strict';
+//     const forms = document.querySelectorAll('.requires-validation');
+//     Array.from(forms)
+//         .forEach(function (form) {
+//             form.addEventListener('submit', function (event) {
+//                 if (!form.checkValidity()) {
+//                     event.preventDefault();
+//                     event.stopPropagation();
+//                 }
+//
+//                 form.classList.add('was-validated');
+//             }, false);
+//         });
+// })();
 
 // const adminApp = new Vue({
 //     adminRouter,

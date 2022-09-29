@@ -9,63 +9,70 @@
                 <ul class="sidebar-nav">
                     <!--SUBSCRIPTION PLANS-->
                     <li class="sidebar-header">
-                        Προγράμματα Συνδρομής
+                        Subscription Plans
                     </li>
 
                     <li @click="selected = 'subscription_plans'" :class="{active:selected === 'subscription_plans'}" class="sidebar-item">
                         <router-link to="/admin/show-subscription-plans" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Προγράμματα Συνδρομής</span>
+                            <font-awesome-icon icon="fa-solid fa-dollar-sign" size="lg"/>
+                            <span class="align-middle">Subscription Plans</span>
                         </router-link>
                     </li>
 
                     <li @click="selected = 'create_subscription_plans'" :class="{active:selected === 'create_subscription_plans'}" class="sidebar-item">
                         <router-link to="/admin/create-subscription-plans" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="dollar-sign"></i> <span class="align-middle">Δημιουργία Προγράμματος Συνδρομής</span>
+                            <font-awesome-icon icon="fa-solid fa-dollar-sign" size="lg"/>
+                            <span class="align-middle">Create Subscription Plan</span>
                         </router-link>
                     </li>
 
                     <!--GYM CLASSES-->
                     <li class="sidebar-header">
-                        Τμήματα
+                        Classes
                     </li>
 
                     <li @click="selected = 'gym_classes'" :class="{active:selected === 'gym_classes'}" class="sidebar-item">
                         <router-link to="/admin/show-gym-classes" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="home"></i> <span class="align-middle">Τμήματα</span>
+                            <font-awesome-icon icon="fa-solid fa-house-user" size="lg"/>
+                            <span class="align-middle">Classes</span>
                         </router-link>
                     </li>
 
                     <li @click="selected = 'create_gym_classes'" :class="{active:selected === 'create_gym_classes'}" class="sidebar-item">
                         <router-link to="/admin/create-gym-classes" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="home"></i> <span class="align-middle">Δημιουργία Τμήματος</span>
+                            <font-awesome-icon icon="fa-solid fa-house-user" size="lg"/>
+                            <span class="align-middle">Create Class</span>
                         </router-link>
                     </li>
 
                     <!--SUBSCRIPTIONS-->
                     <li class="sidebar-header">
-                        Συνδρομές Χρηστών
+                        Subscriptions
                     </li>
 
                     <li @click="selected = 'subscriptions'" :class="{active:selected === 'subscriptions'}" class="sidebar-item">
                         <router-link to="/admin/show-subscriptions" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Συνδρομές</span>
+                            <font-awesome-icon icon="fa-regular fa-credit-card-alt" size="lg"/>
+                            <span class="align-middle">Subscriptions</span>
                         </router-link>
                     </li>
 
                     <li @click="selected = 'create_subscriptions'" :class="{active:selected === 'create_subscriptions'}" class="sidebar-item">
                         <router-link to="/admin/create-subscriptions" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Δημιουργία Συνδρομής</span>
+                            <font-awesome-icon icon="fa-regular fa-credit-card" size="lg"/>
+                            <span class="align-middle">Create Subscription</span>
                         </router-link>
                     </li>
 
                     <!--GYM CLASSES-->
                     <li class="sidebar-header">
-                        Κρατήσεις
+                        Bookings
                     </li>
 
                     <li @click="selected = 'reservations'" :class="{active:selected === 'reservations'}" class="sidebar-item">
                         <router-link to="/admin/calendar" class="nav-link sidebar-link">
-                            <i class="align-middle" data-feather="calendar"></i> <span class="align-middle">Κρατήσεις</span>
+                            <font-awesome-icon icon="fa-regular fa-calendar" size="lg"/>
+                            <span class="align-middle">Bookings</span>
                         </router-link>
                     </li>
 
@@ -82,36 +89,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav navbar-align">
                         <li class="nav-item dropdown">
-<!--                            <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">-->
-<!--                                <i class="align-middle" data-feather="settings"></i>-->
-<!--                            </a>-->
-
-<!--                            <a @click="expandSettingsMenu = !expandSettingsMenu" class="nav-link dropdown-toggle d-none d-sm-inline-block" :class="{show:expandSettingsMenu === true}" href="#" data-bs-toggle="dropdown" :aria-expanded="expandSettingsMenu">-->
-<!--                                <i class="align-middle" data-feather="user"></i> <span class="text-dark">{{user.name}} {{user.surname}}</span>-->
-<!--                            </a>-->
-
-
-                            <i class="align-middle" data-feather="user"></i>
-                            <b-dropdown id="dropdown-right" right :text="user.name" variant="primary" class="m-2">
-                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="user"></i> Profile</b-dropdown-item>
-                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</b-dropdown-item>
-                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</b-dropdown-item>
-                                <b-dropdown-item href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</b-dropdown-item>
-                                <b-dropdown-item href="#">Log out</b-dropdown-item>
-                            </b-dropdown>
-
-<!--                            <a class="nav-link dropdown-toggle d-none d-sm-inline-block show" href="#" data-bs-toggle="dropdown" aria-expanded="true">-->
-<!--                                <i class="align-middle" data-feather="user"></i> <span class="text-dark">{{user.name}} {{user.surname}}</span>-->
-<!--                            </a>-->
-<!--                            <div class="dropdown-menu dropdown-menu-end">-->
-<!--                                <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>-->
-<!--                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>-->
-<!--                                <div class="dropdown-divider"></div>-->
-<!--                                <a class="dropdown-item" href="index.html"><i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy</a>-->
-<!--                                <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>-->
-<!--                                <div class="dropdown-divider"></div>-->
-<!--                                <a class="dropdown-item" href="#">Log out</a>-->
-<!--                            </div>-->
+                            <drop-down-login></drop-down-login>
                         </li>
                     </ul>
                 </div>
@@ -162,21 +140,17 @@
 
 
 <script>
-    // import adminApp from '../../adminApp.js';
+    import adminApp from '../../adminApp.js';
     // import Vue from "vue";
-    import Auth from '../../auth.js';
+    // import Auth from '../../auth.js';
+    import '../../../css/adminApp.css'
+
 
     export default {
         data() {
             return {
-                user: Auth.user,
                 selected: 'subscription_plans',
             }
         },
-        // methods:{
-        //     expandSettingsMenu(gymClassId) {
-        //         this.$router.push({ name: 'UpdateGymClasses', params: { id: gymClassId } })
-        //     }
-        // }
     }
 </script>

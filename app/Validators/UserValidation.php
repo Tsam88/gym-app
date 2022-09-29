@@ -36,7 +36,7 @@ class UserValidation extends AbstractValidation
         'password' => [
             'required',
             'string',
-            'min:8',
+//            'min:8',
         ],
         'phone_number' => [
             'string',

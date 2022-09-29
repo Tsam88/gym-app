@@ -1,4 +1,14 @@
 {
     "/js/app.js": "/js/app.js",
-    "/js/adminApp.js": "/js/adminApp.js"
+    "/js/adminApp.js": "/js/adminApp.js",
+    "/images/avatars/avatar-2.jpg": "/images/avatars/avatar-2.jpg",
+    "/images/avatars/avatar-3.jpg": "/images/avatars/avatar-3.jpg",
+    "/images/avatars/avatar-4.jpg": "/images/avatars/avatar-4.jpg",
+    "/images/avatars/avatar-5.jpg": "/images/avatars/avatar-5.jpg",
+    "/images/avatars/avatar.jpg": "/images/avatars/avatar.jpg",
+    "/images/icons/barengage-logo.jpg": "/images/icons/barengage-logo.jpg",
+    "/images/icons/icon-48x48.png": "/images/icons/icon-48x48.png",
+    "/images/photos/unsplash-1.jpg": "/images/photos/unsplash-1.jpg",
+    "/images/photos/unsplash-2.jpg": "/images/photos/unsplash-2.jpg",
+    "/images/photos/unsplash-3.jpg": "/images/photos/unsplash-3.jpg"
 }

@@ -248,7 +248,7 @@ class ReservationService
     /**
      * Decline a reservation
      *
-     * @param Reservation       $reservation
+     * @param Reservation $reservation
      *
      * @return void
      */

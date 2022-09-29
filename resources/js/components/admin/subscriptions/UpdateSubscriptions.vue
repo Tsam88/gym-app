@@ -27,17 +27,17 @@
 
                                 <div class="my-3">
                                     <label for="remaining_sessions">Υπόλοιπες επισκέψεις</label>
-                                    <input v-model="form.remaining_sessions" id="remaining_sessions" name="remaining_sessions" type="number" min="0" step="1" class="form-control" placeholder="Υπόλοιπες επισκέψεις" required>
+                                    <input v-model="form.remaining_sessions" id="remaining_sessions" name="remaining_sessions" :disabled="this.form.unlimited_sessions === true" type="number" min="0" step="1" class="form-control" placeholder="Υπόλοιπες επισκέψεις" required>
                                 </div>
 
                                 <div class="my-3">
                                     <label for="sessions_per_week">Αριθμός επισκέψεων ανά εβδομάδα</label>
-                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
+                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" :disabled="this.form.unlimited_sessions === false" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
                                 </div>
 
                                 <div class="my-3">
                                     <label class="form-check">
-                                        <input v-model="form.unlimited_sessions" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox" value="">
+                                        <input v-model="form.unlimited_sessions" @change="toggleUnlimitedSessionsCheckBox" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox">
                                         <span class="form-check-label">
                                               Απεριόριστες επισκέψεις
                                         </span>
@@ -130,14 +130,21 @@
                         this.$alertHandler.showAlert('Subscription updated successfully', result.status);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
-                        console.log(error.response);
-                        // console.log(error.response.data.errors['name'][0]);
+                        // display error message
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                 });
-            }
+            },
+            toggleUnlimitedSessionsCheckBox() {
+                console.log('fuck');
+                console.log(this.form.unlimited_sessions);
+                if (this.form.unlimited_sessions === true) {
+                    this.form.remaining_sessions = null;
+                } else {
+                    this.form.sessions_per_week = null;
+                }
+            },
         }
     }
 </script>

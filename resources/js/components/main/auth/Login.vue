@@ -10,27 +10,16 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form v-on:submit.prevent="login">
-                            <div class="form-group">
+                        <form @submit.prevent="login">
+                            <b-form-group label="Email" label-for="email">
+                                <b-form-input v-model="email" id="email" name="email" type="email" class="mb-3" placeholder="Email" required></b-form-input>
+                            </b-form-group>
 
-                                <div class="mb-3">
-                                    <label for="email">Email</label>
-                                    <input v-model="email" id="email" name="email" type="text" class="form-control" placeholder="Email">
-                                </div>
+                            <b-form-group label="Password" label-for="password">
+                                <b-form-input v-model="password" id="password" name="password" type="password" class="mb-3" placeholder="Password" required></b-form-input>
+                            </b-form-group>
 
-                                <div class="my-3">
-                                    <label for="password">Password</label>
-                                    <input v-model="password" id="password" name="password" type="password" class="form-control" placeholder="Password">
-                                </div>
-
-                                <div class="mt-3">
-                                    <input id="login" name="login" class="btn btn-primary button-color-wave" type="submit" value="Sign in">
-                                </div>
-                                <div class="mt-3">
-                                    <input @click="logout" id="logout" name="logout" class="btn btn-primary button-color-wave" type="button" value="Sign out">
-                                </div>
-
-                            </div>
+                            <b-button class="button-color-wave" type="submit" variant="primary">Submit</b-button>
                         </form>
 
                     </div>
@@ -49,7 +38,6 @@
                 password: '',
             };
         },
-
         methods: {
             login() {
                 let data = {
@@ -65,7 +53,12 @@
                         this.$router.push({ name: 'AdminHome' })
                     })
                     .catch((error) => {
-                        console.log(error);
+                        // display error message
+                        if (error.response.status === 401) {
+                            this.$alertHandler.showAlert('Email or/and Password are invalid', 422);
+                        } else {
+                            this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
+                        }
                     });
             },
             logout() {
@@ -79,7 +72,7 @@
                             console.log(error);
                         });
                 }
-            }
+            },
         }
     }
 </script>

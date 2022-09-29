@@ -18,6 +18,7 @@
                     <th class="text-center" scope="col">Έναρξη</th>
                     <th class="text-center" scope="col">Λήξη</th>
                     <th class="text-center" scope="col">Απεριόριστο</th>
+                    <th class="text-center" scope="col">Ενεργή</th>
                 </tr>
                 </thead>
 
@@ -35,6 +36,11 @@
                         <td>
                             <label class="form-check d-flex justify-content-center">
                                 <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.unlimited_sessions == true" disabled>
+                            </label>
+                        </td>
+                        <td>
+                            <label class="form-check d-flex justify-content-center">
+                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.is_active == true" disabled>
                             </label>
                         </td>
                     </tr>

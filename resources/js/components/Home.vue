@@ -1,5 +1,14 @@
 <template>
-    <h1>Home</h1>
+    <div>
+
+        <h1>Home</h1>
+
+        <drop-down-login></drop-down-login>
+
+        <router-view class="view"></router-view>
+
+
+    </div>
 </template>
 
 <script>

@@ -72,7 +72,7 @@
             </b-modal>
 
             <!--Make reservation for student modal-->
-            <b-modal id="modal-make-reservation" size="sm" ref="modal" @ok="handleOk" @close="handleClose" @cancel="handleClose">
+            <b-modal id="modal-make-reservation" size="sm" @ok="handleOk" @close="handleClose" @cancel="handleClose">
                 <template #modal-header="{ close }">
                     <b>Book a class for student</b>
                     <!-- Emulate built in modal header close button action -->

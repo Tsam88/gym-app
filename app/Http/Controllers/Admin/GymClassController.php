@@ -143,8 +143,6 @@ class GymClassController extends Controller
             // get the valid new week days to create, by comparing the old week days with new ones
             $weekDaysToCreate['week_days'] = $this->weekDayService->getWeekDaysToCreate($data['week_days'], $gymClass);
 
-//            dd($weekDaysToCreate['week_days']);
-
             if ($weekDaysToCreate['week_days']) {
                 foreach ($weekDaysToCreate['week_days'] as &$weekDay) {
                     $weekDay['gym_class_id'] = $gymClass->id;
@@ -165,8 +163,6 @@ class GymClassController extends Controller
 
                 // decline all pending reservations before deleting the selected week days
                 foreach ($pendingReservations as $pendingReservation) {
-                    dd($pendingReservations);
-
                     $this->reservationService->decline($pendingReservation);
                 }
 

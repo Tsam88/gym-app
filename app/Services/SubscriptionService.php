@@ -4,8 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-use App\Exceptions\UserAlreadyHasActiveSubscriptionException;
+use App\Exceptions\UserAlreadyHasSubscriptionOnTheseDatesException;
 use App\Libraries\ReservationSubscriptionHelper;
+use App\Models\Reservation;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use App\Validators\SubscriptionValidation;
@@ -58,6 +59,21 @@ class SubscriptionService
             ->orderBy('subscriptions.id', 'DESC')
             ->paginate($itemsPerPage);
 
+        // set is_active attribute per subscription
+        $activeSubscriptionIdPerUser = [];
+        foreach ($subscriptions as &$subscription) {
+            if (!array_key_exists($subscription->user_id, $activeSubscriptionIdPerUser)) {
+                $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($subscription->user_id);
+                $activeSubscriptionIdPerUser[$subscription->user_id] = $activeSubscription ? $activeSubscription->id : null;
+            }
+
+            if ($activeSubscriptionIdPerUser[$subscription->user_id] !== $subscription->id) {
+                $subscription->is_active = false;
+            } else {
+                $subscription->is_active = true;
+            }
+        }
+
         return $subscriptions;
     }
 
@@ -85,12 +101,12 @@ class SubscriptionService
             $data['sessions_per_week'] = $subscriptionPlanData['sessions_per_week'];
             $data['expires_at'] = Carbon::parse($data['starts_at'], 'Europe/Athens')->addMonths($subscriptionPlanData['number_of_months'])->format('Y-m-d');
 
-            // check if there is active subscription for these dates
-            $hasActiveSubscription = $this->reservationSubscriptionHelper->hasActiveSubscription($data['user_id'], $data['starts_at'], $data['expires_at'], null);
+            // check if there is another subscription for these dates
+            $hasSubscriptionDateConflict = $this->reservationSubscriptionHelper->hasSubscriptionDateConflict($data['user_id'], $data['starts_at'], $data['expires_at'], null);
 
             // check if there is already active subscription
-            if ($hasActiveSubscription) {
-                throw new UserAlreadyHasActiveSubscriptionException();
+            if ($hasSubscriptionDateConflict) {
+                throw new UserAlreadyHasSubscriptionOnTheseDatesException();
             }
 
             $subscription = Subscription::create($data);
@@ -124,12 +140,12 @@ class SubscriptionService
         DB::beginTransaction();
 
         try {
-            // check if there is active subscription for these dates
-            $hasActiveSubscription = $this->reservationSubscriptionHelper->hasActiveSubscription($data['user_id'], $data['starts_at'], $data['expires_at'], $subscription->id);
+            // check if there is another subscription for these dates
+            $hasSubscriptionDateConflict = $this->reservationSubscriptionHelper->hasSubscriptionDateConflict($data['user_id'], $data['starts_at'], $data['expires_at'], $subscription->id);
 
             // check if there is already active subscription
-            if ($hasActiveSubscription) {
-                throw new UserAlreadyHasActiveSubscriptionException();
+            if ($hasSubscriptionDateConflict) {
+                throw new UserAlreadyHasSubscriptionOnTheseDatesException();
             }
 
             $subscription->update($data);
@@ -167,5 +183,30 @@ class SubscriptionService
 
         // commit database changes
         DB::commit();
+    }
+
+    /**
+     * Check if the subscription is active
+     *
+     * @param Subscription $subscription
+     *
+     * @return bool
+     */
+    public function isActiveSubscription(Subscription $subscription): bool
+    {
+        $now = Carbon::now('Europe/Athens');
+//        $dateLimit = clone $now->subHours(Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE);
+        $startsAt = Carbon::parse($subscription->starts_at->format('Y-m-d'), 'Europe/Athens');
+        $expiresAt = Carbon::parse($subscription->expires_at->format('Y-m-d'), 'Europe/Athens');
+        $lastReservationDate = $this->reservationSubscriptionHelper->getLastReservationDate($subscription->user_id);
+
+        if ($now >= $startsAt && $now <= $expiresAt
+            && ($subscription->unlimited_sessions || $subscription->remaining_sessions > 0
+                || ($subscription->remaining_sessions <= 0 && !empty($lastReservationDate)))) {
+//                || ($subscription->remaining_sessions <= 0 && !empty($lastReservationDate) && $lastReservationDate <= $dateLimit))) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

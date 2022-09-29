@@ -21,27 +21,35 @@ class ReservationSubscriptionHelper
      *
      * @return bool
      */
-    public function hasActiveSubscription(int $userId, string $startsAt, string $expiresAt, ?int $excludedSubscriptionId): bool
+    public function hasSubscriptionDateConflict(int $userId, string $startsAt, string $expiresAt, ?int $excludedSubscriptionId): bool
     {
         $lastReservationDate = $this->getLastReservationDate($userId);
 
         $today = Carbon::today('Europe/Athens');
 
-        if (!empty($lastReservationDate) && $today >= $lastReservationDate) {
+        if (!empty($lastReservationDate) && $lastReservationDate >= $today) {
             // get subscriptions that the expiration date has not passed,
             // but the remaining sessions are zero and the last sessions belongs in the past (so the user can not cancel it)
-            $subscriptionIdsWithNoRemainingSessions = Subscription::where('unlimited_sessions', false)
+            $subscriptionStillActiveWithNoRemaining = Subscription::where('unlimited_sessions', false)
                 ->where('remaining_sessions', '<=', 0)
                 ->where('starts_at', '<=', $today)
                 ->where('expires_at', '>=', $today)
                 ->where('starts_at', '<=', $lastReservationDate)
                 ->where('expires_at', '>=', $lastReservationDate)
-                ->pluck('id');
+                ->first();
         } else {
-            $subscriptionIdsWithNoRemainingSessions = [];
+            $subscriptionStillActiveWithNoRemaining = null;
         }
 
-        $activeSubscription = Subscription::where('user_id',$userId)
+        // subscription with no unlimited setting on and no remaining sessions, supposed expired sessions
+        $subscriptionIdsWithNoRemainingSessions = Subscription::where('unlimited_sessions', false)
+            ->where('remaining_sessions', '<=', 0)
+            ->when($subscriptionStillActiveWithNoRemaining, function ($query) use ($subscriptionStillActiveWithNoRemaining) {
+                $query->where('id', '!=', $subscriptionStillActiveWithNoRemaining->id);
+            })
+            ->pluck('id');
+
+        $hasSubscriptionDateConflict = Subscription::where('user_id',$userId)
             ->where(function ($query) use ($startsAt, $expiresAt) {
                 $query->whereBetween('starts_at', [$startsAt, $expiresAt])
                     ->orWhereBetween('expires_at', [$startsAt, $expiresAt])
@@ -54,7 +62,7 @@ class ReservationSubscriptionHelper
             ->whereNotIn('id', $subscriptionIdsWithNoRemainingSessions)
             ->exists();
 
-        return $activeSubscription;
+        return $hasSubscriptionDateConflict;
     }
 
     /**
@@ -70,21 +78,43 @@ class ReservationSubscriptionHelper
 
         $today = Carbon::today('Europe/Athens');
 
-        if (!empty($lastReservationDate) && $today >= $lastReservationDate) {
+        if (!empty($lastReservationDate) && $lastReservationDate >= $today) {
             // get subscriptions that the expiration date has not passed,
             // but the remaining sessions are zero and the last sessions belongs in the past (so the user can not cancel it)
-            $subscriptionIdsWithNoRemainingSessions = Subscription::where('unlimited_sessions', false)
+            $subscriptionStillActiveWithNoRemaining = Subscription::where('user_id',$userId)
+                ->where('unlimited_sessions', false)
                 ->where('remaining_sessions', '<=', 0)
                 ->where('starts_at', '<=', $today)
                 ->where('expires_at', '>=', $today)
                 ->where('starts_at', '<=', $lastReservationDate)
                 ->where('expires_at', '>=', $lastReservationDate)
-                ->pluck('id');
-        } else {
-            $subscriptionIdsWithNoRemainingSessions = [];
+                ->first();
+
+            if ($subscriptionStillActiveWithNoRemaining) {
+                return $subscriptionStillActiveWithNoRemaining;
+            }
         }
 
-        $activeSubscription = Subscription::where('user_id',$userId)
+        // subscription with no unlimited setting on and no remaining sessions, supposed expired sessions
+        $subscriptionIdsWithNoRemainingSessions = Subscription::where('unlimited_sessions', false)
+            ->where('remaining_sessions', '<=', 0)
+            ->pluck('id');
+
+//        if (!empty($lastReservationDate) && $today >= $lastReservationDate) {
+//            // get subscriptions that the expiration date has not passed,
+//            // but the remaining sessions are zero and the last sessions belongs in the past (so the user can not cancel it)
+//            $subscriptionIdsWithNoRemainingSessions = Subscription::where('unlimited_sessions', false)
+//                ->where('remaining_sessions', '<=', 0)
+//                ->where('starts_at', '<=', $today)
+//                ->where('expires_at', '>=', $today)
+//                ->where('starts_at', '<=', $lastReservationDate)
+//                ->where('expires_at', '>=', $lastReservationDate)
+//                ->pluck('id');
+//        } else {
+//            $subscriptionIdsWithNoRemainingSessions = [];
+//        }
+
+        $activeSubscription = Subscription::where('user_id', $userId)
             ->where('starts_at', '<=', $today)
             ->where('expires_at', '>=', $today)
             ->whereNotIn('id', $subscriptionIdsWithNoRemainingSessions)
@@ -94,37 +124,13 @@ class ReservationSubscriptionHelper
     }
 
     /**
-     * Check if the subscription is active
-     *
-     * @param Subscription $subscription
-     *
-     * @return bool
-     */
-    public function isActiveSubscription(Subscription $subscription): bool
-    {
-        $now = Carbon::now('Europe/Athens');
-        $dateLimit = clone $now->subHours(Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE);
-        $startsAt = Carbon::parse($subscription->starts_at->format('Y-m-d'), 'Europe/Athens');
-        $expiresAt = Carbon::parse($subscription->expires_at->format('Y-m-d'), 'Europe/Athens');
-        $lastReservationDate = $this->getLastReservationDate($subscription->user_id);
-
-        if ($now >= $startsAt && $now <= $expiresAt
-            && ($subscription->unlimited_sessions || $subscription->remaining_sessions > 0
-                || ($subscription->remaining_sessions <= 0 && !empty($lastReservationDate) && $lastReservationDate <= $dateLimit))) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Get user's last reservation date
      *
      * @param int $userId
      *
      * @return Carbon|null
      */
-    private function getLastReservationDate(int $userId): ?Carbon
+    public function getLastReservationDate(int $userId): ?Carbon
     {
         $lastReservation = Reservation::where('user_id', $userId)
             ->where('canceled', false)
@@ -132,7 +138,7 @@ class ReservationSubscriptionHelper
             ->orderBy('date', 'DESC')
             ->first();
 
-        $lastReservationDate = $lastReservation ? Carbon::parse($lastReservation->date) : null;
+        $lastReservationDate = $lastReservation ? Carbon::parse($lastReservation->date, 'Europe/Athens') : null;
 
         return $lastReservationDate;
     }
