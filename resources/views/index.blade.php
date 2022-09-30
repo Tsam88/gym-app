@@ -2,7 +2,7 @@
 <html lang="en">
 
     <head>
-{{--        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">--}}
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <link rel="icon" href="{{ asset('/images/icons/wave_favicon.png') }}"/>
         <title>Wave Fitness Project</title>
 {{--        <img src="{{ asset('/images/barengage-logo.jpg') }}" alt="jacket3">--}}
