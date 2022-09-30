@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Passport::routes();
-        Passport::loadKeysFrom(__DIR__.'/../secrets/oauth');
+        Passport::loadKeysFrom(__DIR__.'/storage');
 
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage)
