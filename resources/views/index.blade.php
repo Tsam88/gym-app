@@ -6,7 +6,6 @@
         <title>Wave Fitness Project</title>
 {{--        <img src="{{ asset('/images/barengage-logo.jpg') }}" alt="jacket3">--}}
 
-
         {{--        <meta name="csrf-token" content="{{ csrf_token() }}"/>--}}
 
 {{--        <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet" type="text/css">--}}
