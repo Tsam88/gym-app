@@ -3,7 +3,7 @@
     <div>
 <!--        <img :src="'/images/barengage-logo.jpg'" alt="jacket4">-->
         <font-awesome-icon v-if="user" icon='fa-regular fa-user' size="lg"/>
-        <b-dropdown id="dropdown-form" :text="user ? user.name : 'Sign up'" ref="dropdown" class="dropdown-login px-1">
+        <b-dropdown id="dropdown-form" right :text="user ? user.name : 'Sign in'" ref="dropdown" class="dropdown-login px-1">
             <b-dropdown-form v-if="!user" @submit.stop.prevent>
                 <b-form-group label="Email" label-for="dropdown-form-email" class="mb-2">
                     <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" placeholder="Email" ></b-form-input>

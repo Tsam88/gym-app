@@ -82,7 +82,7 @@
                     number_of_sessions: null,
                     sessions_per_week: null,
                     unlimited_sessions: false,
-                    display_on_page: true
+                    display_on_page: false,
                 }
             }
         },

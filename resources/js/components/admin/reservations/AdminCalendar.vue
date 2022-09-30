@@ -26,7 +26,7 @@
                     <b class="col d-lg-none text-center text-muted">{{calendarDate.day_name}}</b>
                     <span class="col-1"></span>
                 </h5>
-                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-admin-calendar class="event d-block p-1 pl-2 pr-2 mb-sm-2 mb-lg-1 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
+                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-admin-calendar class="event d-block p-1 pl-2 pr-2 mb-2 mb-lg-1 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
             </div>
         </div>
 

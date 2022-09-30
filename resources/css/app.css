@@ -240,4 +240,6 @@
 }
 .dropdown-login .dropdown-menu {
     top: 25px !important;
+    right: 0 !important;
+    left:auto !important;
 }
