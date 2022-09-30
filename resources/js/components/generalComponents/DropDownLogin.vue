@@ -1,9 +1,10 @@
 <template>
 
     <div>
-        <font-awesome-icon icon='fa-regular fa-user' size="lg"/>
-        <b-dropdown id="dropdown-form" :text="this.auth.user ? this.auth.user.name : 'Sign up'" ref="dropdown" class="m-2">
-            <b-dropdown-form v-if="!this.auth.user" @submit.stop.prevent>
+<!--        <img :src="'/images/barengage-logo.jpg'" alt="jacket4">-->
+        <font-awesome-icon v-if="user" icon='fa-regular fa-user' size="lg"/>
+        <b-dropdown id="dropdown-form" :text="user ? user.name : 'Sign up'" ref="dropdown" class="dropdown-login px-1">
+            <b-dropdown-form v-if="!user" @submit.stop.prevent>
                 <b-form-group label="Email" label-for="dropdown-form-email" class="mb-2">
                     <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" placeholder="Email" ></b-form-input>
                 </b-form-group>
@@ -18,7 +19,7 @@
 
             <b-dropdown-divider></b-dropdown-divider>
 
-            <div v-if="this.auth.user">
+            <div v-if="user">
                 <b-dropdown-item-button @click="logout">Sign out</b-dropdown-item-button>
             </div>
             <div v-else>
@@ -36,6 +37,7 @@
             return {
                 dropDownEmail: '',
                 dropDownPassword: '',
+                user: this.auth.user,
             };
         },
 
@@ -51,6 +53,7 @@
                         console.log(data.user);
 
                         this.auth.login(data.token, data.user);
+                        this.user = this.auth.user;
                         this.$router.push({ name: 'AdminHome' })
                     })
                     .catch((error) => {
@@ -67,6 +70,7 @@
                     axios.post('/users/logout')
                         .then(({data}) => {
                             this.auth.logout();
+                            this.user = this.auth.user;
                             this.$router.push({ name: 'Home' })
                         })
                         .catch((error) => {

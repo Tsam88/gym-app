@@ -1,10 +1,15 @@
 <template>
     <div>
-        <div class="mb-3">
+        <div v-if="!isLoading" class="mb-3">
             <h1 class="h1 d-inline align-middle">Προγράμματα Συνδρομής</h1>
         </div>
 
-        <div class="table-responsive">
+        <!-- loader -->
+        <div v-if="isLoading" class="row p-7">
+            <b-spinner class="spinner-size-default" variant="info"></b-spinner>
+        </div>
+
+        <div v-if="!isLoading" class="table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -20,24 +25,24 @@
                 </thead>
 
                 <tbody>
-                    <tr v-for="subscriptionPlan in subscriptionPlans" @click="updateSubscriptionPlan(subscriptionPlan.id)">
-                        <th scope="row">{{ subscriptionPlan.id }}</th>
-                        <td>{{ subscriptionPlan.name }}</td>
-                        <td class="text-center">{{ subscriptionPlan.plan_price }} </td>
-                        <td class="text-center">{{ subscriptionPlan.number_of_months }}</td>
-                        <td class="text-center" >{{ subscriptionPlan.number_of_sessions }}</td>
-                        <td class="text-center" >{{ subscriptionPlan.sessions_per_week }}</td>
-                        <td>
-                            <label class="form-check d-flex justify-content-center">
-                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.unlimited_sessions == true" disabled>
-                            </label>
-                        </td>
-                        <td>
-                            <label class="form-check d-flex justify-content-center">
-                                <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.display_on_page == true" disabled>
-                            </label>
-                        </td>
-                    </tr>
+                <tr v-for="subscriptionPlan in subscriptionPlans" @click="updateSubscriptionPlan(subscriptionPlan.id)">
+                    <th scope="row">{{ subscriptionPlan.id }}</th>
+                    <td>{{ subscriptionPlan.name }}</td>
+                    <td class="text-center">{{ subscriptionPlan.plan_price }} </td>
+                    <td class="text-center">{{ subscriptionPlan.number_of_months }}</td>
+                    <td class="text-center" >{{ subscriptionPlan.number_of_sessions }}</td>
+                    <td class="text-center" >{{ subscriptionPlan.sessions_per_week }}</td>
+                    <td>
+                        <label class="form-check d-flex justify-content-center">
+                            <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.unlimited_sessions == true" disabled>
+                        </label>
+                    </td>
+                    <td>
+                        <label class="form-check d-flex justify-content-center">
+                            <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscriptionPlan.display_on_page == true" disabled>
+                        </label>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -48,7 +53,8 @@
     export default {
         data() {
             return {
-                subscriptionPlans: []
+                subscriptionPlans: [],
+                isLoading: true,
             }
         },
         mounted() {
@@ -57,6 +63,9 @@
                     results.data.data.forEach((value, index) => {
                         this.subscriptionPlans.push(value);
                     });
+
+                    // loader
+                    this.isLoading = false;
                 })
                 .catch((error) => {
                     // error.response.status Check status code

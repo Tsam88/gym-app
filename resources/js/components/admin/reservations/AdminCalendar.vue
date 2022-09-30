@@ -12,7 +12,14 @@
                 <b class="col-sm p-1 text-center">Sunday</b>
             </div>
         </header>
-        <div class="row border border-right-0 border-bottom-0">
+
+        <!-- loader -->
+        <div v-if="isLoading" class="row border p-4">
+            <b-spinner class="spinner-size-default" variant="info"></b-spinner>
+        </div>
+
+        <!-- calendar dates -->
+        <div v-if="!isLoading" class="row border border-right-0 border-bottom-0">
             <div v-for="(calendarDate, index) in calendarDates" :id="'calendar_date'+index" class="day col-lg p-2 border border-left-0 border-top-0 text-truncate" :class="[{'d-none d-sm-inline-block bg-light text-muted':calendarDate.disabled === true}, {'hide-date':calendarDate.gym_classes.length === 0}]">
                 <h5 class="row align-items-center">
                     <b class="date col-1 text-muted">{{calendarDate.date_number}} {{calendarDate.month_name}}</b>
@@ -132,6 +139,7 @@
                     date: null,
                     // isPastDate -> fix it in reservation service
                 },
+                isLoading: true,
             }
         },
         mounted() {
@@ -160,6 +168,9 @@
 
                             ++count;
                         }
+
+                        // loader
+                        this.isLoading = false;
                     })
                     .catch((error) => {
                         console.log(error);

@@ -219,3 +219,25 @@
 
 
 /*!*admin-calendar-modal END*!*/
+
+
+/*error message alerts START*/
+.spinner-size-default {
+    width: 5rem;
+    height: 5rem;
+    margin: auto;
+}
+/*error message alerts END*/
+
+
+
+.dropdown-login .dropdown-toggle, .dropdown-login:hover .dropdown-toggle {
+    background-color: inherit !important;;
+    color: inherit !important;;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+.dropdown-login .dropdown-menu {
+    top: 25px !important;
+}

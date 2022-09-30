@@ -140,10 +140,9 @@
 
 
 <script>
-    import adminApp from '../../adminApp.js';
+    // import adminApp from '../../adminApp.js';
     // import Vue from "vue";
     // import Auth from '../../auth.js';
-    import '../../../css/adminApp.css'
 
 
     export default {

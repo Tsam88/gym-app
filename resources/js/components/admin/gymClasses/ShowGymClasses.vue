@@ -1,10 +1,15 @@
 <template>
     <div>
-        <div class="mb-3">
+        <div v-if="!isLoading" class="mb-3">
             <h1 class="h1 d-inline align-middle">Τμήματα</h1>
         </div>
 
-        <div class="table-responsive">
+        <!-- loader -->
+        <div v-if="isLoading" class="row p-7">
+            <b-spinner class="spinner-size-default" variant="info"></b-spinner>
+        </div>
+
+        <div v-if="!isLoading" class="table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -34,7 +39,8 @@
     export default {
         data() {
             return {
-                gymClasses: []
+                gymClasses: [],
+                isLoading: true,
             }
         },
         mounted() {
@@ -43,6 +49,9 @@
                     results.data.data.forEach((value, index) => {
                         this.gymClasses.push(value);
                     });
+
+                    // loader
+                    this.isLoading = false;
                 })
                 .catch((error) => {
                     // error.response.status Check status code
