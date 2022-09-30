@@ -3,6 +3,9 @@
 
     <head>
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+{{--        <meta name="viewport" content="width=device-width, initial-scale=1">--}}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
         <link rel="icon" href="{{ asset('/images/icons/wave_favicon.png') }}"/>
         <title>Wave Fitness Project</title>
 {{--        <img src="{{ asset('/images/barengage-logo.jpg') }}" alt="jacket3">--}}
