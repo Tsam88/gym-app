@@ -29,7 +29,7 @@
     color: #4ecdb5 !important;
 }
 
-/*Buttons*/
+/* BUTTONS START */
 .button-color-wave {
     background-color: #04646a !important;
     border-color: #204d6a !important;
@@ -46,8 +46,9 @@
 
 .button-small-size {
     font-size: 12px;
-    padding: 0px 10px;
+    padding: 0 10px;
 }
+/* BUTTONS END */
 
 .sidebar-item.active .sidebar-link:hover, .sidebar-item.active>.sidebar-link {
     background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent) !important;
@@ -99,7 +100,7 @@
 /*}*/
 
 
-/*CALENDAR START*/
+/* CALENDAR START */
 .calendar-header {
     background-color: #0f3650;
     border-radius: 4px 4px 0 0;
@@ -147,9 +148,9 @@
         /*padding: 0 !important;*/
     }
 }
-/*CALENDAR END*/
+/* CALENDAR END */
 
-/*admin-calendar-modal START*/
+/* ADMIN CALENDAR MODAL START*/
 .modal-header-close-button {
     color: #ffffff;
     cursor: pointer;
@@ -184,10 +185,9 @@
 .modal-reservation-list > li{
     padding-left: 3px !important;
 }
-/*admin-calendar-modal END*/
+/* ADMIN CALENDAR MODAL END*/
 
-
-/*error message alerts START*/
+/* ERROR MESSAGE ALERTS START*/
 .message-alert {
     position: fixed;
     top: 30px;
@@ -208,7 +208,7 @@
     font-size: 25px;
     border: none;
 }
-/*error message alerts END*/
+/* ERROR MESSAGE ALERTS END */
 
 /*admin-calendar-modal START*/
 /*.b-dropdown-form > label {*/
@@ -221,16 +221,15 @@
 /*!*admin-calendar-modal END*!*/
 
 
-/*error message alerts START*/
+/* LOADER START */
 .spinner-size-default {
     width: 5rem;
     height: 5rem;
     margin: auto;
 }
-/*error message alerts END*/
+/* LOADER END */
 
-
-
+/* DROP DOWN LOGIN START */
 .dropdown-login .dropdown-toggle, .dropdown-login:hover .dropdown-toggle {
     background-color: inherit !important;;
     color: inherit !important;;
@@ -238,8 +237,16 @@
     box-shadow: none !important;
     padding: 0 !important;
 }
+
 .dropdown-login .dropdown-menu {
     top: 25px !important;
     right: 0 !important;
     left:auto !important;
 }
+
+@media (max-width: 575px) {
+    .dropdown-login .dropdown-menu {
+        top: 40px !important;
+    }
+}
+/* DROP DOWN LOGIN END */
