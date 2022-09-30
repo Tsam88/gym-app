@@ -31,6 +31,8 @@ class CreateReservationsTable extends Migration
                 ->references('id')->on('gym_classes')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->unique(['user_id', 'date']);
         });
     }
 
