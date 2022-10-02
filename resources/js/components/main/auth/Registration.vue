@@ -60,26 +60,22 @@
                     email: null,
                     password: null,
                     phone_number: null,
-                    // token: null,
                 }
             }
         },
         methods:{
             submitForm() {
-                axios.post('/register', this.form)
+                axios.post('/users/register', this.form)
                     .then((result) => {
-
-                        console.log(result);
                         this.auth.login(result.data.token, result.data.user);
 
                         // display success message
                         this.$alertHandler.showAlert('Registration created successfully', result.status);
+                        this.$router.push({ name: 'Home' })
                     })
                     .catch((error) => {
-                        console.log(error);
-
                         // display error message
-                        // this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
+                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
                     //Perform action in always
                     });

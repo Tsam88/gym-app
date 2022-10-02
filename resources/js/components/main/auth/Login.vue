@@ -45,12 +45,15 @@
                     password: this.password
                 };
 
-                axios.post('/login', data)
+                axios.post('/users/login', data)
                     .then(({data}) => {
-                        console.log(data.user);
-
                         this.auth.login(data.token, data.user);
-                        this.$router.push({ name: 'AdminHome' })
+
+                        if (!this.auth.isAdmin()) {
+                            this.$router.push({ name: 'Home' })
+                        } else {
+                            this.$router.push({ name: 'AdminHome' })
+                        }
                     })
                     .catch((error) => {
                         // display error message

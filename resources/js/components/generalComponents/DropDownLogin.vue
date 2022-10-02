@@ -48,7 +48,7 @@
                     password: this.dropDownPassword
                 };
 
-                axios.post('/login', data)
+                axios.post('/users/login', data)
                     .then(({data}) => {
                         console.log(data.user);
 

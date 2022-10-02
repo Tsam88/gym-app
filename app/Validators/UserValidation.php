@@ -137,4 +137,46 @@ class UserValidation extends AbstractValidation
 
         return $data;
     }
+
+    /**
+     * Update user validation.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function userSendResetPasswordLinkEmail(array $input)
+    {
+        // build the rules for update
+        $validationRules = [
+            'email' => $this->getRule(self::VALIDATION_RULES, 'email', []),
+        ];
+
+        $validator = $this->getValidator($input, $validationRules);
+        $data = $validator->validate();
+
+        return $data;
+    }
+
+    /**
+     * Update user validation.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function userResetPassword(array $input)
+    {
+        // build the rules for update
+        $validationRules = [
+            'token' => $this->getRule(self::VALIDATION_RULES, 'token', ['required']),
+            'email' => $this->getRule(self::VALIDATION_RULES, 'email', []),
+            'password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+        ];
+
+        $validator = $this->getValidator($input, $validationRules);
+        $data = $validator->validate();
+
+        return $data;
+    }
 }

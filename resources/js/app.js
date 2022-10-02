@@ -63,6 +63,9 @@ import MainPage from './components/MainPage.vue';
 import Home from './components/Home.vue';
 import Login from './components/main/auth/Login.vue';
 import Register from './components/main/auth/Registration.vue';
+import EmailVerificationCompleted from './components/main/emailVerification/EmailVerificationCompleted.vue';
+import ForgotPassword from './components/main/users/ForgotPassword.vue';
+import ResetPassword from './components/main/users/ResetPassword.vue';
 /* ADMIN */
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
@@ -117,11 +120,15 @@ const router = new VueRouter({
     base: __dirname,
     routes: [
         /* MAIN */
-        { path: '', name: 'MainPage', component: MainPage, children: [
+        { path: '', component: MainPage, children: [
                 /* MAIN PAGE */
                 { path: '/', name: 'Home', component: Home, children: [
                         { path: '/login', name: 'Login', component: Login },
                         { path: '/register', name: 'Register', component: Register },
+                        { path: '/email-verification-completed', name: 'EmailVerificationCompleted', component: EmailVerificationCompleted },
+                        { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
+                        { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
+                        // { path: '/reset-password', name: 'ResetPassword', component: ResetPassword, props: { default: true, sidebar: false } },
                     ]
                 },
                 /* ADMIN */
@@ -179,6 +186,8 @@ const routesWithoutAuthorization = [
     'Register',
     'Home',
     'MainPage',
+    'ForgotPassword',
+    'ResetPassword',
 ];
 
 /**
@@ -186,8 +195,8 @@ const routesWithoutAuthorization = [
  */
 router.beforeEach((to, from, next) => {
     // Routes that require Admin role
-    if (to.path === '/admin/*') {
-        if (Auth.isAdmin === true) {
+    if (to.path.startsWith("/admin")) {
+        if (Auth.isAdmin() === true) {
             next();
         } else {
             next({ name: 'Login' });
@@ -220,6 +229,9 @@ Vue.component('main-page', require('./components/MainPage.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
 Vue.component('login', require('./components/main/auth/Login.vue').default);
 Vue.component('register', require('./components/main/auth/Registration.vue').default);
+Vue.component('email-verification-completed', require('./components/main/emailVerification/EmailVerificationCompleted.vue').default);
+Vue.component('forgot-password', require('./components/main/users/ForgotPassword.vue').default);
+Vue.component('reset-password', require('./components/main/users/ResetPassword.vue').default);
 /* ADMIN */
 Vue.component('admin-home', require('./components/admin/Home.vue').default);
 Vue.component('show-subscription-plans', require('./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue').default);

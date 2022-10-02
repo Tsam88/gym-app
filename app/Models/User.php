@@ -20,6 +20,17 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         $this->notify(new Notifications\UserVerificationEmail);
     }
 
+    /**
+     * Send a password reset notification to the user.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new Notifications\ResetPasswordNotification($token));
+    }
+
     public const ROLE_ADMIN = 'admin';
     public const ROLE_STUDENT = 'student';
 

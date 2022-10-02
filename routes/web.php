@@ -17,9 +17,13 @@ Route::get('/', function () {
     return view('index');
 })->name('index');
 
-Route::get('/admin/calendar', function () {
+Route::get('/email-verification-completed', function () {
     return view('index');
-})->name('admin.calendar');
+})->name('email-verification-completed');
+
+Route::get('/reset-password', function () {
+    return view('index');
+})->name('reset-password');
 
 Route::get('/{catchall?}', function () {
     return response()->view('index');

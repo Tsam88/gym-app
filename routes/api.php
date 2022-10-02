@@ -23,11 +23,13 @@ use Illuminate\Support\Facades\Route;
 //UserAuthController::get();
 
 //Route::post('/register', 'UserAuthController@register');
-//Route::post('/register', 'App\Http\Controllers\Auth\UserAuthController@register')->name('user.register');
-//Route::post('/login', 'App\Http\Controllers\Auth\UserAuthController@login')->name('user.login');
-Route::post('/register', 'AuthController@register')->name('user.register');
-Route::post('/login', 'AuthController@login')->name('login');
-Route::get('/email/verify/{id}/{hash}', 'AuthController@verifyEmail')->name('verification.verify');
+//Route::post('/register', 'App\Http\Controllers\Auth\UserAuthController@register')->name('users.register');
+//Route::post('/login', 'App\Http\Controllers\Auth\UserAuthController@login')->name('users.login');
+Route::post('users/register', 'AuthController@register')->name('users.register');
+Route::post('users/login', 'AuthController@login')->name('users.login');
+Route::get('email/verify/{id}/{hash}', 'AuthController@verifyEmail')->name('users.verify');
+Route::post('users/forgot-password', 'AuthController@sendResetPasswordLinkEmail')->middleware('guest')->name('users.forgot-password');
+Route::post('users/reset-password', 'AuthController@resetPassword')->middleware('guest')->name('users.reset-password');
 
 
 //Route::get('/email/verify', function () {
@@ -104,9 +106,15 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::post('/', 'ReservationController@store')->name('reservations.store');
         Route::post('/{reservation}/cancel', 'ReservationController@cancel')->name('reservations.cancel');
     });
+
     // week days
     Route::group(['prefix' => 'calendar'], function () {
         Route::get('/', 'WeekDayController@calendar')->name('week-days.calendar');
+    });
+
+    // emails
+    Route::group(['prefix' => 'email'], function () {
+        Route::post('/resend-verification-email', 'AuthController@resendVerificationEmail')->name('users.resend-verification-email');
     });
 });
 
@@ -125,11 +133,11 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::get('/', 'UserController@index')->name('users.index');
             Route::get('{user}', 'Admin\AdminUserController@show')->name('admin.users.show');
 
-//        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('user.get-profile');
+//        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
 
-//        Route::post('users/password', 'UserController@updatePassword')->name('user.update-password');
-//        Route::delete('users/delete', 'UserController@deleteUser')->name('user.destroy');
-//        Route::get('users/permissions', 'UserController@getPermissions')->name('user.get-permissions');
+//        Route::post('users/password', 'UserController@updatePassword')->name('users.update-password');
+//        Route::delete('users/delete', 'UserController@deleteUser')->name('users.destroy');
+//        Route::get('users/permissions', 'UserController@getPermissions')->name('users.get-permissions');
         });
         // gym classes
         Route::group(['prefix' => 'gym-classes'], function () {

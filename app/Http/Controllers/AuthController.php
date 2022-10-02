@@ -84,13 +84,30 @@ class AuthController extends Controller
     {
         $this->userService->verifyEmail($request);
 
-        return redirect()->route('index');
+        return redirect()->route('email-verification-completed');
+    }
+
+    /**
+     * Verify users (get token).
+     *
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function resendVerificationEmail(Request $request)
+    {
+        // get users
+        $user = $request->user();
+
+        $this->userService->resendVerificationEmail($user);
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
      * Send a reset link to the given user.
      *
-     * @param Request        $request
+     * @param Request $request
      *
      * @return Response
      */
@@ -106,7 +123,7 @@ class AuthController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param ResetPassword  $request
+     * @param Request $request
      *
      * @return Response
      */

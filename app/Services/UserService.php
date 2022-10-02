@@ -410,6 +410,18 @@ class UserService
     }
 
     /**
+     * Resend verification email.
+     *
+     * @param User $user
+     *
+     * @return void
+     */
+    public function resendVerificationEmail(User $user)
+    {
+        $user->sendEmailVerificationNotification();
+    }
+
+    /**
      * Update a user password.
      *
      * @param array $input password
@@ -457,13 +469,8 @@ class UserService
      */
     public function sendResetPasswordLinkEmail(array $input)
     {
-        // build the rules for registering
-        $validationRules = [
-            'email' => $this->getRule(User::VALIDATION_RULES, 'email', []),
-        ];
-
-        $validator = $this->getValidator($input, $validationRules);
-        $data = $validator->validate();
+        // data validation
+        $data = $this->userValidation->userSendResetPasswordLinkEmail($input);
 
         // start db transaction
         DB::beginTransaction();
@@ -501,15 +508,8 @@ class UserService
      */
     public function resetPassword(array $input)
     {
-        // build the rules for registering
-        $validationRules = [
-            'token' => $this->getRule(User::VALIDATION_RULES, 'token', ['required']),
-            'email' => $this->getRule(User::VALIDATION_RULES, 'email', []),
-            'password' => $this->getRule(User::VALIDATION_RULES, 'password', []),
-        ];
-
-        $validator = $this->getValidator($input, $validationRules);
-        $data = $validator->validate();
+        // data validation
+        $data = $this->userValidation->userResetPassword($input);
 
         // start db transaction
         DB::beginTransaction();
@@ -518,7 +518,7 @@ class UserService
             $status = Password::reset(
                 ['email' => $data['email'], 'password' => $data['password'], 'token' => $data['token']],
                 function ($user, $password) {
-                    $user->password = $password;
+                    $user->password = bcrypt($password);
                     $user->tokens()->delete();
 
                     $user->save();
