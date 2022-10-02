@@ -18,13 +18,20 @@ class UserProfileSingle extends JsonResource
     {
         $parent = parent::toArray($request);
 
-        return [
+        $response = [
             'id' => $parent['id'],
             'name' => $parent['name'],
             'surname' => $parent['surname'],
             'email' => $parent['email'],
             'phone_number' => $parent['phone_number'],
             'role' => $parent['role'],
+            'email_verified_at' => $parent['email_verified_at'],
         ];
+
+        if ($parent['active_subscription']) {
+            $response['subscription'] = $parent['active_subscription'];
+        }
+
+        return $response;
     }
 }

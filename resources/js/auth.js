@@ -21,6 +21,13 @@ class Auth {
     isAuthorized () {
         return !! this.token;
     }
+    isVerified () {
+        if (this.user && this.user.email_verified_at) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     isAdmin () {
         if (this.user) {
             return this.user.role === 'admin';

@@ -63,7 +63,7 @@ class SubscriptionService
         $activeSubscriptionIdPerUser = [];
         foreach ($subscriptions as &$subscription) {
             if (!array_key_exists($subscription->user_id, $activeSubscriptionIdPerUser)) {
-                $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($subscription->user_id);
+                $activeSubscription = $this->reservationSubscriptionHelper->getClosestActiveSubscription($subscription->user_id);
                 $activeSubscriptionIdPerUser[$subscription->user_id] = $activeSubscription ? $activeSubscription->id : null;
             }
 

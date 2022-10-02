@@ -34,8 +34,6 @@ class AuthController extends Controller
         $token = $this->userService->register($data);
 
         return new Response($token, Response::HTTP_OK);
-
-//        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -80,13 +78,13 @@ class AuthController extends Controller
      *
      * @param Request $request
      *
-     * @return Response
+//     * @return void
      */
-    public function verify(Request $request, $id)
+    public function verifyEmail(Request $request)
     {
-        $this->userService->verify($id);
+        $this->userService->verifyEmail($request);
 
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return redirect()->route('index');
     }
 
     /**

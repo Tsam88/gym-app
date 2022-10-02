@@ -43,15 +43,9 @@ class UserVerificationEmail extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->subject('Please verify your email address')
-            ->markdown(
-                'emails.userverify',
-                [
-                    'url' => $this->verificationUrl($notifiable),
-                    'notifiable' => $notifiable,
-                ]
-            );
+        $verificationUrl = $this->verificationUrl($notifiable);
+
+        return (new MailMessage)->view('emails.userVerifyEmail', ['url' => $verificationUrl]);
     }
 
     /**

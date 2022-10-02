@@ -12,6 +12,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
+// import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
+
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 // import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -33,6 +35,7 @@ Vue.prototype.auth = Auth;
 Vue.use(VueRouter,axios);
 
 
+/* FONT AWESOME START */
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -40,22 +43,26 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faHouse, faHouseUser, faDollarSign } from '@fortawesome/free-solid-svg-icons'
+import { faUser as faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faCreditCard, faUser, faCalendar } from '@fortawesome/free-regular-svg-icons'
 import { faTwitter, faFacebook, faStackOverflow, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 /* add icons to the library */
-library.add( faHouse, faHouseUser, faDollarSign, faUser, faCreditCard, faCalendar);
+library.add( faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCreditCard, faUser, faCalendar);
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.config.productionTip = false;
+/* FONT AWESOME END */
 
-/* IMPORT COMPONENTS */
+
+/* IMPORT ALL VUE COMPONENTS */
+/* MAIN PAGE */
 import MainPage from './components/MainPage.vue';
 import Home from './components/Home.vue';
 import Login from './components/main/auth/Login.vue';
+import Register from './components/main/auth/Registration.vue';
 /* ADMIN */
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
@@ -114,6 +121,7 @@ const router = new VueRouter({
                 /* MAIN PAGE */
                 { path: '/', name: 'Home', component: Home, children: [
                         { path: '/login', name: 'Login', component: Login },
+                        { path: '/register', name: 'Register', component: Register },
                     ]
                 },
                 /* ADMIN */
@@ -168,6 +176,7 @@ const router = new VueRouter({
  */
 const routesWithoutAuthorization = [
     'Login',
+    'Register',
     'Home',
     'MainPage',
 ];
@@ -206,11 +215,12 @@ router.beforeEach((to, from, next) => {
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
+/* MAIN PAGE */
 Vue.component('main-page', require('./components/MainPage.vue').default);
 Vue.component('home', require('./components/Home.vue').default);
 Vue.component('login', require('./components/main/auth/Login.vue').default);
-
-/* Admin */
+Vue.component('register', require('./components/main/auth/Registration.vue').default);
+/* ADMIN */
 Vue.component('admin-home', require('./components/admin/Home.vue').default);
 Vue.component('show-subscription-plans', require('./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue').default);
 Vue.component('create-subscription-plans', require('./components/admin/subscriptionPlans/CreateSubscriptionPlans.vue').default);
@@ -222,10 +232,8 @@ Vue.component('show-subscriptions', require('./components/admin/subscriptions/Sh
 Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
 Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);
 Vue.component('admin-calendar', require('./components/admin/reservations/AdminCalendar.vue').default);
-/* General components */
+/* GENERAL COMPONENTS */
 Vue.component('drop-down-login', require('./components/generalComponents/DropDownLogin.vue').default);
-
-/* Main page */
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

@@ -36,7 +36,6 @@ class UserValidation extends AbstractValidation
         'password' => [
             'required',
             'string',
-//            'min:8',
         ],
         'phone_number' => [
             'string',
@@ -86,7 +85,7 @@ class UserValidation extends AbstractValidation
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', []),
             'email' => $this->getRule(self::VALIDATION_RULES, 'email', ['unique:users']),
-            'password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+            'password' => $this->getRule(self::VALIDATION_RULES, 'password', ['min:8']),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

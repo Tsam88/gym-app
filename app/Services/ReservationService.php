@@ -128,8 +128,8 @@ class ReservationService
                 throw new GymClassIsFullException();
             }
 
-            // get active subscription
-            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($data['user_id']);
+            // get active subscription for reservation date
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscriptionForReservationDate($data['user_id'], $data['date']);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -218,8 +218,8 @@ class ReservationService
                 throw new ReservationCancellationIsNotAllowedException;
             }
 
-            // get active subscription
-            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
+            // get active subscription for reservation date
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscriptionForReservationDate($reservation->user_id, $reservation->date);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -269,8 +269,8 @@ class ReservationService
                 throw new ReservationAlreadyCanceledException();
             }
 
-            // get active subscription
-            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
+            // get active subscription for reservation date
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscriptionForReservationDate($reservation->user_id, $reservation->date);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {
@@ -309,8 +309,8 @@ class ReservationService
         DB::beginTransaction();
 
         try {
-            // get active subscription
-            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscription($reservation->user_id);
+            // get active subscription for reservation date
+            $activeSubscription = $this->reservationSubscriptionHelper->getActiveSubscriptionForReservationDate($reservation->user_id, $reservation->date);
 
             // if there is no active subscription for the requested date throw exception
             if (empty($activeSubscription)) {

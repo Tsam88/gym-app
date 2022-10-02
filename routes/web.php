@@ -15,7 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
-});
+})->name('index');
+
+Route::get('/admin/calendar', function () {
+    return view('index');
+})->name('admin.calendar');
 
 Route::get('/{catchall?}', function () {
     return response()->view('index');

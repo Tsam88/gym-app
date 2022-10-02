@@ -1,5 +1,12 @@
+/*.background-color-wave {*/
+/*    background-color: #4ecdb5 !important;*/
+/*}*/
+
 .background-color-wave {
-    background-color: #4ecdb5 !important;
+    background-color: #0f3650 !important;
+}
+.color-wave {
+    color: #4ecdb5 !important;
 }
 
 /*GREEN*/
@@ -250,3 +257,27 @@
     }
 }
 /* DROP DOWN LOGIN END */
+
+/* REGISTER FORM START */
+.input-group-prepend .input-group-text {
+    border-radius: 3px 0 0 3px !important;
+    /*height: 2.035rem !important;*/
+    height: 2.3rem !important;
+    background-color: #0f3650 !important;
+    color: #4ecdb5 !important;
+    border-color: #04646a !important;
+    /*width: 43px;*/
+    /*font-weight: bolder !important;*/
+    font-size: 1.15rem;
+    padding: 11px;
+}
+.register-input {
+    height: 2.3rem !important;
+    border-color: #04646a !important;
+}
+/* REGISTER FORM END */
+
+
+/*.input-group-prepend > input {*/
+/*    height: 35px !important;*/
+/*}*/

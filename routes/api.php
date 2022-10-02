@@ -26,14 +26,16 @@ use Illuminate\Support\Facades\Route;
 //Route::post('/register', 'App\Http\Controllers\Auth\UserAuthController@register')->name('user.register');
 //Route::post('/login', 'App\Http\Controllers\Auth\UserAuthController@login')->name('user.login');
 Route::post('/register', 'AuthController@register')->name('user.register');
-Route::post('/login', 'AuthController@login')->name('user.login');
+Route::post('/login', 'AuthController@login')->name('login');
+Route::get('/email/verify/{id}/{hash}', 'AuthController@verifyEmail')->name('verification.verify');
+
 
 //Route::get('/email/verify', function () {
 //    return view('auth.verify-email');
 //})->middleware('auth')->name('verification.notice');
 
 //Route::group(['middleware' => ['auth']], function() {
-Route::group(['middleware' => ['auth:api']], function() {
+//Route::group(['middleware' => ['auth:api']], function() {
     /**
      * Verification Routes
      */
@@ -41,9 +43,16 @@ Route::group(['middleware' => ['auth:api']], function() {
 //        return view('emails.emailVerificationEmail');
 //    })->middleware('auth')->name('verification.email-ver-notice');
 
+
+
+
     Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
+//    Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
     Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
+
+
+
+
 
 //    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
 //        $request->fulfill();
@@ -59,7 +68,7 @@ Route::group(['middleware' => ['auth:api']], function() {
          */
         Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
     });
-});
+//});
 
 ////only authenticated can access this group
 //Route::group(['middleware' => ['auth']], function() {

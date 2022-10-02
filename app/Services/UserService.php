@@ -19,6 +19,9 @@ use App\Validators\UserValidation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -109,8 +112,10 @@ class UserService
 
 //        UserRegisterEvent::dispatch($user);
 
-        return ['token' => $token];
-//        return $user;
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
     }
 
 //    /**
@@ -375,28 +380,33 @@ class UserService
     /**
      * Mark the authenticated user's email address as verified.
      *
-     * @param int $userId
-     *
-     * @throws AuthenticationException
+     * @param  \Illuminate\Http\Request  $request
      *
      * @return void
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Auth\AuthenticationException
      */
-    public function verify($userId)
+    public function verifyEmail(Request $request)
     {
-        $user = User::find($userId);
-
         // if user does not exist return 401 instead of 404
         // don't let anyone to guess if user does not exist or signature is invalid.
+        $user = User::find($request->route('id'));
         if (null === $user) {
             throw new AuthenticationException();
         }
 
-        if (!$user->hasVerifiedEmail()) {
-            if ($user->markEmailAsVerified()) {
-                $user->active = true;
-                $user->save();
-            }
+        if (! hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+            throw new AuthorizationException;
         }
+
+        if ($user->hasVerifiedEmail()) {
+            return $user->email_verified_at;
+        }
+
+        $user->markEmailAsVerified();
+
+        return $user->email_verified_at;
     }
 
     /**

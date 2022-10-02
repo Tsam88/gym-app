@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\User\UserProfileSingle;
+use App\Libraries\ReservationSubscriptionHelper;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -15,9 +16,15 @@ class UserController extends Controller
      */
     private $userService;
 
-    public function __construct(UserService $userService)
+    /**
+     * @var ReservationSubscriptionHelper
+     */
+    private $reservationSubscriptionHelper;
+
+    public function __construct(UserService $userService, ReservationSubscriptionHelper $reservationSubscriptionHelper)
     {
         $this->userService = $userService;
+        $this->reservationSubscriptionHelper = $reservationSubscriptionHelper;
     }
 
     /**
@@ -50,6 +57,9 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         $user = $request->user();
+
+        // get user's active subscription if exists
+        $user->active_subscription = $this->reservationSubscriptionHelper->getClosestActiveSubscription($user->id) ?? null;
 
         return new UserProfileSingle($user);
     }
