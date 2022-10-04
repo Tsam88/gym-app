@@ -5,7 +5,8 @@
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 {{--        <meta name="viewport" content="width=device-width, initial-scale=1">--}}
 {{--        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">--}}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=12, user-scalable=no">
+{{--        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=12, user-scalable=no">--}}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 
         <link rel="icon" href="{{ asset('/images/icons/wave_favicon.png') }}"/>
         <title>Wave Fitness Project</title>

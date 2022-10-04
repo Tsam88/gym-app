@@ -2,7 +2,7 @@
 
     <div>
         <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Register</h1>
+            <h1 class="h1 d-inline align-middle">Sign up</h1>
         </div>
 
         <div class="row">
@@ -39,7 +39,7 @@
                                 <b-form-input v-model="form.password" id="password" name="password" type="password" class="register-input" placeholder="Password" required></b-form-input>
                             </b-input-group>
 
-                            <b-button class="button-color-wave" type="submit" variant="primary">Register</b-button>
+                            <b-button class="button-color-wave" type="submit" variant="primary">Sign up</b-button>
                         </form>
 
                     </div>
@@ -70,7 +70,10 @@
                         this.auth.login(result.data.token, result.data.user);
 
                         // display success message
-                        this.$alertHandler.showAlert('Registration created successfully', result.status);
+                        // this.$alertHandler.showAlert('Registration created successfully', result.status);
+                        this.$alertHandler.showAlert('Registration created successfully. \nIn order to book a class, you need to verify your email address first', 451);
+                        // this.$alertHandler.showAlert('In order to book a class, you need to verify your email address first', 451);
+                        // this.$alertHandler.showAlert('In order to access calendar, you need to verify your email address first', 451);
                         this.$router.push({ name: 'Home' })
                     })
                     .catch((error) => {

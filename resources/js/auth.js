@@ -22,11 +22,7 @@ class Auth {
         return !! this.token;
     }
     isVerified () {
-        if (this.user && this.user.email_verified_at) {
-            return true;
-        } else {
-            return false;
-        }
+        return !! (this.user && this.user.email_verified_at);
     }
     isAdmin () {
         if (this.user) {

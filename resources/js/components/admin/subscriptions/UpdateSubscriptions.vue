@@ -137,8 +137,6 @@
                 });
             },
             toggleUnlimitedSessionsCheckBox() {
-                console.log('fuck');
-                console.log(this.form.unlimited_sessions);
                 if (this.form.unlimited_sessions === true) {
                     this.form.remaining_sessions = null;
                 } else {

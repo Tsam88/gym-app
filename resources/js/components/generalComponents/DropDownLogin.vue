@@ -23,8 +23,12 @@
                 <b-dropdown-item-button @click="logout">Sign out</b-dropdown-item-button>
             </div>
             <div v-else>
-                <b-dropdown-item-button>New around here? Sign up</b-dropdown-item-button>
-                <b-dropdown-item-button>Forgot Password?</b-dropdown-item-button>
+                <router-link to="/sign-up">
+                    <b-dropdown-item-button>New around here? Sign up</b-dropdown-item-button>
+                </router-link>
+                <router-link to="/forgot-password">
+                    <b-dropdown-item-button>Forgot Password?</b-dropdown-item-button>
+                </router-link>
             </div>
         </b-dropdown>
     </div>
@@ -50,8 +54,6 @@
 
                 axios.post('/users/login', data)
                     .then(({data}) => {
-                        console.log(data.user);
-
                         this.auth.login(data.token, data.user);
                         this.user = this.auth.user;
                         this.$router.push({ name: 'AdminHome' })

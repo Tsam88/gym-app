@@ -16,7 +16,9 @@
                                 <b-form-input v-model="form.email" id="email" name="email" type="email" class="register-input" placeholder="Email" required></b-form-input>
                             </b-input-group>
 
-                            <b-button class="button-color-wave" type="submit" variant="primary" :disabled="disabled">Send password reset link</b-button>
+                            <div class="row m-auto">
+                                <b-button class="button-color-wave" type="submit" variant="primary" :disabled="disabled">Send password reset link</b-button>
+                            </div>
                         </form>
 
                     </div>

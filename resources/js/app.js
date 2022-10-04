@@ -64,8 +64,10 @@ import Home from './components/Home.vue';
 import Login from './components/main/auth/Login.vue';
 import Register from './components/main/auth/Registration.vue';
 import EmailVerificationCompleted from './components/main/emailVerification/EmailVerificationCompleted.vue';
+import EmailVerificationRequired from './components/main/emailVerification/EmailVerificationRequired.vue';
 import ForgotPassword from './components/main/users/ForgotPassword.vue';
 import ResetPassword from './components/main/users/ResetPassword.vue';
+import StudentCalendar from './components/main/reservations/StudentCalendar.vue';
 /* ADMIN */
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
@@ -89,7 +91,7 @@ Vue.prototype.$alertHandler = new Vue({
             dismissCountDown: 0,
             variant: '',
             successCodes: [201,204],
-            warningCodes: [],
+            warningCodes: [451],
             dangerCodes: [404,409,412,422],
             responseMessage: '',
         }
@@ -123,11 +125,13 @@ const router = new VueRouter({
         { path: '', component: MainPage, children: [
                 /* MAIN PAGE */
                 { path: '/', name: 'Home', component: Home, children: [
-                        { path: '/login', name: 'Login', component: Login },
-                        { path: '/register', name: 'Register', component: Register },
+                        { path: '/sign-in', name: 'Login', component: Login },
+                        { path: '/sign-up', name: 'Register', component: Register },
                         { path: '/email-verification-completed', name: 'EmailVerificationCompleted', component: EmailVerificationCompleted },
+                        { path: '/email-verification-required', name: 'EmailVerificationRequired', component: EmailVerificationRequired },
                         { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
                         { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
+                        { path: '/calendar', name: 'StudentCalendar', component: StudentCalendar },
                         // { path: '/reset-password', name: 'ResetPassword', component: ResetPassword, props: { default: true, sidebar: false } },
                     ]
                 },
@@ -189,6 +193,12 @@ const routesWithoutAuthorization = [
     'ForgotPassword',
     'ResetPassword',
 ];
+/**
+ * Routes that require verified user
+ */
+const routesRequireVerifiedUser = [
+    'StudentCalendar',
+];
 
 /**
  * MIDDLEWARE
@@ -200,6 +210,18 @@ router.beforeEach((to, from, next) => {
             next();
         } else {
             next({ name: 'Login' });
+        }
+    }
+
+    // Routes that require verified user
+    if (!routesRequireVerifiedUser.includes(to.name)) {
+        next();
+    } else {
+        if (Auth.isVerified() === true) {
+            next();
+        } else {
+            // display error message
+            next({ name: 'EmailVerificationRequired' });
         }
     }
 
@@ -230,8 +252,10 @@ Vue.component('home', require('./components/Home.vue').default);
 Vue.component('login', require('./components/main/auth/Login.vue').default);
 Vue.component('register', require('./components/main/auth/Registration.vue').default);
 Vue.component('email-verification-completed', require('./components/main/emailVerification/EmailVerificationCompleted.vue').default);
+Vue.component('email-verification-required', require('./components/main/emailVerification/EmailVerificationRequired.vue').default);
 Vue.component('forgot-password', require('./components/main/users/ForgotPassword.vue').default);
 Vue.component('reset-password', require('./components/main/users/ResetPassword.vue').default);
+Vue.component('student-calendar', require('./components/main/reservations/StudentCalendar.vue').default);
 /* ADMIN */
 Vue.component('admin-home', require('./components/admin/Home.vue').default);
 Vue.component('show-subscription-plans', require('./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue').default);

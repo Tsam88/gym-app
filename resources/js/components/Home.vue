@@ -3,7 +3,19 @@
 
         <h1>Home</h1>
 
-        <drop-down-login></drop-down-login>
+
+
+        <div>
+            <drop-down-login class="float-right"></drop-down-login>
+
+            <div class="float-right">
+                <router-link to="/calendar">
+                    <b-dropdown-item-button>Calendar</b-dropdown-item-button>
+                </router-link>
+            </div>
+
+        </div>
+
 
         <router-view class="view"></router-view>
 
