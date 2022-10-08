@@ -134,6 +134,7 @@
                         this.$alertHandler.showAlert('Class updated successfully', result.status);
                     })
                     .catch((error) => {
+                        console.log(error);
                         // display error message
                         this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
                     }).finally(() => {
