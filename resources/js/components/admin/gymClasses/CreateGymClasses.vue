@@ -36,10 +36,10 @@
                                 <div class="my-3">
                                     <label for="group_dates">Ημέρες και ώρες</label>
                                     <div v-for="(week_day, index) in form.week_days" id="group_dates" class="form-group wave-group-dates mx-0 mb-3 row">
-                                        <div class="mt-3 mt-lg-0 col-sm-12 col-lg-4">
+                                        <div class="mt-2 col-sm-12 col-lg-4">
                                             <label :for="'day'+index">Ημέρα</label>
                                             <select v-model="week_day.day" :id="'day'+index" :name="'day'+index" class="form-select mb-3" required>
-                                                <option value=null selected>Επιλογή ημέρας</option>
+                                                <option value="" hidden>Επιλογή ημέρας</option>
                                                 <option value=MONDAY>Δευτέρα</option>
                                                 <option value=TUESDAY>Τρίτη</option>
                                                 <option value=WEDNESDAY>Τετάρτη</option>
@@ -50,17 +50,17 @@
                                             </select>
                                         </div>
 
-                                        <div class="my-3 my-lg-0 col-sm-12 col-lg-4">
+                                        <div class="my-2 col-sm-12 col-lg-4">
                                             <label :for="'start_time'+index">Ώρα έναρξης</label>
                                             <input v-model="week_day.start_time" :id="'start_time'+index" :name="'start_time'+index" type="time" class="form-control" placeholder="Ώρα έναρξης" required>
                                         </div>
 
-                                        <div class="my-3 my-lg-0 col-sm-12 col-lg-4">
+                                        <div class="my-2 col-sm-12 col-lg-4">
                                             <label :for="'end_time'+index">Ώρα λήξης</label>
                                             <input v-model="week_day.end_time" :id="'end_time'+index" :name="'end_time'+index" type="time" class="form-control" placeholder="Ώρα λήξης" required>
                                         </div>
 
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <button @click="removeDate(index)" class="btn btn-primary danger-button-color-wave float-right" :disabled="form.week_days.length === 1">
                                                 Αφαίρεση
                                             </button>
@@ -98,7 +98,7 @@
                     number_of_students: 0,
                     week_days: [
                         {
-                            day: null,
+                            day: "",
                             start_time: null,
                             end_time: null
                         }
@@ -126,7 +126,7 @@
                 });
             },
             addDate() {
-                this.form.week_days.push({day:null,start_time:null,end_time:null}); // what to push unto the rows array?
+                this.form.week_days.push({day:"", start_time:null, end_time:null}); // what to push unto the rows array?
             },
             removeDate(index) {
                 if (this.form.week_days.length > 1) {

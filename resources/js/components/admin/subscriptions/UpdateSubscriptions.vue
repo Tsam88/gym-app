@@ -16,6 +16,7 @@
                                 <div class="mb-3">
                                     <label for="user_id">Χρήστης</label>
                                     <select v-model="form.user_id" id="user_id" name="user_id" class="form-select mb-3" required>
+                                        <option value="" hidden>Επιλογή χρήστη</option>
                                         <option v-for="user in users" :value="user.id">{{user.name}} {{user.surname}} - {{user.email}}</option>
                                     </select>
                                 </div>
@@ -74,7 +75,7 @@
         data() {
             return {
                 form: {
-                    user_id: null,
+                    user_id: "",
                     price: null,
                     remaining_sessions: null,
                     sessions_per_week: null,

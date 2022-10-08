@@ -1,12 +1,11 @@
-/*.background-color-wave {*/
-/*    background-color: #4ecdb5 !important;*/
-/*}*/
+/* background-color-wave: #0f3650 = #003153 */
+/* color-wave: #4ecdb5 = #04D9B2 */
 
 .background-color-wave {
-    background-color: #0f3650 !important;
+    background-color: #003153 !important;
 }
 .color-wave {
-    color: #4ecdb5 !important;
+    color: #04D9B2 !important;
 }
 
 /*GREEN*/
@@ -31,11 +30,6 @@
 /*borede*/
 /*#35566a*/
 
-
-.color-wave {
-    color: #4ecdb5 !important;
-}
-
 /* BUTTONS START */
 .button-color-wave {
     background-color: #04646a !important;
@@ -59,8 +53,8 @@
 
 .sidebar-item.active .sidebar-link:hover, .sidebar-item.active>.sidebar-link {
     background: linear-gradient(90deg,rgba(59,125,221,.1),rgba(59,125,221,.0875) 50%,transparent) !important;
-    border-left-color: #4ecdb5 !important;
-    color: #4ecdb5 !important;
+    border-left-color: #04D9B2 !important;
+    color: #04D9B2 !important;
 }
 
 .wave-check-input:checked,
@@ -109,7 +103,7 @@
 
 /* CALENDAR START */
 .calendar-header {
-    background-color: #0f3650;
+    background-color: #003153;
     border-radius: 4px 4px 0 0;
 }
 
@@ -170,13 +164,11 @@
 .modal-header {
     color: #ffffff;
     font-size: 20px;
-    background-color: #0f3650;
+    background-color: #003153;
     padding: 10px 15px;
     /*border-radius: 4px;*/
 }
 .modal-title {
-    /*color: #0f3650;*/
-    /*color: #525e66;*/
     color: #ffffff;
     font-weight: 600;
     font-size: 22px;
@@ -263,18 +255,25 @@
     border-radius: 3px 0 0 3px !important;
     /*height: 2.035rem !important;*/
     height: 2.3rem !important;
-    background-color: #0f3650 !important;
-    color: #4ecdb5 !important;
+    background-color: #003153 !important;
+    color: #04D9B2 !important;
     border-color: #04646a !important;
-    /*width: 43px;*/
+    width: 45px;
     /*font-weight: bolder !important;*/
     font-size: 1.15rem;
-    padding: 11px;
+    padding: 0 !important;
 }
+.wave-input {
+    height: 2.3rem !important;
+    border-color: #04646a !important;
+}
+
 .register-input {
     height: 2.3rem !important;
     border-color: #04646a !important;
 }
+
+
 /* REGISTER FORM END */
 
 

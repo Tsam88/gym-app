@@ -122,7 +122,6 @@
                 changeLineCalendarDateIndexes: [],
                 currentMonth: null,
                 currentYear: null,
-                displayModal: false,
                 modalTitle: null,
                 modalGymClass: [],
                 usersList: [],
@@ -153,7 +152,7 @@
                 // this.currentMonth = today.toLocaleString('el-GR', { month: 'long' });
                 this.currentYear = today.getFullYear();
 
-                axios.get('/calendar', this.form)
+                axios.get('/admin/calendar', this.form)
                     .then((results) => {
                         let count = 0;
                         this.calendarDates = [];

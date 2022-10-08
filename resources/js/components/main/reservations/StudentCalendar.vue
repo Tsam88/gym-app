@@ -26,14 +26,14 @@
                     <b class="col d-lg-none text-center text-muted">{{calendarDate.day_name}}</b>
                     <span class="col-1"></span>
                 </h5>
-                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-admin-calendar class="event d-block p-1 pl-2 pr-2 mb-2 mb-lg-1 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
+                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 mb-lg-1 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
             </div>
         </div>
 
         <div class="container mt-5">
 
             <!--Show reservations modal-->
-            <b-modal id="modal-admin-calendar">
+            <b-modal id="modal-student-calendar" size="sm">
                 <template #modal-header="{ close }">
                     <b>{{modalGymClass.gym_class_name}}</b>
                     <!-- Emulate built in modal header close button action -->
@@ -44,67 +44,22 @@
                     <div class="modal-info text-muted mb-2">
                         <b>
                             <i>{{modalTitle}} | {{modalGymClass.start_time}} - {{modalGymClass.end_time}}</i>
+                            <b class="float-right me-2">{{modalGymClass.number_of_reservations}}/{{modalGymClass.number_of_students_limit}}</b>
                             <br>
                             <i v-if="modalGymClass.teacher">{{modalGymClass.teacher}}</i>
                         </b>
                     </div>
 
                     <p>{{modalGymClass.description}}</p>
-
-                    <hr>
-
-                    <u><b>Students ({{modalGymClass.number_of_reservations}}/{{modalGymClass.number_of_students_limit}}):</b></u>
-                    <div v-if="modalGymClass.users && modalGymClass.users.length > 0">
-                        <ul class="list-group list-group-flush modal-reservation-list">
-                            <li v-for="(user, modalGymClassUsersIndex) in modalGymClass.users" class="list-group-item">
-                                <span>{{user.user_name}} {{user.user_surname}}</span>
-                                <span class="float-right">
-                                    <b-button v-if="user.declined === true" @click="acceptReservation(user.user_id, modalGymClassUsersIndex)" class="button-color-wave button-small-size">Book</b-button>
-                                    <b-button v-if="user.declined === false" @click="declineReservation(user.reservation_id, modalGymClassUsersIndex)" class="danger-button-color-wave button-small-size pl-6">Decline</b-button>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 <template #modal-footer="{ ok }">
-                    <b-button v-b-modal.modal-make-reservation class="btn btn-primary button-color-wave" size="sm" @click="getUsers">
+                    <b-button v-if="modalGymClass.user.has_reservation === false" v-b-modal.modal-make-reservation class="btn btn-primary button-color-wave" size="sm" @click="createReservation">
                         Book this class
                     </b-button>
 
                     <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
                         OK
-                    </b-button>
-                </template>
-            </b-modal>
-
-            <!--Make reservation for student modal-->
-            <b-modal id="modal-make-reservation" size="sm" @ok="handleOk" @close="handleClose" @cancel="handleClose">
-                <template #modal-header="{ close }">
-                    <b>Book a class for student</b>
-                    <!-- Emulate built in modal header close button action -->
-                    <span class="modal-header-close-button" @click="close()">×</span>
-                </template>
-
-                <form ref="form" @submit.stop.prevent="submitForm">
-                    <b-form-group label="Student" label-for="user_id">
-                        <b-form-select v-model="form.user_id" id="user_id" name="user_id" class="form-select mb-3" :state="state.user_id" required>
-                            <option value=null selected>Select student</option>
-                            <option v-for="user in usersList" :value="user.id">{{user.name}} {{user.surname}}</option>
-                        </b-form-select>
-                        <b-form-invalid-feedback id="user_id">
-                            {{validationMessages.user_id}}
-                        </b-form-invalid-feedback>
-                    </b-form-group>
-                </form>
-
-                <template #modal-footer="{ cancel }">
-                    <b-button class="btn btn-primary button-color-wave" size="sm" @click="submitForm">
-                        Book this class
-                    </b-button>
-
-                    <b-button class="btn btn-primary button-color-wave" size="sm" @click="cancel()">
-                        Cancel
                     </b-button>
                 </template>
             </b-modal>
@@ -115,8 +70,6 @@
 </template>
 
 <script>
-    import Auth from "../../../auth";
-
     export default {
         data() {
             return {
@@ -124,22 +77,13 @@
                 changeLineCalendarDateIndexes: [],
                 currentMonth: null,
                 currentYear: null,
-                displayModal: false,
                 modalTitle: null,
                 modalGymClass: [],
-                usersList: [],
-                state: {
-                    user_id: null,
-                },
-                validationMessages: {
-                    user_id: 'Student is required',
-                },
                 form: {
-                    user_id: null,
+                    user_id: this.auth.user.id,
                     gym_class_id: null,
                     week_day_id: null,
                     date: null,
-                    // isPastDate -> fix it in reservation service
                 },
                 isLoading: true,
             }
@@ -191,43 +135,18 @@
                 this.form.week_day_id = gymClass.week_day_id;
                 this.form.date = calendarDate.date + ' ' + gymClass.start_time;
             },
-            getUsers() {
-                axios.get('/admin/users')
-                    .then((results) => {
-                        results.data.data.forEach((value, index) => {
-                            this.usersList.push(value);
-                        });
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    }).finally(() => {
-                    //Perform action in always
-                });
-            },
-            createReservation(modalGymClassUsersIndex = null) {
+            createReservation() {
+                console.log(this.form);
                 // create reservation
-                axios.post('/admin/reservations', this.form)
+                axios.post('/reservations', this.form)
                     .then((result) => {
-                        // clear form values
-                        this.form.user_id = null;
-                        // clear state values
-                        this.state.user_id = null;
-
-                        // check if the "create reservation" action is coming from modal-admin-calendar or modal-make-reservation
-                        // modalGymClassUsersIndex is not null the the action is coming from modal-admin-calendar
-                        if (modalGymClassUsersIndex !== null) {
-                            this.modalGymClass.users[modalGymClassUsersIndex].declined = false;
-                            ++this.modalGymClass.number_of_reservations;
-                        } else {
-                            // Hide the modals manually
-                            this.$nextTick(() => {
-                                this.$bvModal.hide('modal-make-reservation');
-                                this.$bvModal.hide('modal-admin-calendar');
-                            });
-                        }
+                        // Hide the modals manually
+                        this.$nextTick(() => {
+                            this.$bvModal.hide('modal-student-calendar');
+                        });
 
                         // display success message
-                        this.$alertHandler.showAlert('Booking for student completed successfully', result.status);
+                        this.$alertHandler.showAlert('Booking completed successfully', result.status);
                     })
                     .catch((error) => {
                         // display error message
@@ -237,26 +156,11 @@
                     this.buildCalendar();
                 });
             },
-            submitForm() {
-                // validate form
-                if (!this.checkFormValidity()) {
-                    return;
-                }
-
-                this.createReservation();
-            },
-            acceptReservation(userId, modalGymClassUsersIndex) {
-                this.form.user_id = userId;
-                this.createReservation(modalGymClassUsersIndex);
-            },
-            declineReservation(reservationId, modalGymClassUsersIndex) {
-                axios.post('/admin/reservations/' + reservationId + '/decline')
+            cancelReservation(reservationId) {
+                axios.post('/reservations/' + reservationId + '/cancel')
                     .then((result) => {
-                        this.modalGymClass.users[modalGymClassUsersIndex].declined = true;
-                        --this.modalGymClass.number_of_reservations;
-
                         // display success message
-                        this.$alertHandler.showAlert('Booking for student declined successfully', result.status);
+                        this.$alertHandler.showAlert('Booking canceled successfully', result.status);
                     })
                     .catch((error) => {
                         // display error message
@@ -265,22 +169,6 @@
                     //Perform action in always
                     this.buildCalendar();
                 });
-            },
-            handleOk(bvModalEvent) {
-                // Prevent modal from closing
-                bvModalEvent.preventDefault();
-                // Trigger submit handler
-                this.submitForm()
-            },
-            handleClose() {
-                this.form.user_id = null;
-                this.state.user_id = null;
-            },
-            checkFormValidity() {
-                const valid = this.$refs.form.checkValidity() && this.form.user_id > 0;
-                this.state.user_id = valid;
-                this.validationMessages.user_id = 'Student is required';
-                return valid;
             },
         }
     }

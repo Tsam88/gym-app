@@ -25,12 +25,12 @@ class WeekDayController extends Controller
      *
      * @return Response
      */
-    public function calendar(Request $request)
+    public function studentCalendar(Request $request)
     {
         // get user
         $user = $request->user();
 
-        $gymClasses = $this->weekDayService->getCalendar($user);
+        $gymClasses = $this->weekDayService->getStudentCalendar($user);
 
         $response = new Response($gymClasses, Response::HTTP_OK);
 

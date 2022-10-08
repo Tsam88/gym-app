@@ -109,7 +109,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // week days
     Route::group(['prefix' => 'calendar'], function () {
-        Route::get('/', 'WeekDayController@calendar')->name('week-days.calendar');
+        Route::get('/', 'WeekDayController@studentCalendar')->name('week-days.student-calendar');
     });
 
     // emails
@@ -170,6 +170,10 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::get('{reservation}', 'Admin\AdminReservationController@show')->name('admin.reservations.show');
             Route::post('/{reservation}/decline', 'Admin\AdminReservationController@decline')->name('admin.reservations.decline');
             Route::delete('{reservation}', 'Admin\AdminReservationController@delete')->name('admin.reservations.delete');
+        });
+        // week days
+        Route::group(['prefix' => 'calendar'], function () {
+            Route::get('/', 'Admin\AdminWeekDayController@adminCalendar')->name('admin.calendar.adminCalendar');
         });
     });
 });

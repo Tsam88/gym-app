@@ -9,11 +9,11 @@
                 <div class="card">
                     <div class="card-body">
                         <form @submit.prevent="submitForm">
-                            <b-input-group class="mb-3">
+                            <b-input-group>
                                 <b-input-group-prepend is-text>
-                                    <b-icon icon="envelope" scale="1"></b-icon>
+                                    <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
                                 </b-input-group-prepend>
-                                <b-form-input v-model="form.email" id="email" name="email" type="email" class="register-input" placeholder="Email" required></b-form-input>
+                                <b-form-input v-model="form.email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
                             </b-input-group>
 
                             <div class="row m-auto">

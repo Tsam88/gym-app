@@ -40,50 +40,45 @@ class WeekDayService
         $this->reservationGymClassHelper = $reservationGymClassHelper;
     }
 
+//    /**
+//     * Return week calendar
+//     *
+//     * @return array
+//     */
+//    public function getWeekCalendar(): array
+//    {
+//
+//        $weekDays = WeekDay::orderBy('start_time')
+//            ->get();
+//
+//        $weekCalendar = WeekDay::WEEK_DAYS;
+//
+//        foreach ($weekDays as $weekDay) {
+//            $weekCalendar[$weekDay->day][] = [
+//                'gym_class_name' => $weekDay->gymClass->name,
+//                'start_time' => $weekDay->start_time,
+//                'end_time' => $weekDay->end_time,
+//            ];
+//        }
+//
+////        $response = new Response($weekCalendar, Response::HTTP_OK);
+//
+//        return $weekCalendar;
+//    }
+
     /**
-     * Return week calendar
+     * Get week calendar
      *
      * @return array
      */
     public function getWeekCalendar(): array
     {
-
-        $weekDays = WeekDay::orderBy('start_time')
-            ->get();
-
-        $weekCalendar = WeekDay::WEEK_DAYS;
-
-        foreach ($weekDays as $weekDay) {
-            $weekCalendar[$weekDay->day][] = [
-                'gym_class_name' => $weekDay->gymClass->name,
-                'start_time' => $weekDay->start_time,
-                'end_time' => $weekDay->end_time,
-            ];
-        }
-
-//        $response = new Response($weekCalendar, Response::HTTP_OK);
-
-        return $weekCalendar;
-    }
-
-    /**
-     * Return calendar
-     *
-     * @param User $user
-     *
-     * @return array
-     */
-    public function getCalendar(User $user): array
-    {
-        // if the logged-in user is not student, then set user as null, so we can get the subscriptions of all students
-        if (!$user->isStudent) {
-            $user = null;
-        }
-
         $weekDays = WeekDay::with('gymClass')
             ->orderBy('start_time')
             ->get()
             ->toArray();
+
+        $weekCalendar = WeekDay::WEEK_DAYS;
 
         foreach ($weekDays as $weekDay) {
             $weekCalendar[$weekDay['day']][] = [
@@ -98,17 +93,20 @@ class WeekDayService
             ];
         }
 
-        $lastDateOfMonth = Carbon::today()->endOfMonth()->day;
-        $fromDate = Carbon::now('Europe/Athens');
-        // if fromDate (current date) does not belong in the last 7 days of the month,
-        // then set as toDate the last date of the month
-        // else set as toDate the last day of the first week of the next month
-        if ($fromDate->day <= $lastDateOfMonth - 7 ) {
-            $toDate = Carbon::today('Europe/Athens')->endOfMonth();
-        } else {
-            $toDate = Carbon::today('Europe/Athens')->endOfMonth()->addDays(self::CALENDAR_TO_DATE_ON_LAST_WEEK_ADD_DAYS);
-        }
-        $period = CarbonPeriod::create($fromDate, $toDate);
+        return $weekCalendar;
+    }
+
+    /**
+     * Return calendar
+     *
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getAdminCalendar(): array
+    {
+        $weekCalendar = $this->getWeekCalendar();
+        $period = $this->getPeriodForCalendar();
 
         $calendar = [];
         foreach ($period as $date) {
@@ -143,33 +141,16 @@ class WeekDayService
                     'start_time' => $gymClass['start_time'],
                     'end_time' => $gymClass['end_time'],
                     'number_of_reservations' => $this->reservationGymClassHelper->countGymClassReservations($gymClass['gym_class_id'], $gymClass['week_day_id'], $gymClassDateTimeString),
-                    'users' => [],
                 ];
 
-                if ($user) {
-                    $dailyGymClasses[$key]['users'] = [
-                        'user_id' => $user->id,
-                        'user_name' => $user->name,
-                        'user_surname' => $user->surname,
-                        'reservation_id' => null,
-                        'has_reservation' => false,
-                        'canceled' => false,
-                        'declined' => false,
-                    ];
-                }
-
                 $reservations = Reservation::with('user')
-                        ->when($user, function ($query) use ($user) {
-                            $query->where('user_id', $user->id);
-                        })
-                        // when the logged-in user is Admin, then do not get the canceled reservations
-                        ->when($user === null, function ($query) use ($user) {
-                            $query->where('canceled', false);
-                        })
-                        ->where('gym_class_id', $gymClass['gym_class_id'])
-                        ->where('week_day_id', $gymClass['week_day_id'])
-                        ->where('date', $gymClassDateTime)
-                        ->get();
+                    ->where('gym_class_id', $gymClass['gym_class_id'])
+                    ->where('week_day_id', $gymClass['week_day_id'])
+                    ->where('date', $gymClassDateTime)
+                    ->where('canceled', false)
+                    ->get();
+
+                $dailyGymClasses[$key]['users'] = [];
 
                 foreach ($reservations as $reservation) {
                     $dailyGymClasses[$key]['users'][] = [
@@ -191,63 +172,94 @@ class WeekDayService
             $calendar[$date->format('Y-m-d')]['disabled'] = false;
         }
 
-        // fill missing dates at the start of the calendar
-        $firstDate = array_key_first($calendar);
-        $firstDay = Carbon::parse($firstDate)->dayName;
+        $calendar = $this->fillMissingDatesOfCalendar($calendar);
 
-        while (strtoupper($firstDay) !== WeekDay::WEEK_DAYS[0]) {
-            $previousDate = Carbon::parse($firstDate)->subDay();
+        return $calendar;
+    }
 
-            $calendar[$previousDate->format('Y-m-d')] = [
-                'date' => $previousDate->format('Y-m-d'),
-                'day_name' => $previousDate->dayName,
-                'month_name' => $previousDate->format('M'),
-                'date_number' => $previousDate->day,
+    /**
+     * Return calendar
+     *
+     * @param User $user
+     *
+     * @return array
+     */
+    public function getStudentCalendar(User $user): array
+    {
+        $weekCalendar = $this->getWeekCalendar();
+        $period = $this->getPeriodForCalendar();
+
+        $calendar = [];
+        foreach ($period as $date) {
+            $calendar[$date->format('Y-m-d')] = [
+                'date' => $date->format('Y-m-d'),
+                'day_name' => $date->dayName,
+                'month_name' => $date->format('M'),
+                'date_number' => $date->day,
                 'gym_classes' => [],
-                'disabled' => true,
+                'disabled' => false,
             ];
 
-            // sort calendar array by key (date)
-            ksort($calendar);
+            $dayName = strtoupper($date->dayName);
 
-            $firstDate = array_key_first($calendar);
-            $firstDay = Carbon::parse($firstDate)->dayName;
-        }
-
-        // fill missing dates at the end of the calendar
-        while (count($calendar) % 7 !== 0) {
-            $lastDate = array_key_last ($calendar);
-            $nextDate = Carbon::parse($lastDate)->addDay();
-
-            $calendar[$nextDate->format('Y-m-d')] = [
-                'date' => $nextDate->format('Y-m-d'),
-                'day_name' => $nextDate->dayName,
-                'month_name' => $nextDate->format('M'),
-                'date_number' => $nextDate->day,
-                'gym_classes' => [],
-                'disabled' => true,
-            ];
-        }
-
-        // remove date keys from calendar
-        $calendar = array_values($calendar);
-
-        // check if first seven dates of calendar are empty
-        $fisrtSevenDatesAreEmpty = true;
-        for ($key = 0; $key <= 6; $key++) {
-            if (!empty($calendar[$key]['gym_classes'])) {
-                $fisrtSevenDatesAreEmpty = false;
-                break;
+            if (!isset($weekCalendar[$dayName])) {
+                continue;
             }
-        }
-        // if first seven dates are empty, then unset them from calendar
-        if ($fisrtSevenDatesAreEmpty) {
-            for ($key = 0; $key <= 6; $key++) {
-                unset($calendar[$key]);
+
+            $dailyGymClasses = [];
+
+            foreach ($weekCalendar[$dayName] as $key => $gymClass) {
+                $gymClassDateTimeString = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
+                $gymClassDateTime = Carbon::parse($gymClassDateTimeString);
+
+                $dailyGymClasses[$key] = [
+                    'gym_class_id' => $gymClass['gym_class_id'],
+                    'week_day_id' => $gymClass['week_day_id'],
+                    'gym_class_name' => $gymClass['gym_class_name'],
+                    'number_of_students_limit' => $gymClass['number_of_students'],
+                    'teacher' => $gymClass['teacher'],
+                    'description' => $gymClass['description'],
+                    'start_time' => $gymClass['start_time'],
+                    'end_time' => $gymClass['end_time'],
+                    'number_of_reservations' => $this->reservationGymClassHelper->countGymClassReservations($gymClass['gym_class_id'], $gymClass['week_day_id'], $gymClassDateTimeString),
+                ];
+
+                $reservation = Reservation::with('user')
+                    ->where('user_id', $user->id)
+                    ->where('gym_class_id', $gymClass['gym_class_id'])
+                    ->where('week_day_id', $gymClass['week_day_id'])
+                    ->where('date', $gymClassDateTime)
+                    ->first();
+
+                // get student's reservation
+                $dailyGymClasses[$key]['user'] = [
+                    'user_id' => $user->id,
+                    'user_name' => $user->name,
+                    'user_surname' => $user->surname,
+                    'reservation_id' => null,
+                    'has_reservation' => false,
+                    'canceled' => false,
+                    'declined' => false,
+                ];
+
+                if (!empty($reservation)) {
+                    $dailyGymClasses[$key]['user']['reservation_id'] = $reservation->id;
+                    $dailyGymClasses[$key]['user']['has_reservation'] = true;
+                    $dailyGymClasses[$key]['user']['canceled'] = $reservation->canceled;
+                    $dailyGymClasses[$key]['user']['declined'] = $reservation->declined;
+                }
             }
+
+            $calendar[$date->format('Y-m-d')]['day_name'] = $date->dayName;
+            $calendar[$date->format('Y-m-d')]['month_name'] = $date->format('M');
+            $calendar[$date->format('Y-m-d')]['date_number'] = $date->day;
+            $calendar[$date->format('Y-m-d')]['gym_classes'] = $dailyGymClasses;
+            $calendar[$date->format('Y-m-d')]['disabled'] = false;
         }
 
-        return array_values($calendar);
+        $calendar = $this->fillMissingDatesOfCalendar($calendar);
+
+        return $calendar;
     }
 
     /**
@@ -371,5 +383,96 @@ class WeekDayService
         }
 
         return $weekDayIdsToDelete;
+    }
+
+    /**
+     * Get calendar's date period (range of dates)
+     *
+     * @return CarbonPeriod
+     */
+    private function getPeriodForCalendar(): CarbonPeriod
+    {
+        $lastDateOfMonth = Carbon::today()->endOfMonth()->day;
+        $fromDate = Carbon::now('Europe/Athens');
+        // if fromDate (current date) does not belong in the last 7 days of the month,
+        // then set as toDate the last date of the month
+        // else set as toDate the last day of the first week of the next month
+        if ($fromDate->day <= $lastDateOfMonth - 7 ) {
+            $toDate = Carbon::today('Europe/Athens')->endOfMonth();
+        } else {
+            $toDate = Carbon::today('Europe/Athens')->endOfMonth()->addDays(self::CALENDAR_TO_DATE_ON_LAST_WEEK_ADD_DAYS);
+        }
+
+        $period = CarbonPeriod::create($fromDate, $toDate);
+
+        return $period;
+    }
+
+    /**
+     * Fill the missing dates at the start and at the end of the calendar
+     *
+     * @param array $calendar
+     *
+     * @return array
+     */
+    private function fillMissingDatesOfCalendar(array $calendar): array
+    {
+        // fill missing dates at the start of the calendar
+        $firstDate = array_key_first($calendar);
+        $firstDay = Carbon::parse($firstDate)->dayName;
+
+        while (strtoupper($firstDay) !== WeekDay::WEEK_DAYS[0]) {
+            $previousDate = Carbon::parse($firstDate)->subDay();
+
+            $calendar[$previousDate->format('Y-m-d')] = [
+                'date' => $previousDate->format('Y-m-d'),
+                'day_name' => $previousDate->dayName,
+                'month_name' => $previousDate->format('M'),
+                'date_number' => $previousDate->day,
+                'gym_classes' => [],
+                'disabled' => true,
+            ];
+
+            // sort calendar array by key (date)
+            ksort($calendar);
+
+            $firstDate = array_key_first($calendar);
+            $firstDay = Carbon::parse($firstDate)->dayName;
+        }
+
+        // fill missing dates at the end of the calendar
+        while (count($calendar) % 7 !== 0) {
+            $lastDate = array_key_last ($calendar);
+            $nextDate = Carbon::parse($lastDate)->addDay();
+
+            $calendar[$nextDate->format('Y-m-d')] = [
+                'date' => $nextDate->format('Y-m-d'),
+                'day_name' => $nextDate->dayName,
+                'month_name' => $nextDate->format('M'),
+                'date_number' => $nextDate->day,
+                'gym_classes' => [],
+                'disabled' => true,
+            ];
+        }
+
+        // remove date keys from calendar
+        $calendar = array_values($calendar);
+
+        // check if first seven dates of calendar are empty
+        $fisrtSevenDatesAreEmpty = true;
+        for ($key = 0; $key <= 6; $key++) {
+            if (!empty($calendar[$key]['gym_classes'])) {
+                $fisrtSevenDatesAreEmpty = false;
+                break;
+            }
+        }
+        // if first seven dates are empty, then unset them from calendar
+        if ($fisrtSevenDatesAreEmpty) {
+            for ($key = 0; $key <= 6; $key++) {
+                unset($calendar[$key]);
+            }
+        }
+
+        return array_values($calendar);
     }
 }

@@ -11,15 +11,21 @@
                     <div class="card-body">
 
                         <form @submit.prevent="login">
-                            <b-form-group label="Email" label-for="email">
-                                <b-form-input v-model="email" id="email" name="email" type="email" class="mb-3" placeholder="Email" required></b-form-input>
-                            </b-form-group>
+                            <b-input-group>
+                                <b-input-group-prepend is-text>
+                                    <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
+                                </b-input-group-prepend>
+                                <b-form-input v-model="email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
+                            </b-input-group>
 
-                            <b-form-group label="Password" label-for="password">
-                                <b-form-input v-model="password" id="password" name="password" type="password" class="mb-3" placeholder="Password" required></b-form-input>
-                            </b-form-group>
+                            <b-input-group>
+                                <b-input-group-prepend is-text>
+                                    <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
+                                </b-input-group-prepend>
+                                <b-form-input v-model="password" id="password" name="password" type="password" class="wave-input mb-3" placeholder="Password" required></b-form-input>
+                            </b-input-group>
 
-                            <b-button class="button-color-wave" type="submit" variant="primary">Submit</b-button>
+                            <b-button class="button-color-wave" type="submit" variant="primary">Sign in</b-button>
                         </form>
 
                     </div>
@@ -50,10 +56,13 @@
                         this.auth.login(data.token, data.user);
 
                         if (!this.auth.isAdmin()) {
-                            this.$router.push({ name: 'Home' })
+                            this.$router.push({ name: 'StudentCalendar' })
                         } else {
                             this.$router.push({ name: 'AdminHome' })
                         }
+
+                        // reload page, so the component DropDownLogin will be refreshed
+                        this.$router.go()
                     })
                     .catch((error) => {
                         // display error message

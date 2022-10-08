@@ -44,7 +44,6 @@
                 user: this.auth.user,
             };
         },
-
         methods: {
             login() {
                 let data = {

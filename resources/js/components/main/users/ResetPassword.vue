@@ -9,19 +9,19 @@
                 <div class="card">
                     <div class="card-body">
                         <form @submit.prevent="submitForm">
-                            <b-input-group class="mb-3">
+                            <b-input-group>
                                 <b-input-group-prepend is-text>
-                                    <b-icon icon="envelope" scale="1"></b-icon>
+                                    <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
                                 </b-input-group-prepend>
-                                <b-form-input v-model="form.email" id="email" name="email" type="email" class="register-input" placeholder="Email" disabled required></b-form-input>
+                                <b-form-input v-model="form.email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" disabled required></b-form-input>
                             </b-input-group>
 
-                            <b-input-group class="mb-3">
-                                <b-input-group-prepend is-text>
-                                    <b-icon icon="lock" scale="1"></b-icon>
+                            <b-input-group>
+                                <b-input-group-prepend class="text-center" is-text>
+                                    <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
                                 </b-input-group-prepend>
-                                <b-form-input v-model="form.password" id="password" name="password" type="password" class="register-input" placeholder="Password" required></b-form-input>
-                                <b-form-input v-model="confirm_password" id="confirm_password" name="confirm_password" type="password" class="register-input" placeholder="Confirm password" required></b-form-input>
+                                <b-form-input v-model="form.password" id="password" name="password" type="password" class="wave-input mb-3" placeholder="Password" minlength="8" required></b-form-input>
+                                <b-form-input v-model="confirm_password" id="confirm_password" name="confirm_password" type="password" class="wave-input mb-3" placeholder="Confirm password" minlength="8" required></b-form-input>
                             </b-input-group>
 
                             <b-button class="button-color-wave" type="submit" variant="primary" :disabled="disabled">Reset password</b-button>
@@ -49,6 +49,13 @@
         },
         methods:{
             submitForm() {
+                // validate password fields
+                if (this.form.password !== this.confirm_password) {
+                    // display error message
+                    this.$alertHandler.showAlert('Passwords do not match', 422);
+                    return;
+                }
+
                 this.disabled = true;
 
                 axios.post('/users/reset-password', this.form)

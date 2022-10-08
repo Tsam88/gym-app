@@ -131,7 +131,7 @@ const router = new VueRouter({
                         { path: '/email-verification-required', name: 'EmailVerificationRequired', component: EmailVerificationRequired },
                         { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
                         { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
-                        { path: '/calendar', name: 'StudentCalendar', component: StudentCalendar },
+                        { path: '/student-calendar', name: 'StudentCalendar', component: StudentCalendar },
                         // { path: '/reset-password', name: 'ResetPassword', component: ResetPassword, props: { default: true, sidebar: false } },
                     ]
                 },
@@ -173,7 +173,7 @@ const router = new VueRouter({
                         },
                         // Reservations
                         {
-                            path: '/admin/calendar', name: 'AdminCalendar', component: AdminCalendar,
+                            path: '/admin/admin-calendar', name: 'AdminCalendar', component: AdminCalendar,
                         },
                     ]
                 },
@@ -283,6 +283,10 @@ Vue.component('drop-down-login', require('./components/generalComponents/DropDow
 //     }, 1);
 //     return true;  // Return true to fix the error
 // });
+
+// import { reactive } from 'vue'
+// export const loggedInUser = Auth.user ? reactive(Auth.user) : reactive({});
+// Object.assign(loggedInUser, this.auth.user);
 
 const app = new Vue({
     router,

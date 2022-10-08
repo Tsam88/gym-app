@@ -70,7 +70,7 @@
                     </li>
 
                     <li @click="selected = 'reservations'" :class="{active:selected === 'reservations'}" class="sidebar-item">
-                        <router-link to="/admin/calendar" class="nav-link sidebar-link">
+                        <router-link to="/admin/admin-calendar" class="nav-link sidebar-link">
                             <font-awesome-icon icon="fa-regular fa-calendar" size="lg"/>
                             <span class="align-middle">Bookings</span>
                         </router-link>

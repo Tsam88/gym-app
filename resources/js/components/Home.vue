@@ -9,7 +9,7 @@
             <drop-down-login class="float-right"></drop-down-login>
 
             <div class="float-right">
-                <router-link to="/calendar">
+                <router-link to="/student-calendar">
                     <b-dropdown-item-button>Calendar</b-dropdown-item-button>
                 </router-link>
             </div>
