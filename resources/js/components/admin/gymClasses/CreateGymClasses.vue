@@ -10,7 +10,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                        <form v-on:submit.prevent="submitForm">
+                        <form @submit.prevent="submitForm">
                             <div class="form-group">
 
                                 <div class="mb-3">
@@ -61,19 +61,19 @@
                                         </div>
 
                                         <div class="mb-2">
-                                            <button @click="removeDate(index)" class="btn btn-primary danger-button-color-wave float-right" :disabled="form.week_days.length === 1">
+                                            <b-button @click="removeDate(index)" class="btn btn-primary danger-button-color-wave float-right" :disabled="form.week_days.length === 1">
                                                 Αφαίρεση
-                                            </button>
+                                            </b-button>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="">
-                                    <input @click="addDate" id="add_date" name="add_date" class="btn btn-primary button-color-wave float-right" type="button" value="Πρόσθεσε ημερομηνία">
+                                    <b-button @click="addDate" class="btn btn-primary button-color-wave float-right">Πρόσθεσε ημερομηνία</b-button>
                                 </div>
 
                                 <div class="mt-5">
-                                    <input id="submit_subscription_plan" name="submit_subscription_plan" class="btn btn-primary button-color-wave" type="submit" value="Αποθήκευση">
+                                    <b-button class="btn btn-primary button-color-wave" type="submit" variant="primary">Αποθήκευση</b-button>
                                 </div>
 
                             </div>
