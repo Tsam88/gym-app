@@ -3,6 +3,8 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import $ from 'jquery';
+window.$ = window.jQuery = $;
 
 require('./bootstrap');
 
@@ -12,7 +14,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 
-// import 'bootstrap-vue/dist/bootstrap-vue-icons.min.css'
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -22,6 +23,12 @@ import 'bootstrap/dist/css/bootstrap-reboot.css'
 import '../css/adminApp.css'
 import '../css/app.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '../css/font-awesome.min.css'
+import '../css/flaticon.css'
+import '../css/owl.carousel.min.css'
+import '../css/barfiller.css'
+import '../css/slicknav.min.css'
+import '../css/style.css'
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
@@ -68,6 +75,7 @@ import EmailVerificationRequired from './components/main/emailVerification/Email
 import ForgotPassword from './components/main/users/ForgotPassword.vue';
 import ResetPassword from './components/main/users/ResetPassword.vue';
 import StudentCalendar from './components/main/reservations/StudentCalendar.vue';
+import Error404 from './components/main/404.vue';
 /* ADMIN */
 import AdminHome from './components/admin/Home.vue';
 import ShowSubscriptionPlans from './components/admin/subscriptionPlans/ShowSubscriptionPlans.vue';
@@ -177,6 +185,7 @@ const router = new VueRouter({
                         },
                     ]
                 },
+                { path: '*', name:'404',  component: Error404 },
             ]
         },
     ]
@@ -204,6 +213,11 @@ const routesRequireVerifiedUser = [
  * MIDDLEWARE
  */
 router.beforeEach((to, from, next) => {
+    // let resolved = router.resolve(to.path);
+    // if(resolved.route.name === 'Error404') {
+    //     next({ name: 'Error404' });
+    // }
+
     // Routes that require Admin role
     if (to.path.startsWith("/admin")) {
         if (Auth.isAdmin() === true) {
@@ -256,6 +270,7 @@ Vue.component('email-verification-required', require('./components/main/emailVer
 Vue.component('forgot-password', require('./components/main/users/ForgotPassword.vue').default);
 Vue.component('reset-password', require('./components/main/users/ResetPassword.vue').default);
 Vue.component('student-calendar', require('./components/main/reservations/StudentCalendar.vue').default);
+Vue.component('Error-404', require('./components/main/404.vue').default);
 /* ADMIN */
 Vue.component('admin-home', require('./components/admin/Home.vue').default);
 Vue.component('show-subscription-plans', require('./components/admin/subscriptionPlans/ShowSubscriptionPlans.vue').default);

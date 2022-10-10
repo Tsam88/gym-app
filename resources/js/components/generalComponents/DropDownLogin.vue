@@ -1,7 +1,6 @@
 <template>
 
     <div>
-<!--        <img :src="'/images/barengage-logo.jpg'" alt="jacket4">-->
         <font-awesome-icon v-if="user" icon='fa-regular fa-user' size="lg"/>
         <b-dropdown id="dropdown-form" right :text="user ? user.name : 'Sign in'" ref="dropdown" class="dropdown-login px-1">
             <b-dropdown-form v-if="!user" @submit.stop.prevent>

@@ -1,6 +1,56 @@
 /* background-color-wave: #0f3650 = #003153 */
 /* color-wave: #4ecdb5 = #04D9B2 */
 
+
+
+
+
+/*new colors*/
+/*046482*/
+
+
+/*073862c7*/
+
+
+
+
+/*-----*/
+/*00848d*/
+/*04646a*/
+/*03575c*/
+
+/*010e1c*/
+
+/*new colors*/
+
+
+
+
+
+
+
+
+@font-face {
+    font-family: proxima-nova;
+    src: url("/fonts/proxima-nova-font.otf") format("opentype");
+}
+@font-face {
+    font-family: arquitecta;
+    src: url("/fonts/Arquitecta.otf") format("opentype");
+}
+
+
+/** {*/
+/*    !*font-size: 100%;*!*/
+/*    !*font-family: 'Poppins', sans-serif !important;*!*/
+/*    font-family: 'proxima-nova',sans-serif !important;*/
+/*    !*font-family: 'arquitecta',sans-serif !important;*!*/
+/*    !*font-family: europa,sans-serif !important;*!*/
+/*    !*font-family: "arquitecta",Arial,sans-serif !important;*!*/
+/*    !*--primary-font: "proxima-nova",Arial,sans-serif;*!*/
+/*    !*--secondary-font: "arquitecta",Arial,sans-serif;*!*/
+/*}*/
+
 .background-color-wave {
     background-color: #003153 !important;
 }
