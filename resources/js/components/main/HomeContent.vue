@@ -34,7 +34,7 @@
         <!-- Hero Section End -->
 
         <!-- ChoseUs Section Begin -->
-        <section class="choseus-section spad">
+        <section id="choose-us-section" class="choseus-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -83,7 +83,7 @@
         <!-- ChoseUs Section End -->
 
         <!-- Classes Section Begin -->
-        <section class="classes-section spad">
+        <section id="classes" class="classes-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -276,7 +276,7 @@
         <!-- Gallery Section End -->
 
         <!-- Team Section Begin -->
-        <section class="team-section spad">
+        <section id="our-team" class="team-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -392,7 +392,7 @@
 <script>
     export default {
         mounted() {
-            console.log('Component Home mounted.')
+            console.log('Component Home2 mounted.')
         }
     }
 </script>

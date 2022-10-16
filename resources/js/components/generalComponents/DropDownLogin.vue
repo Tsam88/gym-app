@@ -81,7 +81,9 @@
                         .then(({data}) => {
                             this.auth.logout();
                             this.user = this.auth.user;
-                            this.$router.push({ name: 'HomeContent' })
+                            // this.$router.push({ name: 'HomeContent' });
+                            // this.$router.replace({ path: '/' })
+                            window.location.replace("/");
                         })
                         .catch((error) => {
                             console.log(error);

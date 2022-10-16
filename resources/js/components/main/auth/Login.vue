@@ -73,18 +73,6 @@
                         }
                     });
             },
-            logout() {
-                if (this.auth.isAuthorized()) {
-                    axios.post('/users/logout')
-                        .then(({data}) => {
-                            this.auth.logout();
-                            this.$router.push({ name: 'HomeContent' })
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                }
-            },
         }
     }
 </script>

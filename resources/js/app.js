@@ -201,6 +201,7 @@ const routesWithoutAuthorization = [
     'Login',
     'Register',
     'Home',
+    'HomeContent',
     'MainPage',
     'ForgotPassword',
     'ResetPassword',

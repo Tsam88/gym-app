@@ -16,7 +16,10 @@
 
 <!--        </div>-->
 
-
+        <!-- Page Preloder -->
+        <div id="preloder">
+            <div class="loader"></div>
+        </div>
 
         <!-- Header Begin -->
         <header-menu></header-menu>
@@ -35,7 +38,7 @@
 <script>
     export default {
         mounted() {
-            console.log('Component Home mounted.')
+            console.log('Component Home1 mounted.')
         }
     }
 </script>
