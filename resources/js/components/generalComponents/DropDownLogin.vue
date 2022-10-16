@@ -1,19 +1,25 @@
 <template>
 
     <div>
-        <font-awesome-icon v-if="user" icon='fa-regular fa-user' size="lg"/>
         <b-dropdown id="dropdown-form" right :text="user ? user.name : 'Sign in'" ref="dropdown" class="dropdown-login px-1">
-            <b-dropdown-form v-if="!user" @submit.stop.prevent>
-                <b-form-group label="Email" label-for="dropdown-form-email" class="mb-2">
-                    <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" placeholder="Email" ></b-form-input>
-                </b-form-group>
+            <b-dropdown-form v-if="!user" @submit.prevent="login">
+                <b-input-group class="mt-2">
+                    <b-input-group-prepend is-text>
+                        <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
+                    </b-input-group-prepend>
+                    <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Email" required></b-form-input>
+                </b-input-group>
 
-                <b-form-group label="Password" label-for="dropdown-form-password">
-                    <b-form-input v-model="dropDownPassword" id="dropDownPassword" name="dropDownPassword" type="password" size="sm" placeholder="Password"></b-form-input>
-                </b-form-group>
+                <b-input-group class="mb-2">
+                    <b-input-group-prepend is-text>
+                        <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
+                    </b-input-group-prepend>
+                    <b-form-input v-model="dropDownPassword" id="dropDownPassword" name="dropDownPassword" type="password" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Password" required></b-form-input>
+                </b-input-group>
 
-                <b-form-checkbox class="mb-3">Remember me</b-form-checkbox>
-                <b-button class="button-color-wave" size="sm" @click="login">Sign In</b-button>
+                <div class="row m-auto">
+                    <b-button class="button-color-wave" type="submit" size="sm" variant="primary">Sign in</b-button>
+                </div>
             </b-dropdown-form>
 
             <b-dropdown-divider></b-dropdown-divider>
@@ -23,13 +29,17 @@
             </div>
             <div v-else>
                 <router-link to="/sign-up">
-                    <b-dropdown-item-button>New around here? Sign up</b-dropdown-item-button>
+                    <b-dropdown-item-button class="color-wave">New around here? Sign up</b-dropdown-item-button>
                 </router-link>
                 <router-link to="/forgot-password">
-                    <b-dropdown-item-button>Forgot Password?</b-dropdown-item-button>
+                    <b-dropdown-item-button class="secondary-color-wave">Forgot Password?</b-dropdown-item-button>
                 </router-link>
             </div>
         </b-dropdown>
+
+        <span class="color-wave">
+            <font-awesome-icon v-if="user" icon='fa-regular fa-user'/>
+        </span>
     </div>
 
 </template>
@@ -71,7 +81,7 @@
                         .then(({data}) => {
                             this.auth.logout();
                             this.user = this.auth.user;
-                            this.$router.push({ name: 'Home' })
+                            this.$router.push({ name: 'HomeContent' })
                         })
                         .catch((error) => {
                             console.log(error);

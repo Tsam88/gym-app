@@ -67,7 +67,10 @@ Vue.config.productionTip = false;
 /* IMPORT ALL VUE COMPONENTS */
 /* MAIN PAGE */
 import MainPage from './components/MainPage.vue';
-import Home from './components/Home.vue';
+import Home from './components/main/Home.vue';
+import HeaderMenu from './components/main/HeaderMenu.vue';
+import FooterSection from './components/main/FooterSection.vue';
+import HomeContent from './components/main/HomeContent.vue';
 import Login from './components/main/auth/Login.vue';
 import Register from './components/main/auth/Registration.vue';
 import EmailVerificationCompleted from './components/main/emailVerification/EmailVerificationCompleted.vue';
@@ -132,7 +135,8 @@ const router = new VueRouter({
         /* MAIN */
         { path: '', component: MainPage, children: [
                 /* MAIN PAGE */
-                { path: '/', name: 'Home', component: Home, children: [
+                { path: '/', component: Home, children: [
+                        { path: '/', name: 'HomeContent', component: HomeContent },
                         { path: '/sign-in', name: 'Login', component: Login },
                         { path: '/sign-up', name: 'Register', component: Register },
                         { path: '/email-verification-completed', name: 'EmailVerificationCompleted', component: EmailVerificationCompleted },
@@ -140,7 +144,6 @@ const router = new VueRouter({
                         { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
                         { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
                         { path: '/student-calendar', name: 'StudentCalendar', component: StudentCalendar },
-                        // { path: '/reset-password', name: 'ResetPassword', component: ResetPassword, props: { default: true, sidebar: false } },
                     ]
                 },
                 /* ADMIN */
@@ -262,7 +265,10 @@ router.beforeEach((to, from, next) => {
 
 /* MAIN PAGE */
 Vue.component('main-page', require('./components/MainPage.vue').default);
-Vue.component('home', require('./components/Home.vue').default);
+Vue.component('home', require('./components/main/Home.vue').default);
+Vue.component('header-menu', require('./components/main/HeaderMenu.vue').default);
+Vue.component('footer-section', require('./components/main/FooterSection.vue').default);
+Vue.component('home-content', require('./components/main/HomeContent.vue').default);
 Vue.component('login', require('./components/main/auth/Login.vue').default);
 Vue.component('register', require('./components/main/auth/Registration.vue').default);
 Vue.component('email-verification-completed', require('./components/main/emailVerification/EmailVerificationCompleted.vue').default);

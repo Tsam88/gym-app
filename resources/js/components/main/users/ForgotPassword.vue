@@ -1,27 +1,25 @@
 <template>
-    <div>
-        <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Forgot Password</h1>
-        </div>
+    <div class="wave-content-padding-y">
+        <div class="col-12 col-lg-3 m-auto p-4">
+            <div class="mb-3 text-center">
+                <h1 class="h1 d-inline align-middle color-wave">Forgot Password</h1>
+            </div>
 
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <form @submit.prevent="submitForm">
-                            <b-input-group>
-                                <b-input-group-prepend is-text>
-                                    <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
-                                </b-input-group-prepend>
-                                <b-form-input v-model="form.email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
-                            </b-input-group>
+            <div class="card">
+                <div class="card-body">
+                    <form @submit.prevent="submitForm">
+                        <b-input-group>
+                            <b-input-group-prepend is-text>
+                                <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
+                            </b-input-group-prepend>
+                            <b-form-input v-model="form.email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
+                        </b-input-group>
 
-                            <div class="row m-auto">
-                                <b-button class="button-color-wave" type="submit" variant="primary" :disabled="disabled">Send password reset link</b-button>
-                            </div>
-                        </form>
+                        <div class="row m-auto">
+                            <b-button class="button-color-wave mt-2" type="submit" variant="primary" :disabled="disabled">Send password reset link</b-button>
+                        </div>
+                    </form>
 
-                    </div>
                 </div>
             </div>
         </div>

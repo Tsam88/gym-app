@@ -6,8 +6,6 @@
             </b-alert>
 
             <router-view class="view"></router-view>
-
-<!--            <drop-down-login></drop-down-login>-->
         </div>
 
 </template>

@@ -1,34 +1,34 @@
 <template>
 
-    <div>
-        <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Sign in</h1>
-        </div>
+    <div class="wave-content-padding-y">
+        <div class="col-12 col-lg-3 m-auto p-4">
+            <div class="mb-3 text-center">
+                <h1 class="h1 d-inline align-middle color-wave">Sign in</h1>
+            </div>
 
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="card">
-                    <div class="card-body">
+            <div class="card">
+                <div class="card-body">
 
-                        <form @submit.prevent="login">
-                            <b-input-group>
-                                <b-input-group-prepend is-text>
-                                    <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
-                                </b-input-group-prepend>
-                                <b-form-input v-model="email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
-                            </b-input-group>
+                    <form @submit.prevent="login">
+                        <b-input-group>
+                            <b-input-group-prepend is-text>
+                                <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
+                            </b-input-group-prepend>
+                            <b-form-input v-model="email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
+                        </b-input-group>
 
-                            <b-input-group>
-                                <b-input-group-prepend is-text>
-                                    <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
-                                </b-input-group-prepend>
-                                <b-form-input v-model="password" id="password" name="password" type="password" class="wave-input mb-3" placeholder="Password" required></b-form-input>
-                            </b-input-group>
+                        <b-input-group>
+                            <b-input-group-prepend is-text>
+                                <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
+                            </b-input-group-prepend>
+                            <b-form-input v-model="password" id="password" name="password" type="password" class="wave-input mb-3" placeholder="Password" required></b-form-input>
+                        </b-input-group>
 
-                            <b-button class="button-color-wave" type="submit" variant="primary">Sign in</b-button>
-                        </form>
+                        <div class="row m-auto">
+                            <b-button class="button-color-wave mt-2" type="submit" variant="primary">Sign in</b-button>
+                        </div>
+                    </form>
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -78,7 +78,7 @@
                     axios.post('/users/logout')
                         .then(({data}) => {
                             this.auth.logout();
-                            this.$router.push({ name: 'Home' })
+                            this.$router.push({ name: 'HomeContent' })
                         })
                         .catch((error) => {
                             console.log(error);

@@ -21,12 +21,13 @@
 
 /*010e1c*/
 
+
+/*card*/
+/*e4fffa*/
+
+/*#00b18840*/
+
 /*new colors*/
-
-
-
-
-
 
 
 
@@ -54,8 +55,13 @@
 .background-color-wave {
     background-color: #003153 !important;
 }
+
 .color-wave {
     color: #04D9B2 !important;
+}
+
+.secondary-color-wave {
+    color: #04646a !important;
 }
 
 /*GREEN*/
@@ -83,9 +89,12 @@
 /* BUTTONS START */
 .button-color-wave {
     background-color: #04646a !important;
-    border-color: #204d6a !important;
+    /*border-color: #204d6a !important;*/
+    /*border-color: #0f7865 !important;*/
+    border-color: #04646a  !important;
     /*color: #d9d9d9 !important;*/
     color: #ffffff !important;
+    font-weight: 700;
 }
 
 .danger-button-color-wave {
@@ -304,34 +313,146 @@
 .input-group-prepend .input-group-text {
     border-radius: 3px 0 0 3px !important;
     /*height: 2.035rem !important;*/
-    height: 2.3rem !important;
-    background-color: #003153 !important;
-    color: #04D9B2 !important;
+    height: 2.3rem;
+    /*background-color: #003153 !important;*/
+    /*color: #04D9B2 !important;*/
+    /*border-color: #04646a !important;*/
+
+    background-color: #04646a !important;
+    color: #ffffff !important;
     border-color: #04646a !important;
+
     width: 45px;
     /*font-weight: bolder !important;*/
     font-size: 1.15rem;
     padding: 0 !important;
 }
+
+.wave-input-dropdown-login {
+    height: 1.5rem !important;
+    border-color: #04646a !important;
+    color: #04D9B2;
+    /*background-color: #112132;*/
+    background-color: #0c1f32 !important;
+}
+
 .wave-input {
     height: 2.3rem !important;
     border-color: #04646a !important;
+    color: #04D9B2;
+    /*background-color: #112132;*/
+    background-color: #0c1f32 !important;
 }
 
-.register-input {
-    height: 2.3rem !important;
-    border-color: #04646a !important;
+.wave-input-dropdown-login:focus,
+.wave-input:focus {
+    background-color: #0c1f32 !important;
+    color: #04D9B2;
 }
 
+.wave-input-dropdown-login:-webkit-autofill,
+.wave-input-dropdown-login:-webkit-autofill:focus,
+.wave-input:-webkit-autofill,
+.wave-input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+
+/* !*Change Autocomplete styles in Chrome*!*/
+/*.wave-input:-webkit-autofill,*/
+/*.wave-input:-webkit-autofill:hover,*/
+/*.wave-input:-webkit-autofill:focus {*/
+/*    -webkit-text-fill-color: #04D9B2 !important;;*/
+/*    -webkit-box-shadow: 0 0 0 1000px #0c1f32 inset !important;*/
+/*}*/
+
+/*!* Change Autocomplete styles in Chrome*!*/
+/*input:-webkit-autofill,*/
+/*input:-webkit-autofill:hover,*/
+/*input:-webkit-autofill:focus,*/
+/*textarea:-webkit-autofill,*/
+/*textarea:-webkit-autofill:hover,*/
+/*textarea:-webkit-autofill:focus,*/
+/*select:-webkit-autofill,*/
+/*select:-webkit-autofill:hover,*/
+/*select:-webkit-autofill:focus {*/
+/*    !*background-color: #0c1f32 !important;*!*/
+/*    !*color: #04D9B2;*!*/
+/*    !*border: 1px solid green !important;;*!*/
+/*    -webkit-text-fill-color: #04D9B2 !important;;*/
+/*    -webkit-box-shadow: 0 0 0 1000px #0c1f32 inset !important;*/
+/*    !*transition: background-color 5000s ease-in-out 0s !important;*!*/
+/*}*/
+
+/*.wave-input input[type=text]  {*/
+/*    background-color: #0c1f32 !important;*/
+/*}*/
 
 /* REGISTER FORM END */
 
+/* DROPDOWN LOGIN FORM START */
+.dropdown-login .input-group-prepend .input-group-text {
+    border-radius: 3px 0 0 3px !important;
+    height: 1.65rem !important;
+    background-color: #04646a !important;
+    color: #ffffff !important;
+    border-color: #04646a !important;
+    width: 45px;
+    font-size: 0.95rem;
+    padding: 0 !important;
+}
 
-/*.input-group-prepend > input {*/
-/*    height: 35px !important;*/
-/*}*/
+.dropdown-login ul {
+    background-color: #0c1f32;
+}
 
+.dropdown-login hr {
+    color: #04646a;
+}
+
+.dropdown-login li > button {
+    color: #04D9B2;
+}
+
+.dropdown-login li > button:focus {
+    background-color: #04646a;
+    color: #04D9B2;
+}
+
+.dropdown-login li > button:hover {
+    background-color: #04646a;
+    color: #04D9B2;
+}
+/* DROPDOWN LOGIN FORM END */
 
 .cursor-wait {
     cursor: wait !important;
+}
+
+/*HOME*/
+.main-home-page {
+    /*position: relative;*/
+    /*margin: 0;*/
+    /*min-height: 100px;*/
+}
+
+.home-content {
+    background-color: #010e1c;
+    /*position: relative;*/
+    /*margin: 0;*/
+    /*min-height: 50px;*/
+}
+
+.home-content .card {
+    /*background-color: #112132;*/
+    background-color: #0c1f32;
+}
+
+.wave-content-padding-y {
+    padding-top: 200px;
+    padding-bottom: 100px;
+}
+
+.wave-content {
+    width: 400px;
+    margin: auto;
 }
