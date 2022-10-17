@@ -240,7 +240,7 @@
     max-height: 200px;
     overflow: auto;
 }
-.modal-reservation-list > li{
+.modal-reservation-list > li {
     padding-left: 3px !important;
 }
 /* ADMIN CALENDAR MODAL END*/
@@ -332,7 +332,6 @@
     height: 1.5rem !important;
     border-color: #04646a !important;
     color: #04D9B2;
-    /*background-color: #112132;*/
     background-color: #0c1f32 !important;
 }
 
@@ -340,7 +339,6 @@
     height: 2.3rem !important;
     border-color: #04646a !important;
     color: #04D9B2;
-    /*background-color: #112132;*/
     background-color: #0c1f32 !important;
 }
 
@@ -423,6 +421,135 @@
     color: #04D9B2;
 }
 /* DROPDOWN LOGIN FORM END */
+
+/* STUDENT CALENDAR START */
+.student-calendar {
+    /*background-color: #0c1f32;*/
+    border-color: #04646a !important;
+}
+.student-calendar-header {
+    background-color: #003153;
+    border-radius: 4px 4px 0 0;
+    border: 1px solid;
+    border-bottom: 0;
+    border-color: #04646a !important;
+}
+.student-calendar-content {
+    border-color: #04646a !important;
+}
+.student-calendar h5 {
+    color: #04D9B2;
+}
+.student-calendar a {
+    background-color: #04646a !important;
+}
+.student-calendar .day {
+    background-color: #0c1f32;
+    border-color: #04646a !important;
+    border-left: 0 !important;
+}
+.student-calendar-day-border-right-0 {
+    border-right: 0 !important;
+}
+.student-calendar-day-muted {
+    /*background-color: #0e292a !important;*/
+    /*background-color: #0c1616  !important;*/
+    /*background-color: #1b252e  !important;*/
+
+    /*background-color: #142330  !important;*/
+    background-color: #010e1c  !important;
+    /*background-color: #0c1f322e  !important;*/
+    /*background-color: #000910  !important;*/
+
+    /*background-color: #001526  !important;*/
+}
+.student-calendar-day-muted h5 {
+    color: #04646a !important;
+}
+
+/*@media (max-width:575px) {*/
+@media (max-width:991px) {
+    .student-calendar .display-4 {
+        font-size: 1.5rem;
+    }
+    .student-calendar .day {
+        background-color: #0c1f32;
+        height: auto;
+        border-color: #04646a;
+        border-right: 0 !important;
+    }
+    .student-calendar .day h5 {
+        background-color: #0c1f32;
+        padding: 3px 5px 5px;
+        margin: -8px -8px 8px -8px;
+    }
+    .student-calendar .date {
+        padding-left: 4px;
+    }
+    .student-calendar .hide-date {
+        height: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+    }
+}
+
+/*@media (min-width: 576px) {*/
+@media (min-width: 992px) {
+    .student-calendar .day {
+        background-color: #0c1f32;
+        height: auto;
+        border-color: #04646a;
+    }
+}
+/* STUDENT CALENDAR END */
+
+/* STUDENT CALENDAR MODAL START*/
+#modal-student-calendar .modal-header-close-button {
+    color: #04646a;
+    cursor: pointer;
+    font-size: 25px;
+    font-weight: 800;
+}
+#modal-student-calendar .modal-content {
+    border-width: 0;
+    border-radius: 10px;
+    box-shadow: 0 1rem 3rem rgb(0 0 0) !important
+}
+#modal-student-calendar .modal-header {
+    color: #ffffff;
+    font-size: 20px;
+    background-color: #003153;
+    padding: 10px 15px;
+    border-color: #04646a;
+    border-radius: 4px 4px 0 0;
+}
+#modal-student-calendar .modal-body {
+    background-color: #0c1f32;
+}
+#modal-student-calendar .modal-footer {
+    background-color: #0c1f32;
+    border-color: #04646a;
+    border-radius: 0 0 4px 4px;
+}
+#modal-student-calendar .modal-title {
+    font-weight: 600;
+    font-size: 22px;
+}
+#modal-student-calendar .modal-info {
+    font-size: 12px;
+}
+#modal-student-calendar .modal-info i {
+    color: #a9a9a9;
+}
+#modal-student-calendar button {
+    font-weight: 500;
+}
+
+#modal-student-calendar p,
+#modal-student-calendar .modal-info b {
+    color: #ffffff !important;
+}
+/* STUDENT CALENDAR MODAL END*/
 
 .cursor-wait {
     cursor: wait !important;

@@ -21,12 +21,12 @@
         <!-- calendar dates -->
         <div v-if="!isLoading" class="row border border-right-0 border-bottom-0">
             <div v-for="(calendarDate, index) in calendarDates" :id="'calendar_date'+index" class="day col-lg p-2 border border-left-0 border-top-0 text-truncate" :class="[{'d-none d-sm-inline-block bg-light text-muted':calendarDate.disabled === true}, {'hide-date':calendarDate.gym_classes.length === 0}]">
-                <h5 class="row align-items-center">
+                <h5 class="row align-items-center pb-3">
                     <b class="date col-1 text-muted">{{calendarDate.date_number}} {{calendarDate.month_name}}</b>
                     <b class="col d-lg-none text-center text-muted">{{calendarDate.day_name}}</b>
                     <span class="col-1"></span>
                 </h5>
-                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-admin-calendar class="event d-block p-1 pl-2 pr-2 mb-2 mb-lg-1 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
+                <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-admin-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" title="Test Event 2">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
             </div>
         </div>
 

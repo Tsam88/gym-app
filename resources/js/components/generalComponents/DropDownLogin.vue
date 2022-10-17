@@ -2,25 +2,32 @@
 
     <div>
         <b-dropdown id="dropdown-form" right :text="user ? user.name : 'Sign in'" ref="dropdown" class="dropdown-login px-1">
-            <b-dropdown-form v-if="!user" @submit.prevent="login">
-                <b-input-group class="mt-2">
-                    <b-input-group-prepend is-text>
-                        <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
-                    </b-input-group-prepend>
-                    <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Email" required></b-form-input>
-                </b-input-group>
+            <div v-if="user">
+                <router-link to="/profile">
+                    <b-dropdown-item-button class="color-wave">Profile</b-dropdown-item-button>
+                </router-link>
+            </div>
+            <div v-else>
+                <b-dropdown-form @submit.prevent="login">
+                    <b-input-group class="mt-2">
+                        <b-input-group-prepend is-text>
+                            <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
+                        </b-input-group-prepend>
+                        <b-form-input v-model="dropDownEmail" id="dropDownEmail" name="dropDownEmail" type="email" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Email" required></b-form-input>
+                    </b-input-group>
 
-                <b-input-group class="mb-2">
-                    <b-input-group-prepend is-text>
-                        <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
-                    </b-input-group-prepend>
-                    <b-form-input v-model="dropDownPassword" id="dropDownPassword" name="dropDownPassword" type="password" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Password" required></b-form-input>
-                </b-input-group>
+                    <b-input-group class="mb-2">
+                        <b-input-group-prepend is-text>
+                            <font-awesome-icon icon='fa-solid fa-lock' class="m-auto"/>
+                        </b-input-group-prepend>
+                        <b-form-input v-model="dropDownPassword" id="dropDownPassword" name="dropDownPassword" type="password" size="sm" class="wave-input-dropdown-login mb-3" placeholder="Password" required></b-form-input>
+                    </b-input-group>
 
-                <div class="row m-auto">
-                    <b-button class="button-color-wave" type="submit" size="sm" variant="primary">Sign in</b-button>
-                </div>
-            </b-dropdown-form>
+                    <div class="row m-auto">
+                        <b-button class="button-color-wave" type="submit" size="sm" variant="primary">Sign in</b-button>
+                    </div>
+                </b-dropdown-form>
+            </div>
 
             <b-dropdown-divider></b-dropdown-divider>
 

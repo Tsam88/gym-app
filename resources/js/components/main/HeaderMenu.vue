@@ -46,7 +46,7 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a href="/">
                                 <img src="images/wave_transparent_no_buffer.png" alt="">
                                 <!--                                <img src="images/wave_transparent_no_buffer.png" alt="">-->
                                 <!--                                <img :src="'/images/logo.png'" alt="">-->
