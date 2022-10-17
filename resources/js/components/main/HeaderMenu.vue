@@ -48,8 +48,6 @@
                         <div class="logo">
                             <a href="/">
                                 <img src="images/wave_transparent_no_buffer.png" alt="">
-                                <!--                                <img src="images/wave_transparent_no_buffer.png" alt="">-->
-                                <!--                                <img :src="'/images/logo.png'" alt="">-->
                             </a>
                         </div>
                         <b class="logo-text">
@@ -83,10 +81,10 @@
                             </div>
                             <div class="to-social">
                                 <span class="px-1"> | </span>
-                                <a href="#"><i class="fa fa-facebook"></i></a>
-                                <a href="#"><i class="fa fa-twitter"></i></a>
-                                <a href="#"><i class="fa fa-youtube-play"></i></a>
-                                <a href="#"><i class="fa fa-instagram"></i></a>
+<!--                                <a href="#"><i class="fa fa-facebook"></i></a>-->
+<!--                                <a href="#"><i class="fa fa-twitter"></i></a>-->
+<!--                                <a href="#"><i class="fa fa-youtube-play"></i></a>-->
+                                <a href="https://www.instagram.com/wave_fitness_project/" target="_blank"><i class="fa fa-instagram"></i></a>
                             </div>
                         </div>
                     </div>

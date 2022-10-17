@@ -50,12 +50,12 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faUser as faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faUser as faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
 import { faCreditCard, faUser, faCalendar } from '@fortawesome/free-regular-svg-icons'
 import { faTwitter, faFacebook, faStackOverflow, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 /* add icons to the library */
-library.add( faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCreditCard, faUser, faCalendar);
+library.add( faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCircleCheck, faCircleXmark, faCreditCard, faUser, faCalendar);
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon);

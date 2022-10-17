@@ -63,6 +63,9 @@
 .secondary-color-wave {
     color: #04646a !important;
 }
+.danger-color-wave {
+    color: #912b1a !important;
+}
 
 /*GREEN*/
 /*#4CAF50*/
@@ -98,7 +101,8 @@
 }
 
 .danger-button-color-wave {
-    background-color: #af2c1c !important;
+    /*background-color: #af2c1c !important;*/
+    background-color: #912b1a  !important;
     border-color: #912b1a !important;
     /*color: #d9d9d9 !important;*/
     color: #ffffff !important;
@@ -442,6 +446,9 @@
 }
 .student-calendar a {
     background-color: #04646a !important;
+    font-size: 11.5px;
+    position: relative;
+    padding-right: 19px !important;
 }
 .student-calendar .day {
     background-color: #0c1f32;
@@ -465,6 +472,20 @@
 }
 .student-calendar-day-muted h5 {
     color: #04646a !important;
+}
+.reservation-status {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    margin-left: 4px;
+    font-size: 14px;
+    font-weight: 900;
+}
+.reservation-status-reserved {
+    color: #04D9B2;
+}
+.reservation-status-declined {
+    color: #ff836f;
 }
 
 /*@media (max-width:575px) {*/
@@ -510,10 +531,15 @@
     font-size: 25px;
     font-weight: 800;
 }
+#modal-student-calendar .modal-dialog {
+    width: 300px;
+    margin: auto;
+    top: 120px;
+}
 #modal-student-calendar .modal-content {
     border-width: 0;
     border-radius: 10px;
-    box-shadow: 0 1rem 3rem rgb(0 0 0) !important
+    box-shadow: 0 1rem 3rem rgb(0 0 0) !important;
 }
 #modal-student-calendar .modal-header {
     color: #ffffff;
@@ -544,7 +570,6 @@
 #modal-student-calendar button {
     font-weight: 500;
 }
-
 #modal-student-calendar p,
 #modal-student-calendar .modal-info b {
     color: #ffffff !important;

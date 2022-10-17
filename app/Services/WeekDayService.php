@@ -158,7 +158,6 @@ class WeekDayService
                         'user_name' => $reservation->user->name,
                         'user_surname' => $reservation->user->surname,
                         'reservation_id' => $reservation->id,
-                        'has_reservation' => true,
                         'canceled' => $reservation->canceled,
                         'declined' => $reservation->declined,
                     ];
@@ -237,14 +236,16 @@ class WeekDayService
                     'user_name' => $user->name,
                     'user_surname' => $user->surname,
                     'reservation_id' => null,
-                    'has_reservation' => false,
+                    'has_reservation_record' => false,
+                    'has_active_reservation' => false,
                     'canceled' => false,
                     'declined' => false,
                 ];
 
                 if (!empty($reservation)) {
                     $dailyGymClasses[$key]['user']['reservation_id'] = $reservation->id;
-                    $dailyGymClasses[$key]['user']['has_reservation'] = true;
+                    $dailyGymClasses[$key]['user']['has_reservation_record'] = true;
+                    $dailyGymClasses[$key]['user']['has_active_reservation'] = $reservation->canceled === false && $reservation->declined === false;
                     $dailyGymClasses[$key]['user']['canceled'] = $reservation->canceled;
                     $dailyGymClasses[$key]['user']['declined'] = $reservation->declined;
                 }

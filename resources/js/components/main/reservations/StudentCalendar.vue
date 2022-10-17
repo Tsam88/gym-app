@@ -27,14 +27,18 @@
                             <b class="col d-lg-none text-center">{{calendarDate.day_name}}</b>
                             <span class="col-1"></span>
                         </h5>
-                        <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" :title="gym_class.gym_class_name">{{gym_class.start_time}} {{gym_class.gym_class_name}}</a>
+                        <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" :title="gym_class.gym_class_name">
+                            {{gym_class.start_time}} {{gym_class.gym_class_name}}
+                            <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
+                            <font-awesome-icon v-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
+                        </a>
                     </div>
                 </div>
 
                 <div class="container mt-5">
 
                     <!--Show reservations modal-->
-                    <b-modal id="modal-student-calendar" size="sm">
+                    <b-modal id="modal-student-calendar">
                         <template #modal-header="{ close }">
                             <b>{{modalGymClass.gym_class_name}}</b>
                             <!-- Emulate built in modal header close button action -->
@@ -55,8 +59,22 @@
                         </div>
 
                         <template #modal-footer="{ ok }">
-                            <b-button v-if="modalGymClass.user.has_reservation === false" v-b-modal.modal-make-reservation class="btn btn-primary button-color-wave" size="sm" @click="createReservation">
-                                Book this class
+                            <b-button v-if="modalGymClass.user.has_reservation_record === false || (modalGymClass.user.has_reservation_record === true && modalGymClass.user.has_active_reservation === false)"
+                                      v-b-modal.modal-make-reservation size="sm"
+                                      class="btn btn-primary"
+                                      :class="[{'button-color-wave':modalGymClass.user.declined === false}, {'danger-button-color-wave':modalGymClass.user.declined === true}]"
+                                      @click="createReservation" :disabled="modalGymClass.user.declined === true">
+                                <span v-if="modalGymClass.user.declined === false">
+                                    Book this class
+                                </span>
+                                <span v-else>
+                                    Declined
+                                </span>
+                            </b-button>
+                            <b-button v-if="modalGymClass.user.has_active_reservation === true"
+                                      v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="sm"
+                                      @click="cancelReservation(modalGymClass.user.reservation_id)">
+                                Cancel class
                             </b-button>
 
                             <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
@@ -139,7 +157,6 @@
                 this.form.date = calendarDate.date + ' ' + gymClass.start_time;
             },
             createReservation() {
-                console.log(this.form);
                 // create reservation
                 axios.post('/reservations', this.form)
                     .then((result) => {
@@ -162,6 +179,11 @@
             cancelReservation(reservationId) {
                 axios.post('/reservations/' + reservationId + '/cancel')
                     .then((result) => {
+                        // Hide the modals manually
+                        this.$nextTick(() => {
+                            this.$bvModal.hide('modal-student-calendar');
+                        });
+
                         // display success message
                         this.$alertHandler.showAlert('Booking canceled successfully', result.status);
                     })
