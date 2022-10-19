@@ -6,9 +6,9 @@ namespace App\Exceptions;
 
 use Illuminate\Http\Response;
 
-final class DateIsAlreadyReservedException extends AbstractException
+final class ReservationDateCoincidesWithAnotherReservationException extends AbstractException
 {
     protected const DEFAULT_HTTP_CODE = Response::HTTP_CONFLICT;
-    protected const DEFAULT_ERROR_MESSAGE = 'Έχετε κάνει ήδη κράτηση στο συγκεκριμένο τμήμα';
+    protected const DEFAULT_ERROR_MESSAGE = 'The booking date coincides with another booking';
     protected const DEFAULT_SEVERITY = 'info';
 }

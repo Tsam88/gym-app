@@ -5,11 +5,12 @@ declare(strict_types = 1);
 namespace App\Services;
 
 use App\Exceptions\CancelOrDeclineReservationDateHasPassedException;
-use App\Exceptions\DateIsAlreadyReservedException;
+use App\Exceptions\ClassIsAlreadyReservedException;
 use App\Exceptions\GymClassIsFullException;
 use App\Exceptions\NoActiveSubscriptionForTheRequestedDateException;
 use App\Exceptions\ReservationAlreadyCanceledException;
 use App\Exceptions\ReservationCancellationIsNotAllowedException;
+use App\Exceptions\ReservationDateCoincidesWithAnotherReservationException;
 use App\Exceptions\ReservationDateNotFoundException;
 use App\Exceptions\ReservationIsDeclinedException;
 use App\Exceptions\SessionsLimitExceededException;
@@ -108,10 +109,16 @@ class ReservationService
                 throw new ReservationDateNotFoundException();
             }
 
+            // check if date for specific gym class is already reserved
+            $classIsAlreadyReserved = $this->classIsAlreadyReserved($data['user_id'], $data['gym_class_id'], $data['date']);
+            if ($classIsAlreadyReserved) {
+                throw new ClassIsAlreadyReservedException();
+            }
+
             // check if date is already reserved
-            $isAlreadyReserved = $this->isAlreadyReserved($data['user_id'], $data['gym_class_id'], $data['date']);
-            if ($isAlreadyReserved) {
-                throw new DateIsAlreadyReservedException();
+            $reservationDateCoincidesWithAnotherReservation = $this->reservationDateCoincidesWithAnotherReservation($data['user_id'], $data['date']);
+            if ($reservationDateCoincidesWithAnotherReservation) {
+                throw new ReservationDateCoincidesWithAnotherReservationException();
             }
 
             // check if reservation is declined for this date
@@ -170,7 +177,7 @@ class ReservationService
             $data['canceled'] = false;
             $data['declined'] = false;
 
-            $reservation = Reservation::updateOrCreate(['user_id' => $data['user_id'], 'date' => $data['date']], $data);
+            $reservation = Reservation::updateOrCreate(['user_id' => $data['user_id'], 'date' => $data['date'], 'gym_class_id' => $data['gym_class_id']], $data);
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
             DB::rollBack();
@@ -336,7 +343,7 @@ class ReservationService
     }
 
     /**
-     * check if date is already reserved
+     * check if date for specific gym class is already reserved
      *
      * @param int    $userId
      * @param int    $gymClassId
@@ -344,16 +351,35 @@ class ReservationService
      *
      * @return bool
      */
-    private function isAlreadyReserved(int $userId, int $gymClassId, string $date): bool
+    private function classIsAlreadyReserved(int $userId, int $gymClassId, string $date): bool
     {
-        $isAlreadyReserved = Reservation::where('user_id', $userId)
+        $classIsAlreadyReserved = Reservation::where('user_id', $userId)
             ->where('gym_class_id', $gymClassId)
             ->where('date', $date)
             ->where('canceled', false)
             ->where('declined', false)
             ->exists();
 
-        return $isAlreadyReserved;
+        return $classIsAlreadyReserved;
+    }
+
+    /**
+     * check if reservation date coincides with another reservation
+     *
+     * @param int    $userId
+     * @param string $date
+     *
+     * @return bool
+     */
+    private function reservationDateCoincidesWithAnotherReservation(int $userId, string $date): bool
+    {
+        $reservationDateCoincidesWithAnotherReservation = Reservation::where('user_id', $userId)
+            ->where('date', $date)
+            ->where('canceled', false)
+            ->where('declined', false)
+            ->exists();
+
+        return $reservationDateCoincidesWithAnotherReservation;
     }
 
     /**
