@@ -94,7 +94,7 @@
                         </b-row>
 
                         <!-- Subscription with expiring date -->
-                        <b-row v-if="subscription.unlimited_sessions === true" class="my-3">
+                        <b-row v-if="subscription && subscription.unlimited_sessions === true" class="my-3">
                             <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
                                 <span>Starting date: </span>
                             </b-col>
@@ -105,7 +105,7 @@
                             </b-col>
                         </b-row>
 
-                        <b-row v-if="subscription.unlimited_sessions === true" class="my-3">
+                        <b-row v-if="subscription && subscription.unlimited_sessions === true" class="my-3">
                             <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
                                 <span>Expiring date: </span>
                             </b-col>
@@ -116,7 +116,7 @@
                             </b-col>
                         </b-row>
 
-                        <b-row v-if="subscription.unlimited_sessions === true && subscription.sessions_per_week > 0" class="my-3">
+                        <b-row v-if="subscription && subscription.unlimited_sessions === true && subscription.sessions_per_week > 0" class="my-3">
                             <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
                                 <span>Sessions per week: </span>
                             </b-col>
@@ -128,7 +128,7 @@
                         </b-row>
 
                         <!-- Subscription with sessions -->
-                        <b-row v-if="subscription.unlimited_sessions === false" class="my-3">
+                        <b-row v-if="subscription && subscription.unlimited_sessions === false" class="my-3">
                             <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
                                 <span>Sessions left: </span>
                             </b-col>
