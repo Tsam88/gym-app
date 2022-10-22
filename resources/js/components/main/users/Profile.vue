@@ -80,7 +80,7 @@
                             </b-col>
                             <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
                                 <div v-if="subscription" class="text-white">
-                                    <b v-if="subscription && subscription.unlimited_sessions === true">
+                                    <b v-if="subscription.unlimited_sessions === true">
                                         with expiration date
                                     </b>
                                     <b v-else>
@@ -93,51 +93,53 @@
                             </b-col>
                         </b-row>
 
-                        <!-- Subscription with expiring date -->
-                        <b-row v-if="subscription && subscription.unlimited_sessions === true" class="my-3">
-                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
-                                <span>Starting date: </span>
-                            </b-col>
-                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                <b class="text-white">
-                                    {{displayDate(subscription.starts_at)}}
-                                </b>
-                            </b-col>
-                        </b-row>
+                        <div v-if="subscription">
+                            <!-- Subscription with expiring date -->
+                            <b-row v-if="subscription.unlimited_sessions === true" class="my-3">
+                                <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
+                                    <span>Starting date: </span>
+                                </b-col>
+                                <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
+                                    <b class="text-white">
+                                        {{displayDate(subscription.starts_at)}}
+                                    </b>
+                                </b-col>
+                            </b-row>
 
-                        <b-row v-if="subscription && subscription.unlimited_sessions === true" class="my-3">
-                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
-                                <span>Expiring date: </span>
-                            </b-col>
-                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                <b class="text-white">
-                                    {{displayDate(subscription.expires_at)}}
-                                </b>
-                            </b-col>
-                        </b-row>
+                            <b-row v-if="subscription.unlimited_sessions === true" class="my-3">
+                                <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
+                                    <span>Expiring date: </span>
+                                </b-col>
+                                <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
+                                    <b class="text-white">
+                                        {{displayDate(subscription.expires_at)}}
+                                    </b>
+                                </b-col>
+                            </b-row>
 
-                        <b-row v-if="subscription && subscription.unlimited_sessions === true && subscription.sessions_per_week > 0" class="my-3">
-                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
-                                <span>Sessions per week: </span>
-                            </b-col>
-                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                <b class="text-white">
-                                    {{subscription.sessions_per_week}}
-                                </b>
-                            </b-col>
-                        </b-row>
+                            <b-row v-if="subscription.unlimited_sessions === true && subscription.sessions_per_week > 0" class="my-3">
+                                <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
+                                    <span>Sessions per week: </span>
+                                </b-col>
+                                <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
+                                    <b class="text-white">
+                                        {{subscription.sessions_per_week}}
+                                    </b>
+                                </b-col>
+                            </b-row>
 
-                        <!-- Subscription with sessions -->
-                        <b-row v-if="subscription && subscription.unlimited_sessions === false" class="my-3">
-                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
-                                <span>Sessions left: </span>
-                            </b-col>
-                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                <b class="text-white">
-                                    {{subscription.remaining_sessions}}
-                                </b>
-                            </b-col>
-                        </b-row>
+                            <!-- Subscription with sessions -->
+                            <b-row v-if="subscription.unlimited_sessions === false" class="my-3">
+                                <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
+                                    <span>Sessions left: </span>
+                                </b-col>
+                                <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
+                                    <b class="text-white">
+                                        {{subscription.remaining_sessions}}
+                                    </b>
+                                </b-col>
+                            </b-row>
+                        </div>
                     </div>
                 </div>
             </div>
