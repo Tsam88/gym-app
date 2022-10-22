@@ -80,7 +80,7 @@
                             </b-col>
                             <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
                                 <div v-if="subscription" class="text-white">
-                                    <b v-if="subscription.unlimited_sessions === true">
+                                    <b v-if="subscription && subscription.unlimited_sessions === true">
                                         with expiration date
                                     </b>
                                     <b v-else>
