@@ -171,9 +171,9 @@
                     this.form.surname = data.surname;
                     this.form.email = data.email;
                     this.form.phone_number = data.phone_number;
-                    if (data.subscription) {
-                        this.subscription = data.subscription;
-                    }
+                    // if (data.subscription) {
+                    //     this.subscription = data.subscription;
+                    // }
 
                     console.log(this.subscription);
                 })
