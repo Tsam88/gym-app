@@ -1,8 +1,8 @@
 <template>
     <div class="wave-content-padding-y">
-        <div class="col-12 col-lg-3 m-auto p-4">
+        <div class="col-12 col-sm-8 col-md-7 col-lg-5 col-xl-4 col-xxl-3 m-auto p-4">
             <div class="mb-3 text-center">
-                <h1 class="h1 d-inline align-middle">Reset Password</h1>
+                <h1 class="h1 d-inline align-middle color-wave">Reset Password</h1>
             </div>
 
             <div class="card">

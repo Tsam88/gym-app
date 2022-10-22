@@ -1,7 +1,7 @@
 <template>
 
     <div class="wave-content-padding-y">
-        <div class="col-12 col-lg-3 m-auto p-4">
+        <div class="col-12 col-sm-9 col-md-7 col-lg-5 col-xxl-4 m-auto p-4">
             <div class="mb-3 text-center">
                 <h1 class="h1 d-inline align-middle color-wave">Sign up</h1>
             </div>

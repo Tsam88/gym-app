@@ -335,21 +335,24 @@
 .wave-input-dropdown-login {
     height: 1.5rem !important;
     border-color: #04646a !important;
-    color: #04D9B2;
+    /*color: #04D9B2;*/
+    color: #ffffff;
     background-color: #0c1f32 !important;
 }
 
 .wave-input {
     height: 2.3rem !important;
     border-color: #04646a !important;
-    color: #04D9B2;
+    /*color: #04D9B2;*/
+    color: #ffffff;
     background-color: #0c1f32 !important;
 }
 
 .wave-input-dropdown-login:focus,
 .wave-input:focus {
     background-color: #0c1f32 !important;
-    color: #04D9B2;
+    /*color: #04D9B2;*/
+    color: #ffffff;
 }
 
 .wave-input-dropdown-login:-webkit-autofill,
@@ -575,6 +578,35 @@
     color: #ffffff !important;
 }
 /* STUDENT CALENDAR MODAL END*/
+
+
+
+/* PROFILE FORM START*/
+.profile-form {
+    padding: 5px 0 15px 0;
+}
+.profile-form label {
+    color: #04D9B2;
+    float: right;
+    padding-top: 8px;
+    margin: auto;
+}
+.profile-section span {
+    color: #04D9B2;
+    float: right;
+    margin: auto;
+}
+.profile-form button {
+    width: 40%;
+}
+.profile-subscription-info {
+    /*color: #ffffff;*/
+    color: #04D9B2;
+}
+.profile-subscription-info-no-subscription {
+    color: #ff836f;
+}
+/* PROFILE FORM END*/
 
 .cursor-wait {
     cursor: wait !important;

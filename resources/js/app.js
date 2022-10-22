@@ -71,12 +71,14 @@ import Home from './components/main/Home.vue';
 import HeaderMenu from './components/main/HeaderMenu.vue';
 import FooterSection from './components/main/FooterSection.vue';
 import HomeContent from './components/main/HomeContent.vue';
+import WeekCalendar from './components/main/weekCalendar/WeekCalendar.vue';
 import Login from './components/main/auth/Login.vue';
 import Register from './components/main/auth/Registration.vue';
 import EmailVerificationCompleted from './components/main/emailVerification/EmailVerificationCompleted.vue';
 import EmailVerificationRequired from './components/main/emailVerification/EmailVerificationRequired.vue';
 import ForgotPassword from './components/main/users/ForgotPassword.vue';
 import ResetPassword from './components/main/users/ResetPassword.vue';
+import Profile from './components/main/users/Profile.vue';
 import StudentCalendar from './components/main/reservations/StudentCalendar.vue';
 import Error404 from './components/main/404.vue';
 /* ADMIN */
@@ -143,6 +145,7 @@ const router = new VueRouter({
                         { path: '/email-verification-required', name: 'EmailVerificationRequired', component: EmailVerificationRequired },
                         { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
                         { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
+                        { path: '/profile', name: 'Profile', component: Profile },
                         { path: '/student-calendar', name: 'StudentCalendar', component: StudentCalendar },
                     ]
                 },
@@ -270,12 +273,14 @@ Vue.component('home', require('./components/main/Home.vue').default);
 Vue.component('header-menu', require('./components/main/HeaderMenu.vue').default);
 Vue.component('footer-section', require('./components/main/FooterSection.vue').default);
 Vue.component('home-content', require('./components/main/HomeContent.vue').default);
+Vue.component('week-calendar', require('./components/main/weekCalendar/WeekCalendar.vue').default);
 Vue.component('login', require('./components/main/auth/Login.vue').default);
 Vue.component('register', require('./components/main/auth/Registration.vue').default);
 Vue.component('email-verification-completed', require('./components/main/emailVerification/EmailVerificationCompleted.vue').default);
 Vue.component('email-verification-required', require('./components/main/emailVerification/EmailVerificationRequired.vue').default);
 Vue.component('forgot-password', require('./components/main/users/ForgotPassword.vue').default);
 Vue.component('reset-password', require('./components/main/users/ResetPassword.vue').default);
+Vue.component('profile', require('./components/main/users/Profile.vue').default);
 Vue.component('student-calendar', require('./components/main/reservations/StudentCalendar.vue').default);
 Vue.component('Error-404', require('./components/main/404.vue').default);
 /* ADMIN */

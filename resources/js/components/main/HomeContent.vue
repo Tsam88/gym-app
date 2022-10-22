@@ -101,19 +101,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>STRENGTH</span>
-                                <h5>Weightlifting</h5>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="class-item">
-                            <div class="ci-pic">
-                                <img src="images/classes/class-2.jpg" alt="">
-                            </div>
-                            <div class="ci-text">
-                                <span>Cardio</span>
-                                <h5>Indoor cycling</h5>
+                                <h5>WEIGHTLIFTING</h5>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
@@ -124,32 +112,20 @@
                                 <img src="images/classes/class-3.jpg" alt="">
                             </div>
                             <div class="ci-text">
-                                <span>STRENGTH</span>
-                                <h5>Kettlebell power</h5>
+                                <span>TRAINING</span>
+                                <h5>CROSS TRAINING</h5>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6">
+                    <div class="col-lg-4 col-md-6">
                         <div class="class-item">
                             <div class="ci-pic">
-                                <img src="images/classes/class-4.jpg" alt="">
+                                <img src="images/classes/class-2.jpg" alt="">
                             </div>
                             <div class="ci-text">
-                                <span>Cardio</span>
-                                <h4>Indoor cycling</h4>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="class-item">
-                            <div class="ci-pic">
-                                <img src="images/classes/class-5.jpg" alt="">
-                            </div>
-                            <div class="ci-text">
-                                <span>Training</span>
-                                <h4>Boxing</h4>
+                                <span>FLEXIBILITY</span>
+                                <h5>YOGA</h5>
                                 <a href="#"><i class="fa fa-angle-right"></i></a>
                             </div>
                         </div>
@@ -176,7 +152,7 @@
         <!-- Banner Section End -->
 
         <!-- Pricing Section Begin -->
-        <section class="pricing-section spad">
+        <section id="pricing-plans" class="pricing-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -187,61 +163,21 @@
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                    <div class="col-lg-4 col-md-8">
+                    <div v-for="subscriptionPlan in subscriptionPlans" class="col-lg-4 col-md-8">
                         <div class="ps-item">
-                            <h3>Class drop-in</h3>
+                            <h3>{{subscriptionPlan.name}}</h3>
                             <div class="pi-price">
-                                <h2>$ 39.0</h2>
-                                <!--                                <span>SINGLE CLASS</span>-->
+                                <h2>{{subscriptionPlan.plan_price}} €</h2>
                             </div>
                             <ul>
-                                <li>Free riding</li>
-                                <li>Unlimited equipments</li>
-                                <li>Personal trainer</li>
-                                <li>Weight losing classes</li>
-                                <li>Month to mouth</li>
-                                <li>No time restriction</li>
+                                <li>Weightlifting</li>
+                                <li>Cross Training</li>
+                                <li>Yoga</li>
+                                <li v-if="subscriptionPlan.unlimited_sessions === false">{{subscriptionPlan.number_of_sessions}} sessions</li>
+                                <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.number_of_months === 1">1 month</li>
+                                <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.number_of_months > 1">{{subscriptionPlan.number_of_months}} months</li>
+                                <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.sessions_per_week > 0">{{subscriptionPlan.sessions_per_week}} sessions per week</li>
                             </ul>
-                            <!--                            <a href="#" class="primary-btn pricing-btn">Enroll now</a>-->
-                            <!--                            <a href="#" class="thumb-icon"><i class="fa fa-picture-o"></i></a>-->
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-8">
-                        <div class="ps-item">
-                            <h3>12 Month unlimited</h3>
-                            <div class="pi-price">
-                                <h2>$ 99.0</h2>
-                                <!--                                <span>SINGLE CLASS</span>-->
-                            </div>
-                            <ul>
-                                <li>Free riding</li>
-                                <li>Unlimited equipments</li>
-                                <li>Personal trainer</li>
-                                <li>Weight losing classes</li>
-                                <li>Month to mouth</li>
-                                <li>No time restriction</li>
-                            </ul>
-                            <!--                            <a href="#" class="primary-btn pricing-btn">Enroll now</a>-->
-                            <!--                            <a href="#" class="thumb-icon"><i class="fa fa-picture-o"></i></a>-->
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-8">
-                        <div class="ps-item">
-                            <h3>6 Month unlimited</h3>
-                            <div class="pi-price">
-                                <h2>$ 59.0</h2>
-                                <!--                                <span>SINGLE CLASS</span>-->
-                            </div>
-                            <ul>
-                                <li>Free riding</li>
-                                <li>Unlimited equipments</li>
-                                <li>Personal trainer</li>
-                                <li>Weight losing classes</li>
-                                <li>Month to mouth</li>
-                                <li>No time restriction</li>
-                            </ul>
-                            <!--                            <a href="#" class="primary-btn pricing-btn">Enroll now</a>-->
-                            <!--                            <a href="#" class="thumb-icon"><i class="fa fa-picture-o"></i></a>-->
                         </div>
                     </div>
                 </div>
@@ -275,75 +211,79 @@
         </div>
         <!-- Gallery Section End -->
 
-        <!-- Team Section Begin -->
-        <section id="our-team" class="team-section spad">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="team-title">
-                            <div class="section-title">
-                                <span>Our Team</span>
-                                <h2>TRAIN WITH EXPERTS</h2>
-                            </div>
-                            <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="ts-slider owl-carousel">
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-1.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-2.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-3.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-4.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-5.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="ts-item set-bg" data-setbg="images/team/team-6.jpg">
-                                <div class="ts_text">
-                                    <h4>Athart Rachel</h4>
-                                    <span>Gym Trainer</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Team Section End -->
+        <!-- Week Calendar Section Begin -->
+        <week-calendar></week-calendar>
+        <!-- Week Calendar Section End -->
+
+<!--        &lt;!&ndash; Team Section Begin &ndash;&gt;-->
+<!--        <section id="our-team" class="team-section spad">-->
+<!--            <div class="container">-->
+<!--                <div class="row">-->
+<!--                    <div class="col-lg-12">-->
+<!--                        <div class="team-title">-->
+<!--                            <div class="section-title">-->
+<!--                                <span>Our Team</span>-->
+<!--                                <h2>TRAIN WITH EXPERTS</h2>-->
+<!--                            </div>-->
+<!--                            <a href="#" class="primary-btn btn-normal appoinment-btn">appointment</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="row">-->
+<!--                    <div class="ts-slider owl-carousel">-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-1.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-2.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-3.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-4.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-5.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-lg-4">-->
+<!--                            <div class="ts-item set-bg" data-setbg="images/team/team-6.jpg">-->
+<!--                                <div class="ts_text">-->
+<!--                                    <h4>Athart Rachel</h4>-->
+<!--                                    <span>Gym Trainer</span>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </section>-->
+<!--        &lt;!&ndash; Team Section End &ndash;&gt;-->
 
         <!-- Get In Touch Section Begin -->
         <div class="gettouch-section">
@@ -391,8 +331,26 @@
 
 <script>
     export default {
+        data() {
+            return {
+                subscriptionPlans: [],
+            }
+        },
         mounted() {
-            console.log('Component Home2 mounted.')
+            axios.get('/subscription-plans', this.form)
+                .then((results) => {
+                    results.data.data.forEach((value, index) => {
+                        this.subscriptionPlans.push(value);
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                }).finally(() => {
+                //Perform action in always
+            });
+        },
+        methods:{
+
         }
     }
 </script>

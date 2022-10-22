@@ -19,10 +19,7 @@
                         this.$alertHandler.showAlert('We emailed you a new verification link', 451);
                     })
                     .catch((error) => {
-                        // error.response.status Check status code
-                        // for each errors -> display
                         console.log(error);
-                        // console.log(error.response.data.errors['name'][0]);
                     }).finally(() => {
                     //Perform action in always
                 });

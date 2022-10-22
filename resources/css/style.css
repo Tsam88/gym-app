@@ -1591,7 +1591,8 @@ ol {
 }
 
 .class-timetable-section .section-title {
-	text-align: left;
+	/*text-align: left;*/
+	text-align: center;
 }
 
 .class-details-timetable_title {
@@ -1703,46 +1704,56 @@ ol {
 }
 
 .class-timetable table {
-	border: 1px solid #363636;
+	border: 1px solid #04646a;
 	text-align: center;
 }
 
 .class-timetable table thead {
-	border-bottom: 1px solid #363636;
+	border-bottom: 1px solid #04646a;
 }
 
 .class-timetable table thead tr th {
 	font-size: 14px;
 	color: #ffffff;
-	background: #04D9B2;
-	border-right: 1px solid #363636;
+	/*background: #04D9B2;*/
+	background: #003153;
+	border-right: 1px solid #04646a;
 	padding: 15px 0;
 	font-weight: 400;
 }
 
 .class-timetable table tbody tr td {
-	width: 146px;
-	padding: 35px 0;
+	width: 151px;
+    height: 1px;
 }
 
 .class-timetable table tbody tr td.class-time {
 	font-size: 12px;
+	/*color: #04D9B2;*/
 	color: #04D9B2;
-	background: #000000;
-	border: 1px solid #363636;
+	/*background: #000000;*/
+	background: #05182a;
+	border: 1px solid #04646a;
+    width: 65px;
 }
 
 .class-timetable table tbody tr td.dark-bg {
-	background: #090909;
+	/*background: #090909;*/
+	background: #0c1f32;
 }
 
-.class-timetable table tbody tr td.hover-bg {
+.class-height {
+    height: 100%;
+}
+
+.class-timetable table tbody tr td div.hover-bg {
 	-webkit-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
+    padding: 35px 0;
 }
 
-.class-timetable table tbody tr td.hover-bg:hover {
+.class-timetable table tbody tr td div.hover-bg:hover {
 	background: #04D9B2;
 }
 
@@ -1757,7 +1768,7 @@ ol {
 	top: 59px;
 	width: 237px;
 	height: 1px;
-	background: #363636;
+	background: #04646a;
 	content: "";
 	-webkit-transform: rotate(-40deg);
 	-ms-transform: rotate(-40deg);
@@ -1774,7 +1785,7 @@ ol {
 .class-timetable table tbody tr td span {
 	display: block;
 	font-size: 12px;
-	color: #a9a9a9;
+	color: #838080;
 }
 
 /*---------------------

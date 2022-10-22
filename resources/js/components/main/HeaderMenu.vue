@@ -62,7 +62,7 @@
                                 <li><a href="/">Home</a></li>
                                 <li><a href="#">About Us</a></li>
                                 <li><a href="/#classes">Classes</a></li>
-<!--                                <li><a href="./services.html">Services</a></li>-->
+                                <li><a href="/#pricing-plans">Pricing</a></li>
                                 <li><a href="/#our-team">Our Team</a></li>
                                 <li><a href="#">Contact</a></li>
                                 <li><a href="/student-calendar">Bookings</a></li>
