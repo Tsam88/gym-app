@@ -19,7 +19,7 @@ class WeekDayController extends Controller
     }
 
     /**
-     * Display gym classes.
+     * Display student calendar.
      *
      * @param Request $request
      *
@@ -33,6 +33,20 @@ class WeekDayController extends Controller
         $gymClasses = $this->weekDayService->getStudentCalendar($user);
 
         $response = new Response($gymClasses, Response::HTTP_OK);
+
+        return $response;
+    }
+
+    /**
+     * Display week calendar.
+     **
+     * @return Response
+     */
+    public function weekCalendar()
+    {
+        $weekCalendar = $this->weekDayService->getWeekCalendarByTime();
+
+        $response = new Response($weekCalendar, Response::HTTP_OK);
 
         return $response;
     }

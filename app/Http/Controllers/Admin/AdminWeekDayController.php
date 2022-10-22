@@ -19,7 +19,7 @@ class AdminWeekDayController extends Controller
     }
 
     /**
-     * Display gym classes.
+     * Display admin calendar.
      *
      * @return Response
      */

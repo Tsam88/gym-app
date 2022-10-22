@@ -40,31 +40,46 @@ class WeekDayService
         $this->reservationGymClassHelper = $reservationGymClassHelper;
     }
 
-//    /**
-//     * Return week calendar
-//     *
-//     * @return array
-//     */
-//    public function getWeekCalendar(): array
-//    {
-//
-//        $weekDays = WeekDay::orderBy('start_time')
-//            ->get();
-//
-//        $weekCalendar = WeekDay::WEEK_DAYS;
-//
-//        foreach ($weekDays as $weekDay) {
-//            $weekCalendar[$weekDay->day][] = [
-//                'gym_class_name' => $weekDay->gymClass->name,
-//                'start_time' => $weekDay->start_time,
-//                'end_time' => $weekDay->end_time,
-//            ];
-//        }
-//
-////        $response = new Response($weekCalendar, Response::HTTP_OK);
-//
-//        return $weekCalendar;
-//    }
+    /**
+     * Return week calendar by time
+     *
+     * @return array
+     */
+    public function getWeekCalendarByTime(): array
+    {
+        $classes = WeekDay::with('gymClass')
+            ->orderBy('start_time')
+            ->get()
+            ->toArray();
+
+        foreach (WeekDay::WEEK_DAYS as $day) {
+            $weekDays[$day] = [];
+        }
+
+        // initialize weekCalendar per start_time
+        foreach ($classes as $class) {
+            $weekCalendar[$class['start_time']]['days'] = $weekDays;
+        }
+
+        foreach ($classes as $class) {
+            $weekCalendar[$class['start_time']]['start_time'] = $class['start_time'];
+
+            $weekCalendar[$class['start_time']]['days'][$class['day']][] = [
+                'gym_class_name' => $class['gym_class']['name'],
+                'teacher' => $class['gym_class']['teacher'],
+                'start_time' => $class['start_time'],
+                'end_time' => $class['end_time'],
+            ];
+        }
+
+        foreach ($weekCalendar as &$data) {
+            $data['days'] = array_values($data['days']);
+        }
+
+        $weekCalendar = array_values($weekCalendar);
+
+        return $weekCalendar;
+    }
 
     /**
      * Get week calendar
@@ -78,7 +93,9 @@ class WeekDayService
             ->get()
             ->toArray();
 
-        $weekCalendar = WeekDay::WEEK_DAYS;
+        foreach (WeekDay::WEEK_DAYS as $day) {
+            $weekCalendar[$day] = [];
+        }
 
         foreach ($weekDays as $weekDay) {
             $weekCalendar[$weekDay['day']][] = [

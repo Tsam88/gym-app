@@ -110,6 +110,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     // week days
     Route::group(['prefix' => 'calendar'], function () {
         Route::get('/', 'WeekDayController@studentCalendar')->name('week-days.student-calendar');
+        Route::get('/week', 'WeekDayController@weekCalendar')->name('week-days.week-calendar');
     });
 
     // emails

@@ -28,7 +28,7 @@ class UserProfileSingle extends JsonResource
             'email_verified_at' => $parent['email_verified_at'],
         ];
 
-        if ($parent['active_subscription']) {
+        if (isset($parent['active_subscription'])) {
             $response['subscription'] = $parent['active_subscription'];
         }
 
