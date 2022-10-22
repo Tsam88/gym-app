@@ -174,6 +174,8 @@
                     if (data.subscription) {
                         this.subscription = data.subscription;
                     }
+
+                    console.log(this.subscription);
                 })
                 .catch((error) => {
                     console.log(error);
