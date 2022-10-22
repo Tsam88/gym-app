@@ -75,24 +75,24 @@
                     </b-row>
 
                     <div class="py-1">
-                        <b-row class="mb-3">
-                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
-                                <span>Subscription: </span>
-                            </b-col>
-                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                <div v-if="subscription !== null" class="text-white">
-                                    <b v-if="subscription.unlimited_sessions === true">
-                                        with expiration date
-                                    </b>
-                                    <b v-else>
-                                        with sessions
-                                    </b>
-                                </div>
-                                <div v-else class="profile-subscription-info-no-subscription">
-                                    <b>there is no active subscription</b>
-                                </div>
-                            </b-col>
-                        </b-row>
+<!--                        <b-row class="mb-3">-->
+<!--                            <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">-->
+<!--                                <span>Subscription: </span>-->
+<!--                            </b-col>-->
+<!--                            <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">-->
+<!--                                <div v-if="subscription !== null" class="text-white">-->
+<!--                                    <b v-if="subscription.unlimited_sessions === true">-->
+<!--                                        with expiration date-->
+<!--                                    </b>-->
+<!--                                    <b v-else>-->
+<!--                                        with sessions-->
+<!--                                    </b>-->
+<!--                                </div>-->
+<!--                                <div v-else class="profile-subscription-info-no-subscription">-->
+<!--                                    <b>there is no active subscription</b>-->
+<!--                                </div>-->
+<!--                            </b-col>-->
+<!--                        </b-row>-->
 
 <!--                        <div v-if="subscription !== null">-->
 <!--                            &lt;!&ndash; Subscription with expiring date &ndash;&gt;-->
