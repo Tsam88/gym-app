@@ -29,7 +29,13 @@
 
 /*new colors*/
 
-
+#home-content-section section {
+    scroll-margin-top: 4rem;
+}
+section {
+    /*scroll-padding-top: 0;*/
+    scroll-margin-top: 100rem;
+}
 
 @font-face {
     font-family: proxima-nova;

@@ -1,95 +1,97 @@
 <template>
     <div class="wave-content-padding-y">
         <div class="col-12 col-lg-12 col-xxl-11 m-auto p-4">
-            <div class="mb-4 text-center">
-                <h1 class="h1 d-inline align-middle color-wave">Book your spot</h1>
-            </div>
-
-            <div class="container-fluid student-calendar">
-                <header>
-                    <div class="row d-none d-lg-flex p-1 text-white student-calendar-header">
-                        <b class="col-sm p-1 text-center">Monday</b>
-                        <b class="col-sm p-1 text-center">Tuesday</b>
-                        <b class="col-sm p-1 text-center">Wednesday</b>
-                        <b class="col-sm p-1 text-center">Thursday</b>
-                        <b class="col-sm p-1 text-center">Friday</b>
-                        <b class="col-sm p-1 text-center">Saturday</b>
-                        <b class="col-sm p-1 text-center">Sunday</b>
-                    </div>
-                </header>
-
-                <!-- loader -->
-                <div v-if="isLoading" class="row border p-4">
-                    <b-spinner class="spinner-size-default" variant="info"></b-spinner>
+            <section id="bookings">
+                <div class="mb-4 text-center">
+                    <h1 class="h1 d-inline align-middle color-wave">Book your spot</h1>
                 </div>
 
-                <!-- calendar dates -->
-                <div v-if="!isLoading" class="row border border-right-0 border-bottom-0 student-calendar-content">
-                    <div v-for="(calendarDate, index) in calendarDates" :id="'calendar_date'+index" class="day col-lg p-3 p-md-2 border border-left-0 border-top-0 text-truncate" :class="[{'d-none d-sm-inline-block bg-light student-calendar-day-muted':calendarDate.disabled === true}, {'hide-date':calendarDate.gym_classes.length === 0}, {'student-calendar-day-border-right-0':changeLineCalendarDateIndexes.includes(index)}]">
-                        <h5 class="row align-items-center pb-3">
-                            <b class="date col-1">{{calendarDate.date_number}} {{calendarDate.month_name}}</b>
-                            <b class="col d-lg-none text-center">{{calendarDate.day_name}}</b>
-                            <span class="col-1"></span>
-                        </h5>
-                        <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" :title="gym_class.gym_class_name">
-                            {{gym_class.start_time}} {{gym_class.gym_class_name}}
-                            <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
-                            <font-awesome-icon v-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
-                        </a>
+                <div class="container-fluid student-calendar">
+                    <header>
+                        <div class="row d-none d-lg-flex p-1 text-white student-calendar-header">
+                            <b class="col-sm p-1 text-center">Monday</b>
+                            <b class="col-sm p-1 text-center">Tuesday</b>
+                            <b class="col-sm p-1 text-center">Wednesday</b>
+                            <b class="col-sm p-1 text-center">Thursday</b>
+                            <b class="col-sm p-1 text-center">Friday</b>
+                            <b class="col-sm p-1 text-center">Saturday</b>
+                            <b class="col-sm p-1 text-center">Sunday</b>
+                        </div>
+                    </header>
+
+                    <!-- loader -->
+                    <div v-if="isLoading" class="row border p-4">
+                        <b-spinner class="spinner-size-default" variant="info"></b-spinner>
                     </div>
-                </div>
 
-                <div class="container mt-5">
+                    <!-- calendar dates -->
+                    <div v-if="!isLoading" class="row border border-right-0 border-bottom-0 student-calendar-content">
+                        <div v-for="(calendarDate, index) in calendarDates" :id="'calendar_date'+index" class="day col-lg p-3 p-md-2 border border-left-0 border-top-0 text-truncate" :class="[{'d-none d-sm-inline-block bg-light student-calendar-day-muted':calendarDate.disabled === true}, {'hide-date':calendarDate.gym_classes.length === 0}, {'student-calendar-day-border-right-0':changeLineCalendarDateIndexes.includes(index)}]">
+                            <h5 class="row align-items-center pb-3">
+                                <b class="date col-1">{{calendarDate.date_number}} {{calendarDate.month_name}}</b>
+                                <b class="col d-lg-none text-center">{{calendarDate.day_name}}</b>
+                                <span class="col-1"></span>
+                            </h5>
+                            <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" :title="gym_class.gym_class_name">
+                                {{gym_class.start_time}} {{gym_class.gym_class_name}}
+                                <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
+                                <font-awesome-icon v-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
+                            </a>
+                        </div>
+                    </div>
 
-                    <!--Show reservations modal-->
-                    <b-modal id="modal-student-calendar">
-                        <template #modal-header="{ close }">
-                            <b>{{modalGymClass.gym_class_name}}</b>
-                            <!-- Emulate built in modal header close button action -->
-                            <span class="modal-header-close-button" @click="close()">×</span>
-                        </template>
+                    <div class="container mt-5">
 
-                        <div class="mb-4">
-                            <div class="modal-info mb-2">
-                                <b>
-                                    <i>{{modalTitle}} | {{modalGymClass.start_time}} - {{modalGymClass.end_time}}</i>
-                                    <b class="float-right me-2">{{modalGymClass.number_of_reservations}}/{{modalGymClass.number_of_students_limit}}</b>
-                                    <br>
-                                    <i v-if="modalGymClass.teacher">{{modalGymClass.teacher}}</i>
-                                </b>
+                        <!--Show reservations modal-->
+                        <b-modal id="modal-student-calendar">
+                            <template #modal-header="{ close }">
+                                <b>{{modalGymClass.gym_class_name}}</b>
+                                <!-- Emulate built in modal header close button action -->
+                                <span class="modal-header-close-button" @click="close()">×</span>
+                            </template>
+
+                            <div class="mb-4">
+                                <div class="modal-info mb-2">
+                                    <b>
+                                        <i>{{modalTitle}} | {{modalGymClass.start_time}} - {{modalGymClass.end_time}}</i>
+                                        <b class="float-right me-2">{{modalGymClass.number_of_reservations}}/{{modalGymClass.number_of_students_limit}}</b>
+                                        <br>
+                                        <i v-if="modalGymClass.teacher">{{modalGymClass.teacher}}</i>
+                                    </b>
+                                </div>
+
+                                <p>{{modalGymClass.description}}</p>
                             </div>
 
-                            <p>{{modalGymClass.description}}</p>
-                        </div>
-
-                        <template #modal-footer="{ ok }">
-                            <b-button v-if="modalGymClass.user.has_reservation_record === false || (modalGymClass.user.has_reservation_record === true && modalGymClass.user.has_active_reservation === false)"
-                                      v-b-modal.modal-make-reservation size="sm"
-                                      class="btn btn-primary"
-                                      :class="[{'button-color-wave':modalGymClass.user.declined === false}, {'danger-button-color-wave':modalGymClass.user.declined === true}]"
-                                      @click="createReservation" :disabled="modalGymClass.user.declined === true">
+                            <template #modal-footer="{ ok }">
+                                <b-button v-if="modalGymClass.user.has_reservation_record === false || (modalGymClass.user.has_reservation_record === true && modalGymClass.user.has_active_reservation === false)"
+                                          v-b-modal.modal-make-reservation size="sm"
+                                          class="btn btn-primary"
+                                          :class="[{'button-color-wave':modalGymClass.user.declined === false}, {'danger-button-color-wave':modalGymClass.user.declined === true}]"
+                                          @click="createReservation" :disabled="modalGymClass.user.declined === true">
                                 <span v-if="modalGymClass.user.declined === false">
                                     Book this class
                                 </span>
-                                <span v-else>
+                                    <span v-else>
                                     Declined
                                 </span>
-                            </b-button>
-                            <b-button v-if="modalGymClass.user.has_active_reservation === true"
-                                      v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="sm"
-                                      @click="cancelReservation(modalGymClass.user.reservation_id)">
-                                Cancel class
-                            </b-button>
+                                </b-button>
+                                <b-button v-if="modalGymClass.user.has_active_reservation === true"
+                                          v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="sm"
+                                          @click="cancelReservation(modalGymClass.user.reservation_id)">
+                                    Cancel class
+                                </b-button>
 
-                            <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
-                                OK
-                            </b-button>
-                        </template>
-                    </b-modal>
+                                <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
+                                    OK
+                                </b-button>
+                            </template>
+                        </b-modal>
+
+                    </div>
 
                 </div>
-
-            </div>
+            </section>
         </div>
     </div>
 </template>

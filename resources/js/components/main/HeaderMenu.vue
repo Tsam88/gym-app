@@ -23,10 +23,10 @@
                             <a id="weekly-program-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/#weekly-program'}" href="/#weekly-program">Weekly Program</a>
                         </li>
                         <li>
-                            <a id="contact-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/#contact'}" href="/#contact">Contact</a>
+                            <a id="contact-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath && activeMenuItemUrlPath.includes('#contact')}" href="/#contact">Contact</a>
                         </li>
                         <li>
-                            <a id="student-calendar-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/student-calendar'}" href="/student-calendar">Bookings</a>
+                            <a id="student-calendar-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/student-calendar#bookings'}" href="/student-calendar#bookings">Bookings</a>
                         </li>
 
                         <hr class="text-white">
@@ -101,11 +101,11 @@
                                 </li>
                                 <li>
                                     <a id="contact-menu-item" @click="setActiveMenuItem"
-                                       :class="{'color-wave':activeMenuItemUrlPath === '/#contact'}" href="/#contact">Contact</a>
+                                       :class="{'color-wave':activeMenuItemUrlPath && activeMenuItemUrlPath.includes('#contact')}" href="#contact">Contact</a>
                                 </li>
                                 <li>
                                     <a id="student-calendar-menu-item" @click="setActiveMenuItem"
-                                       :class="{'color-wave':activeMenuItemUrlPath === '/student-calendar'}" href="/student-calendar">Bookings</a>
+                                       :class="{'color-wave':activeMenuItemUrlPath === '/student-calendar#bookings'}" href="/student-calendar#bookings">Bookings</a>
                                 </li>
                             </ul>
                         </nav>
