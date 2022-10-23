@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- Class Timetable Section Begin -->
-        <section class="class-timetable-section spad">
+        <section id="weekly-program" class="class-timetable-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
@@ -65,55 +65,12 @@
         data() {
             return {
                 weekDaysPerTime: {},
-                darkBackgroundRow: true,
             }
         },
         mounted() {
             axios.get('/calendar/week', this.form)
                 .then((results) => {
-
-                    console.log(results.data);
-
-                    // var arr1 = ['left', 'top'];
-                    // const arr2 = arr1.map(value => ({[value]: 0}));
-                    //
                     this.weekDaysPerTime = results.data;
-
-                    // for (const [time, value] of Object.entries(results.data)) {
-                        // console.log(results.data[time]);
-
-                    //
-                    //     // this.weekDays.push(value);
-                    //
-                    //     // this.weekDays = arr1.map(value => ({[value]: 0}));
-                    //
-                    //
-                    //     for (const [day, value2] of Object.entries(value)) {
-                    //
-                    //         results.data[time][day].darkBackgroundRow = darkBackgroundRow;
-                    //         darkBackgroundRow = !darkBackgroundRow;
-                    //         this.weekDays[time][day] = [];
-                    //
-                    //         for (const [index, gymClass] of Object.entries(value2)) {
-                    //             this.weekDays[time][day].push(gymClass);
-                    //
-                    //         }
-                    //     }
-                    //     // this.weekDays[time] = value;
-                    //
-                    //
-                    //     // if ((count+1)%7 === 0) {
-                    //     //     this.changeLineCalendarDateIndexes.push(count);
-                    //     // }
-                    //     //
-                    //     // ++count;
-                    // }
-
-                    // results.data.data.forEach((value, index) => {
-                    //     this.weekDays.push(value);
-                    // });
-
-                    console.log(this.weekDaysPerTime);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -121,8 +78,5 @@
                 //Perform action in always
             });
         },
-        methods:{
-
-        }
     }
 </script>

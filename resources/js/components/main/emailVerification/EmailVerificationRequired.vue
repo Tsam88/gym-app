@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Email verification is required</h1>
+        <div class="mb-4 text-center">
+            <h1 class="h1 d-inline align-middle color-wave">Email verification is required</h1>
         </div>
 
 <!--        <p>In order to book a class, you need to verify your email address first</p>-->

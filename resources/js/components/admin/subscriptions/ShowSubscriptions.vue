@@ -74,10 +74,7 @@
                     this.isLoading = false;
                 })
                 .catch((error) => {
-                    // error.response.status Check status code
-                    // for each errors -> display
                     console.log(error);
-                    // console.log(error.response.data.errors['name'][0]);
                 }).finally(() => {
                 //Perform action in always
             });

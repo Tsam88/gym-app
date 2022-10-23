@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div class="mb-3">
-            <h1 class="h1 d-inline align-middle">Email</h1>
+        <div class="mb-4 text-center">
+            <h1 class="h1 d-inline align-middle color-wave">Email</h1>
         </div>
 
         <p>Email verification completed successfully</p>

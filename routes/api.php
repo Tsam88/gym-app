@@ -31,6 +31,10 @@ Route::get('email/verify/{id}/{hash}', 'AuthController@verifyEmail')->name('user
 Route::post('users/forgot-password', 'AuthController@sendResetPasswordLinkEmail')->middleware('guest')->name('users.forgot-password');
 Route::post('users/reset-password', 'AuthController@resetPassword')->middleware('guest')->name('users.reset-password');
 
+// week days
+Route::group(['prefix' => 'calendar'], function () {
+    Route::get('/week', 'WeekDayController@weekCalendar')->name('week-days.week-calendar');
+});
 
 //Route::get('/email/verify', function () {
 //    return view('auth.verify-email');
@@ -110,7 +114,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     // week days
     Route::group(['prefix' => 'calendar'], function () {
         Route::get('/', 'WeekDayController@studentCalendar')->name('week-days.student-calendar');
-        Route::get('/week', 'WeekDayController@weekCalendar')->name('week-days.week-calendar');
     });
 
     // emails

@@ -1,6 +1,10 @@
 <template>
     <div class="wave-content-padding-y">
-        <div class="col-12 col-lg-11 m-auto p-4">
+        <div class="col-12 col-lg-12 col-xxl-11 m-auto p-4">
+            <div class="mb-4 text-center">
+                <h1 class="h1 d-inline align-middle color-wave">Book your spot</h1>
+            </div>
+
             <div class="container-fluid student-calendar">
                 <header>
                     <div class="row d-none d-lg-flex p-1 text-white student-calendar-header">
