@@ -85,6 +85,7 @@ class UserValidation extends AbstractValidation
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', []),
             'email' => $this->getRule(self::VALIDATION_RULES, 'email', ['unique:users']),
+            'phone_number' => $this->getRule(self::VALIDATION_RULES, 'phone_number', []),
             'password' => $this->getRule(self::VALIDATION_RULES, 'password', ['min:8']),
         ];
 

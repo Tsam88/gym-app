@@ -1,14 +1,14 @@
 <template>
 
     <div>
-        <b-dropdown id="dropdown-form" right :text="user ? user.name : 'Sign in'" ref="dropdown" class="dropdown-login px-1">
+        <b-dropdown id="dropdown-form" class="dropdown-login px-1" right :text="user ? user.name : 'Sign in'" ref="dropdown">
             <div v-if="user">
-                <router-link to="/profile">
+                <a href="/profile">
                     <b-dropdown-item-button class="color-wave">Profile</b-dropdown-item-button>
-                </router-link>
+                </a>
             </div>
             <div v-else>
-                <b-dropdown-form @submit.prevent="login">
+                <b-dropdown-form class="px-2" @submit.prevent="login">
                     <b-input-group class="mt-2">
                         <b-input-group-prepend is-text>
                             <font-awesome-icon icon='fa-solid fa-envelope' class="m-auto"/>
@@ -35,12 +35,12 @@
                 <b-dropdown-item-button @click="logout">Sign out</b-dropdown-item-button>
             </div>
             <div v-else>
-                <router-link to="/sign-up">
+                <a href="/sign-up">
                     <b-dropdown-item-button class="color-wave">New around here? Sign up</b-dropdown-item-button>
-                </router-link>
-                <router-link to="/forgot-password">
+                </a>
+                <a href="/forgot-password">
                     <b-dropdown-item-button class="secondary-color-wave">Forgot Password?</b-dropdown-item-button>
-                </router-link>
+                </a>
             </div>
         </b-dropdown>
 

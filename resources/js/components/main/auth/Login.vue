@@ -56,13 +56,15 @@
                         this.auth.login(data.token, data.user);
 
                         if (!this.auth.isAdmin()) {
-                            this.$router.push({ name: 'StudentCalendar' })
+                            // this.$router.push({ name: 'StudentCalendar' });
+                            window.location.replace("/student-calendar");
                         } else {
-                            this.$router.push({ name: 'AdminHome' })
+                            this.$router.push({ name: 'AdminHome' });
                         }
 
                         // reload page, so the component DropDownLogin will be refreshed
-                        this.$router.go()
+                        // this.$router.go();
+                        // location.reload();
                     })
                     .catch((error) => {
                         // display error message

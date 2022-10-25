@@ -1704,7 +1704,6 @@ ol {
 }
 
 .class-timetable table {
-	border: 1px solid #04646a;
 	text-align: center;
 }
 
@@ -1722,6 +1721,27 @@ ol {
 	font-weight: 400;
 }
 
+.class-timetable .no-border-right {
+    border-right: 0;
+}
+
+.class-timetable .no-border-bottom {
+    border-bottom: 0 !important;
+}
+
+.class-timetable-overflow-x {
+    border: 2px solid #04646a;
+    overflow-x: auto;
+}
+
+.class-timetable {
+    overflow-x: auto;
+}
+
+.flipped, .flipped .class-timetable {
+    transform: rotateX(180deg);
+}
+
 .class-timetable table tbody tr td {
 	width: 151px;
     height: 1px;
@@ -1729,11 +1749,10 @@ ol {
 
 .class-timetable table tbody tr td.class-time {
 	font-size: 12px;
-	/*color: #04D9B2;*/
 	color: #04D9B2;
-	/*background: #000000;*/
 	background: #05182a;
 	border: 1px solid #04646a;
+    border-left: 0;
     width: 65px;
 }
 
@@ -1750,7 +1769,7 @@ ol {
 	-webkit-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
-    padding: 35px 0;
+    padding: 35px 10px;
 }
 
 .class-timetable table tbody tr td div.hover-bg:hover {
@@ -2898,6 +2917,10 @@ ol {
 /* Tablet Device = 768px */
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
+    .class-timetable {
+        overflow-x: auto;
+        width: 1123px;
+    }
 	.about-text {
 		height: auto;
 		padding: 120px 70px 60px 70px;
@@ -3085,7 +3108,6 @@ ol {
 	}
 	.gallery .gs-item {
 		width: calc(50% - 10px);
-		float: none;
 	}
 	.gallery .gs-item.grid-wide {
 		width: 100%;
@@ -3245,7 +3267,8 @@ ol {
 		padding: 120px 70px 60px 70px;
 	}
 	.class-timetable {
-		overflow-x: auto;
+        overflow-x: auto;
+        width: 1123px;
 	}
 	.chart-table {
 		overflow-x: auto;

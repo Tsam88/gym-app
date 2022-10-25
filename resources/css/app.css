@@ -407,7 +407,7 @@ section {
     background-color: #04646a !important;
     color: #ffffff !important;
     border-color: #04646a !important;
-    width: 45px;
+    width: 30px;
     font-size: 0.95rem;
     padding: 0 !important;
 }
@@ -585,7 +585,11 @@ section {
 }
 /* STUDENT CALENDAR MODAL END*/
 
-
+/* DROPDOWN LOGIN START*/
+#dropdown-form .b-dropdown-form {
+    padding: 5px 10px;
+}
+/* DROPDOWN LOGIN END*/
 
 /* PROFILE FORM START*/
 .profile-form {

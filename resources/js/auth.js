@@ -21,6 +21,10 @@ class Auth {
     isAuthorized () {
         return !! this.token;
     }
+    verifyEmail (emailVerifiedAt) {
+        this.user.email_verified_at = emailVerifiedAt;
+        window.localStorage.setItem('user', JSON.stringify(this.user));
+    }
     isVerified () {
         return !! (this.user && this.user.email_verified_at);
     }

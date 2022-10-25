@@ -83,11 +83,9 @@
                         this.auth.login(result.data.token, result.data.user);
 
                         // display success message
-                        // this.$alertHandler.showAlert('Registration created successfully', result.status);
                         this.$alertHandler.showAlert('Registration created successfully. \nIn order to book a class, you need to verify your email address first', 451);
-                        // this.$alertHandler.showAlert('In order to book a class, you need to verify your email address first', 451);
-                        // this.$alertHandler.showAlert('In order to access calendar, you need to verify your email address first', 451);
-                        this.$router.push({ name: 'HomeContent' })
+
+                        window.location.replace("/");
                     })
                     .catch((error) => {
                         this.disabled = false;

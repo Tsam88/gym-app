@@ -23,34 +23,36 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="class-timetable">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Monday</th>
-                                    <th>Tuesday</th>
-                                    <th>Wednesday</th>
-                                    <th>Thursday</th>
-                                    <th>Friday</th>
-                                    <th>Saturday</th>
-                                    <th>Sunday</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr v-for="(weekDays, index1) in weekDaysPerTime">
-                                    <td class="class-time">{{weekDays.start_time}}</td>
-                                    <td v-for="(gymClasses, index2) in weekDays.days" class="ts-meta" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
-                                        <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
-                                            <div v-for="gymClass in gymClasses" :class="{'hover-bg': gymClasses.length > 1}">
-                                                <h5>{{gymClass.gym_class_name}}</h5>
-                                                <span>{{gymClass.teacher}}</span>
+                        <div class="class-timetable-overflow-x flipped">
+                            <div class="class-timetable">
+                                <table>
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Monday</th>
+                                        <th>Tuesday</th>
+                                        <th>Wednesday</th>
+                                        <th>Thursday</th>
+                                        <th>Friday</th>
+                                        <th>Saturday</th>
+                                        <th class="no-border-right">Sunday</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(weekDays, index1) in weekDaysPerTime">
+                                        <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(weekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
+                                        <td v-for="(gymClasses, index2) in weekDays.days" class="ts-meta" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
+                                            <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
+                                                <div v-for="gymClass in gymClasses" :class="{'hover-bg': gymClasses.length > 1}">
+                                                    <h5>{{gymClass.gym_class_name}}</h5>
+                                                    <span>{{gymClass.teacher}}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

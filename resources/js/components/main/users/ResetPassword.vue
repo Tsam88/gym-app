@@ -47,7 +47,7 @@
                 disabled: false,
             }
         },
-        methods:{
+        methods: {
             submitForm() {
                 // validate password fields
                 if (this.form.password !== this.confirm_password) {

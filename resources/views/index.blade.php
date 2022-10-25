@@ -16,7 +16,7 @@
 {{--        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Proxima+Nova:300,400,500,600,700,800,900&display=swap" />--}}
 
 
-        <link rel="icon" href="{{ asset('/images/icons/wave_favicon.png') }}"/>
+        <link rel="icon" href="{{ asset('/images/wave_transparent_no_buffer.png') }}"/>
         <title>Wave Fitness Project</title>
 {{--        <img src="{{ asset('/images/logo.png') }}" alt="jacket3">--}}
 
