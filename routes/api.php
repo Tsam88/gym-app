@@ -100,6 +100,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::get('profile', 'UserController@profile')->name('users.get-profile');
 //        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
         Route::patch('profile', 'UserController@update')->name('users.update-profile');
+        Route::patch('password', 'UserController@updatePassword')->name('users.update-password');
+        Route::patch('update-email', 'UserController@updateEmail')->name('users.update-email');
         Route::post('logout', 'AuthController@logout')->name('users.logout');
     });
 
@@ -128,7 +130,6 @@ Route::group(['prefix' => 'subscription-plans'], function () {
     Route::get('{subscriptionPlan}', 'SubscriptionPlanController@show')->name('subscription-plans.show');
 });
 
-
 Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
 //Route::group(['middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'admin'], function () {
@@ -136,10 +137,7 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UserController@index')->name('users.index');
             Route::get('{user}', 'Admin\AdminUserController@show')->name('admin.users.show');
-
 //        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
-
-//        Route::post('users/password', 'UserController@updatePassword')->name('users.update-password');
 //        Route::delete('users/delete', 'UserController@deleteUser')->name('users.destroy');
 //        Route::get('users/permissions', 'UserController@getPermissions')->name('users.get-permissions');
         });

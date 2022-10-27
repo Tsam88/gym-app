@@ -113,7 +113,7 @@ class UserController extends Controller
      *
      * @return Response
      */
-    public function password(Request $request)
+    public function updatePassword(Request $request)
     {
         // get the payload
         $data = $request->post();
@@ -126,21 +126,33 @@ class UserController extends Controller
         // get user
         $user = $request->user();
 
-        $this->userService->updatePassword($data, $user);
+        $token = $this->userService->updatePassword($data, $user);
 
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return new Response($token, Response::HTTP_OK);
     }
 
     /**
-     * Get user's permissions
+     * Update Authorized user email
      *
      * @param Request $request
      *
      * @return Response
      */
-    public function permissions(Request $request)
+    public function updateEmail(Request $request)
     {
-        /** @todo Keep it here until client is fixed */
-        return new Response([], Response::HTTP_OK);
+        // get the payload
+        $data = $request->post();
+
+        // if data is empty nothing to update
+        if (empty($data)) {
+            return new Response(null, Response::HTTP_NO_CONTENT);
+        }
+
+        // get user
+        $user = $request->user();
+
+        $token = $this->userService->updateEmail($data, $user);
+
+        return new Response($token, Response::HTTP_OK);
     }
 }

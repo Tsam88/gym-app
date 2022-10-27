@@ -44,7 +44,8 @@ class UserVerificationEmail extends Notification
     {
         $verificationUrl = $this->verificationUrl($notifiable);
 
-        return (new MailMessage)->view('emails.userVerifyEmail', ['url' => $verificationUrl]);
+        return (new MailMessage)->from('wavefitnessproject@gmail.com', 'Wave Fitness Project')
+            ->view('emails.userVerifyEmail', ['url' => $verificationUrl]);
     }
 
     /**

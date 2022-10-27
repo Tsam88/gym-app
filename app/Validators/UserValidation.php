@@ -4,12 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Validators;
 
-use App\Exceptions\DeleteUserHasParcelsException;
-use App\Exceptions\NotActiveUserException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
-use App\Rules\CheckPassword;
-
 class UserValidation extends AbstractValidation
 {
     /**
@@ -84,7 +78,7 @@ class UserValidation extends AbstractValidation
         $validationRules = [
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', []),
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', []),
-            'email' => $this->getRule(self::VALIDATION_RULES, 'email', ['unique:users']),
+            'email' => $this->getRule(self::VALIDATION_RULES, 'email', []),
             'phone_number' => $this->getRule(self::VALIDATION_RULES, 'phone_number', []),
             'password' => $this->getRule(self::VALIDATION_RULES, 'password', ['min:8']),
         ];
@@ -129,7 +123,6 @@ class UserValidation extends AbstractValidation
         $validationRules = [
             'name' => $this->getRule(self::VALIDATION_RULES, 'name', ['sometimes']),
             'surname' => $this->getRule(self::VALIDATION_RULES, 'surname', ['sometimes']),
-            'email' => $this->getRule(self::VALIDATION_RULES, 'email', ['sometimes']),
             'phone_number' => $this->getRule(self::VALIDATION_RULES, 'phone_number', []),
         ];
 
@@ -173,6 +166,48 @@ class UserValidation extends AbstractValidation
             'token' => $this->getRule(self::VALIDATION_RULES, 'token', ['required']),
             'email' => $this->getRule(self::VALIDATION_RULES, 'email', []),
             'password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+        ];
+
+        $validator = $this->getValidator($input, $validationRules);
+        $data = $validator->validate();
+
+        return $data;
+    }
+
+    /**
+     * Update user password validation.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function userUpdatePassword(array $input)
+    {
+        // build the rules for update
+        $validationRules = [
+            'old_password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+            'password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+        ];
+
+        $validator = $this->getValidator($input, $validationRules);
+        $data = $validator->validate();
+
+        return $data;
+    }
+
+    /**
+     * Update user password validation.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function userUpdateEmail(array $input)
+    {
+        // build the rules for update
+        $validationRules = [
+            'password' => $this->getRule(self::VALIDATION_RULES, 'password', []),
+            'email' => $this->getRule(self::VALIDATION_RULES, 'email', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

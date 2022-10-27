@@ -4,26 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-use App\Exceptions\DeleteUserHasParcelsException;
+use App\Exceptions\EmailAlreadyExistsException;
+use App\Exceptions\EmailDoesNotExistsException;
 use App\Exceptions\InternalServerErrorException;
-use App\Exceptions\NotActiveUserException;
 use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
-use App\Libraries\Constants\LocationConstants;
-use App\Models\Language;
+use App\Exceptions\OldPasswordIsWrongException;
+use App\Exceptions\PasswordIsWrongException;
 use App\Models\User;
-use App\Models\UserSetting;
-use App\Models\UserType;
-use App\Rules\CheckPassword;
 use App\Validators\UserValidation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Events\Verified;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -79,13 +72,18 @@ class UserService
      */
     public function register(array $input): array
     {
+        // data validation
+        $data = $this->userValidation->userRegister($input);
+
         // we need to lowercase email if exists, to validate uniqueness later
         if (!empty($input['email'])) {
             $input['email'] = \mb_convert_case(\trim($input['email']), MB_CASE_LOWER, 'UTF-8');
         }
 
-        // data validation
-        $data = $this->userValidation->userRegister($input);
+        // check if email already exists in db
+        if ($this->emailAlreadyExists($input['email'])) {
+            throw new EmailAlreadyExistsException();
+        }
 
         // start db transaction
         DB::beginTransaction();
@@ -271,22 +269,8 @@ class UserService
      */
     public function updateProfile(array $input, User $user)
     {
-        // we need to lowercase email if exists, to validate uniqueness later
-        if (!empty($input['email'])) {
-            $input['email'] = \mb_convert_case(\trim($input['email']), MB_CASE_LOWER, 'UTF-8');
-        }
-
         // data validation
         $data = $this->userValidation->userUpdate($input);
-
-//        // in case of email change
-//        if (!empty($data['email']) && $data['email'] !== $user->email) {
-//            $user->email = $data['email'];
-//            $user->email_verified_at = null;
-//            $user->save();
-//
-//            UserRegisterEvent::dispatch($user, null);
-//        }
 
         // start db transaction
         DB::beginTransaction();
@@ -326,20 +310,6 @@ class UserService
             throw new AuthenticationException();
         }
 
-//        if (!$user->hasVerifiedEmail()) {
-//            // delete all tokens
-//            $user->tokens()->delete();
-//            throw new NotVerifiedUserException();
-//        }
-
-//        if (!$user->active) {
-//            // delete all tokens
-//            // we could revoke tokens here instead, but no need to over complicate it
-//            $user->tokens()->delete();
-//            throw new NotActiveUserException();
-//        }
-
-//        $token = $user->createToken('token')->accessToken;
         $token = $user->createToken('API Token')->accessToken;
 
         return [
@@ -361,10 +331,6 @@ class UserService
         DB::beginTransaction();
 
         try {
-            if (0 < $user->parcels->count()) {
-                throw new DeleteUserHasParcelsException();
-            }
-
             $user->delete();
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
@@ -427,28 +393,29 @@ class UserService
      * @param array $input password
      * @param User  $user
      *
-     * @return void
+     * @return array
      */
-    public function updatePassword(array $input, User $user)
+    public function updatePassword(array $input, User $user): array
     {
-        // build the rules for registering
-        $validationRules = [
-            'old_password' => $this->getRule(User::VALIDATION_RULES, 'password', ['required', new CheckPassword($user)]),
-            'password' => $this->getRule(User::VALIDATION_RULES, 'password', []),
-        ];
+        // data validation
+        $data = $this->userValidation->userUpdatePassword($input);
 
-        $validator = $this->getValidator($input, $validationRules);
-        $data = $validator->validate();
+        // check if old password is equal to current user's password
+        if (!Hash::check($data['old_password'], $user->password)) {
+            throw new OldPasswordIsWrongException();
+        }
 
         // start db transaction
         DB::beginTransaction();
 
         try {
-            $user->password = $data['password'];
+            $user->password = bcrypt($data['password']);
             $user->save();
 
             // delete all tokens
             $user->tokens()->delete();
+
+            $token = $user->createToken('API Token')->accessToken;
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
             DB::rollBack();
@@ -458,6 +425,11 @@ class UserService
 
         // commit database changes
         DB::commit();
+
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
     }
 
     /**
@@ -471,6 +443,11 @@ class UserService
     {
         // data validation
         $data = $this->userValidation->userSendResetPasswordLinkEmail($input);
+
+        // check if email exists in db
+        if (!$this->emailAlreadyExists($input['email'])) {
+            throw new EmailDoesNotExistsException();
+        }
 
         // start db transaction
         DB::beginTransaction();
@@ -543,5 +520,79 @@ class UserService
 
         // commit database changes
         DB::commit();
+    }
+
+    /**
+     * Update a user password.
+     *
+     * @param array $input password
+     * @param User  $user
+     *
+     * @return array
+     */
+    public function updateEmail(array $input, User $user): array
+    {
+        // data validation
+        $data = $this->userValidation->userUpdateEmail($input);
+
+        // we need to lowercase email if exists, to validate uniqueness later
+        if (!empty($input['email'])) {
+            $input['email'] = \mb_convert_case(\trim($input['email']), MB_CASE_LOWER, 'UTF-8');
+        }
+
+        // check if email already exists in db
+        if ($this->emailAlreadyExists($input['email'])) {
+            throw new EmailAlreadyExistsException();
+        }
+
+        // check if old password is equal to current user's password
+        if (!Hash::check($data['password'], $user->password)) {
+            throw new PasswordIsWrongException();
+        }
+
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            $user->email = $data['email'];
+            $user->email_verified_at = null;
+            $user->save();
+
+            // delete all tokens
+            $user->tokens()->delete();
+
+            $user->sendEmailVerificationNotification();
+
+            $token = $user->createToken('API Token')->accessToken;
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
+
+        return [
+            'token' => $token,
+            'user' => $user
+        ];
+    }
+
+    /**
+     * Check if email already exists in db.
+     *
+     * @param string $email
+     *
+     * @return bool
+     */
+    public function emailAlreadyExists(string $email): bool
+    {
+        $email = \mb_convert_case(\trim($email), MB_CASE_LOWER, 'UTF-8');
+
+        $emailExists = User::where('email', $email)->exists();
+
+        return $emailExists;
     }
 }

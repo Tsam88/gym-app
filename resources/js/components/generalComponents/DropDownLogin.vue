@@ -6,6 +6,12 @@
                 <a href="/profile">
                     <b-dropdown-item-button class="color-wave">Profile</b-dropdown-item-button>
                 </a>
+                <a href="/change-password">
+                    <b-dropdown-item-button class="color-wave">Change password</b-dropdown-item-button>
+                </a>
+                <a href="/change-email">
+                    <b-dropdown-item-button class="color-wave">Change email</b-dropdown-item-button>
+                </a>
             </div>
             <div v-else>
                 <b-dropdown-form class="px-2" @submit.prevent="login">

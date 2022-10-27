@@ -83,7 +83,8 @@
                         this.auth.login(result.data.token, result.data.user);
 
                         // display success message
-                        this.$alertHandler.showAlert('Registration created successfully. \nIn order to book a class, you need to verify your email address first', 451);
+                        // this.$alertHandler.showAlert('Registration created successfully. \nIn order to book a class, you need to verify your email address first', 451);
+                        this.$alertHandler.showAlert('Registration created successfully. A verification link has been sent to your email!', 451);
 
                         window.location.replace("/");
                     })

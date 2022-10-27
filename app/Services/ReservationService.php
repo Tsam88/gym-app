@@ -15,6 +15,7 @@ use App\Exceptions\ReservationDateNotFoundException;
 use App\Exceptions\ReservationIsDeclinedException;
 use App\Exceptions\SessionsLimitExceededException;
 use App\Exceptions\SessionsWeekLimitExceededException;
+use App\Libraries\DeclineEmail;
 use App\Libraries\ReservationGymClassHelper;
 use App\Libraries\ReservationSubscriptionHelper;
 use App\Models\GymClass;
@@ -26,6 +27,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ReservationService
 {
@@ -51,11 +53,17 @@ class ReservationService
      */
     private $reservationGymClassHelper;
 
-    public function __construct(ReservationValidation $reservationValidation, ReservationSubscriptionHelper $reservationSubscriptionHelper, ReservationGymClassHelper $reservationGymClassHelper)
+    /**
+     * @var DeclineEmail
+     */
+    private $declineEmail;
+
+    public function __construct(ReservationValidation $reservationValidation, ReservationSubscriptionHelper $reservationSubscriptionHelper, ReservationGymClassHelper $reservationGymClassHelper, DeclineEmail $declineEmail)
     {
         $this->reservationValidation = $reservationValidation;
         $this->reservationSubscriptionHelper = $reservationSubscriptionHelper;
         $this->reservationGymClassHelper = $reservationGymClassHelper;
+        $this->declineEmail = $declineEmail;
     }
 
     /**
@@ -292,6 +300,9 @@ class ReservationService
 
             $reservation->declined = true;
             $reservation->save();
+
+            // send email notification to the user
+            $this->sendDeclineEmail($reservation);
         } catch (\Exception $e) {
             // something went wrong, rollback and throw same exception
             DB::rollBack();
@@ -488,5 +499,22 @@ class ReservationService
             ->get();
 
         return $pendingReservations;
+    }
+
+    /**
+     * Decline a reservation
+     *
+     * @param Reservation $reservation
+     *
+     * @return void
+     */
+    public function sendDeclineEmail(Reservation $reservation) {
+
+        $this->declineEmail->data = [
+            'gym_class_name' => $reservation->gymClass->name,
+            'reservation_date' => Carbon::parse($reservation->date)->toDayDateTimeString(),
+        ];
+
+        Mail::to($reservation->user->email)->queue($this->declineEmail);
     }
 }

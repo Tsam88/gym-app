@@ -349,15 +349,17 @@ section {
 .wave-input {
     height: 2.3rem !important;
     border-color: #04646a !important;
-    /*color: #04D9B2;*/
     color: #ffffff;
     background-color: #0c1f32 !important;
+}
+
+.wave-input:disabled {
+    background-color: #223448 !important;
 }
 
 .wave-input-dropdown-login:focus,
 .wave-input:focus {
     background-color: #0c1f32 !important;
-    /*color: #04D9B2;*/
     color: #ffffff;
 }
 

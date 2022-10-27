@@ -53,7 +53,8 @@ class ResetPasswordNotification extends Notification
     {
         $resetPasswordUrl = $this->resetPasswordUrl($notifiable);
 
-        return (new MailMessage)->view('emails.resetPasswordEmail', ['url' => $resetPasswordUrl]);
+        return (new MailMessage)->from('wavefitnessproject@gmail.com', 'Wave Fitness Project')
+            ->view('emails.resetPasswordEmail', ['url' => $resetPasswordUrl]);
     }
 
     /**

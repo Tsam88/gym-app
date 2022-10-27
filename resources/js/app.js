@@ -78,6 +78,8 @@ import EmailVerificationCompleted from './components/main/emailVerification/Emai
 import EmailVerificationRequired from './components/main/emailVerification/EmailVerificationRequired.vue';
 import ForgotPassword from './components/main/users/ForgotPassword.vue';
 import ResetPassword from './components/main/users/ResetPassword.vue';
+import ChangePassword from './components/main/users/ChangePassword.vue';
+import ChangeEmail from './components/main/users/ChangeEmail.vue';
 import Profile from './components/main/users/Profile.vue';
 import StudentCalendar from './components/main/reservations/StudentCalendar.vue';
 import Error404 from './components/main/404.vue';
@@ -105,7 +107,7 @@ Vue.prototype.$alertHandler = new Vue({
             variant: '',
             successCodes: [201,204],
             warningCodes: [451],
-            dangerCodes: [404,409,412,422],
+            dangerCodes: [404,409,412,417,422],
             responseMessage: '',
         }
     },
@@ -145,6 +147,8 @@ const router = new VueRouter({
                         { path: '/email-verification-required', name: 'EmailVerificationRequired', component: EmailVerificationRequired },
                         { path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword },
                         { path: '/reset-password', name: 'ResetPassword', component: ResetPassword },
+                        { path: '/change-password', name: 'ChangePassword', component: ChangePassword },
+                        { path: '/change-email', name: 'ChangeEmail', component: ChangeEmail },
                         { path: '/profile', name: 'Profile', component: Profile },
                         { path: '/student-calendar', name: 'StudentCalendar', component: StudentCalendar },
                     ]
@@ -280,6 +284,8 @@ Vue.component('email-verification-completed', require('./components/main/emailVe
 Vue.component('email-verification-required', require('./components/main/emailVerification/EmailVerificationRequired.vue').default);
 Vue.component('forgot-password', require('./components/main/users/ForgotPassword.vue').default);
 Vue.component('reset-password', require('./components/main/users/ResetPassword.vue').default);
+Vue.component('change-password', require('./components/main/users/ChangePassword.vue').default);
+Vue.component('change-email', require('./components/main/users/ChangeEmail.vue').default);
 Vue.component('profile', require('./components/main/users/Profile.vue').default);
 Vue.component('student-calendar', require('./components/main/reservations/StudentCalendar.vue').default);
 Vue.component('Error-404', require('./components/main/404.vue').default);

@@ -41,7 +41,7 @@
                                     <label for="email">Email:</label>
                                 </b-col>
                                 <b-col class="col-7 col-sm-8 col-md-7 col-xl-8 col-xxl-7">
-                                    <b-form-input v-model="form.email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" required></b-form-input>
+                                    <b-form-input v-model="email" id="email" name="email" type="email" class="wave-input mb-3" placeholder="Email" disabled required></b-form-input>
                                 </b-col>
                             </b-row>
 
@@ -159,9 +159,9 @@
                 form: {
                     name: null,
                     surname: null,
-                    email: null,
                     phone_number: null,
                 },
+                email: null,
                 subscription: null,
                 disabled: false,
             }
@@ -171,8 +171,8 @@
                 .then(({data}) => {
                     this.form.name = data.name;
                     this.form.surname = data.surname;
-                    this.form.email = data.email;
                     this.form.phone_number = data.phone_number;
+                    this.email = data.email;
                     if (data.subscription) {
                         this.subscription = data.subscription;
                     }

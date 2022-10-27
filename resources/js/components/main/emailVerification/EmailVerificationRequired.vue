@@ -8,7 +8,8 @@
 
             <div class="card">
                 <div class="card-body">
-                    <p>In order to book a class, you need to verify your email address first</p>
+                    <p>In order to book a class, you need to verify your email address first. Please check your email inbox.</p>
+                    <p>If you did not receive a verification email, you can resend it by pressing the button below.</p>
 
                     <div class="row m-auto">
                         <b-button @click="resendVerificationEmail()" class="button-color-wave" type="button" variant="primary" :disabled="disabled">Resend email</b-button>
