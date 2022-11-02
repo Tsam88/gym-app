@@ -4,15 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-use App\Exceptions\NotActiveUserException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
-use App\Libraries\Constants\LocationConstants;
 use App\Models\GymClass;
-use App\Models\Language;
-use App\Models\UserSetting;
-use App\Models\UserType;
-use App\Rules\CheckPassword;
 use App\Validators\GymClassValidation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
@@ -103,7 +95,7 @@ class GymClassService
     /**
      * Update a subscription plan.
      *
-     * @param array $input SubscriptionPlan data
+     * @param array $input GymClass data
      * @param GymClass $gymClass
      *
      * @return void

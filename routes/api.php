@@ -1,8 +1,5 @@
 <?php
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\UserController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,15 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-//UserAuthController::get();
-
-//Route::post('/register', 'UserAuthController@register');
-//Route::post('/register', 'App\Http\Controllers\Auth\UserAuthController@register')->name('users.register');
-//Route::post('/login', 'App\Http\Controllers\Auth\UserAuthController@login')->name('users.login');
 Route::post('users/register', 'AuthController@register')->name('users.register');
 Route::post('users/login', 'AuthController@login')->name('users.login');
 Route::get('email/verify/{id}/{hash}', 'AuthController@verifyEmail')->name('users.verify');
@@ -36,69 +24,9 @@ Route::group(['prefix' => 'calendar'], function () {
     Route::get('/week', 'WeekDayController@weekCalendar')->name('week-days.week-calendar');
 });
 
-//Route::get('/email/verify', function () {
-//    return view('auth.verify-email');
-//})->middleware('auth')->name('verification.notice');
-
-//Route::group(['middleware' => ['auth']], function() {
-//Route::group(['middleware' => ['auth:api']], function() {
-    /**
-     * Verification Routes
-     */
-//    Route::get('/email/verify', function () {
-//        return view('emails.emailVerificationEmail');
-//    })->middleware('auth')->name('verification.email-ver-notice');
-
-
-
-
-    Route::get('/email/verify', 'VerificationController@show')->name('verification.notice');
-//    Route::get('/email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify')->middleware(['signed']);
-    Route::post('/email/resend', 'VerificationController@resend')->name('verification.resend');
-
-
-
-
-
-//    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-//        $request->fulfill();
-//
-//        return redirect('/home');
-//    })->middleware(['auth', 'signed'])->name('verification.verify');
-
-
-    //only verified account can access with this group
-    Route::group(['middleware' => ['verified']], function() {
-        /**
-         * Dashboard Routes
-         */
-        Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
-    });
-//});
-
-////only authenticated can access this group
-//Route::group(['middleware' => ['auth']], function() {
-//    //only verified account can access with this group
-//    Route::group(['middleware' => ['verified']], function() {
-//        /**
-//         * Dashboard Routes
-//         */
-//        Route::get('/dashboard', 'DashboardController@index')->name('dashboard.index');
-//    });
-//});
-
-
-//Route::post('/login',[App\Http\Controllers\Auth\UserAuthController::class,'login']);
-//Route::resource('/user',AuthController::class)->middleware('auth');
-
-//Route::post('users/register', [AuthController::class, 'register'])->name('users.register');
-//Route::post('users/login', [AuthController::class, 'login'])->name('users.login');
-
 Route::group(['middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'users'], function () {
-//        Route::get('profile', [UserController::class, 'profile'])->name('users.get-profile');
         Route::get('profile', 'UserController@profile')->name('users.get-profile');
-//        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
         Route::patch('profile', 'UserController@update')->name('users.update-profile');
         Route::patch('password', 'UserController@updatePassword')->name('users.update-password');
         Route::patch('update-email', 'UserController@updateEmail')->name('users.update-email');
@@ -131,15 +59,11 @@ Route::group(['prefix' => 'subscription-plans'], function () {
 });
 
 Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
-//Route::group(['middleware' => ['auth:api']], function () {
     Route::group(['prefix' => 'admin'], function () {
         // users
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', 'UserController@index')->name('users.index');
             Route::get('{user}', 'Admin\AdminUserController@show')->name('admin.users.show');
-//        Route::get('profile', 'App\Http\Controllers\UserController@profile')->name('users.get-profile');
-//        Route::delete('users/delete', 'UserController@deleteUser')->name('users.destroy');
-//        Route::get('users/permissions', 'UserController@getPermissions')->name('users.get-permissions');
         });
         // gym classes
         Route::group(['prefix' => 'gym-classes'], function () {
@@ -177,7 +101,13 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
         Route::group(['prefix' => 'calendar'], function () {
             Route::get('/', 'Admin\AdminWeekDayController@adminCalendar')->name('admin.calendar.adminCalendar');
         });
+        // excluded calendar dates
+        Route::group(['prefix' => 'excluded-calendar-dates'], function () {
+            Route::get('/', 'Admin\ExcludedCalendarDateController@index')->name('admin.excluded-calendar-dates.index');
+            Route::post('/', 'Admin\ExcludedCalendarDateController@store')->name('admin.excluded-calendar-dates.store');
+            Route::patch('{excludedCalendarDate}', 'Admin\ExcludedCalendarDateController@update')->name('admin.excluded-calendar-dates.update');
+            Route::get('{excludedCalendarDate}', 'Admin\ExcludedCalendarDateController@show')->name('admin.excluded-calendar-dates.show');
+            Route::delete('{excludedCalendarDate}', 'Admin\ExcludedCalendarDateController@delete')->name('admin.excluded-calendar-dates.delete');
+        });
     });
 });
-
-//Route::apiResource('/employee', 'EmployeeController')->middleware('auth:api');

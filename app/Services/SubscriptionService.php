@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Exceptions\UserAlreadyHasSubscriptionOnTheseDatesException;
 use App\Libraries\ReservationSubscriptionHelper;
-use App\Models\Reservation;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use App\Validators\SubscriptionValidation;

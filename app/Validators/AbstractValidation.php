@@ -5,10 +5,7 @@ declare(strict_types = 1);
 namespace App\Validators;
 
 use App\Exceptions\InternalServerErrorException;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Validator as ValidatorFacade;
-//use Illuminate\Validation\Validator;
 use Illuminate\Contracts\Validation\Validator;
 
 class AbstractValidation
@@ -55,99 +52,5 @@ class AbstractValidation
         }
 
         return $rule;
-    }
-
-    /**
-     * Update if exist a property on a model.
-     *
-     * @param array  $data     Data to check property existence
-     * @param string $property Property to update
-     * @param Model  $model    Model to update the property
-     *
-     * @return void
-     */
-    protected function updateIfExist(array $data, string $property, Model $model)
-    {
-        $model->$property = \array_key_exists($property, $data) ? $data[$property] : $model->$property;
-    }
-
-    /**
-     * Array map data from a model
-     *
-     * @param Model  $model            Model to map
-     * @param string $transPlaceholder Translate Placeholder
-     *
-     * @return array
-     */
-    protected function mapModelRelation(Model $model, string $transPlaceholder): array
-    {
-        $availableTypes = $model::select('id', 'name')->get()->toArray();
-        $types = \array_map(function ($value) use ($transPlaceholder) {
-            return [
-                'id' => $value['id'],
-                'type' => $value['name'],
-                'type_description' => Lang::get(sprintf('%s.%s', $transPlaceholder, $value['name'])),
-            ];
-        }, $availableTypes);
-
-        return $types;
-    }
-
-    /**
-     * Array map data from an array
-     *
-     * @param array  $availableTypes   Array values to map
-     * @param string $transPlaceholder Translate Placeholder
-     *
-     * @return array
-     */
-    protected function mapArrayRelation(array $availableTypes, string $transPlaceholder): array
-    {
-        $types = \array_map(function ($value) use ($transPlaceholder) {
-            return [
-                'type' => $value,
-                'type_description' => Lang::get(sprintf('%s.%s', $transPlaceholder, $value)),
-            ];
-        }, $availableTypes);
-
-        return $types;
-    }
-
-    /**
-     * Get all the existing identifiers for the given model.
-     *
-     * @param Model       $model
-     * @param array|null  $filters
-     * @param array|null  $without
-     * @param string|null $keyName
-     *
-     * @return array
-     */
-    protected function getModelIdentifiers(Model $model, ?array $filters = [], ?array $without = [], ?string $keyName = null): array
-    {
-        $keyName = $keyName ?? $model->getKeyName();
-
-        $identifiers = $model::select($keyName);
-
-        // check if we have filters
-        if (!empty($filters)) {
-            // keep it simple
-            // if for any reason we need something more complicated
-            // create a new function
-            foreach ($filters as $property => $value) {
-                $identifiers->where($property, $value);
-            }
-        }
-
-        // don't load relationships
-        if (!empty($without)) {
-            $identifiers->without($without);
-        }
-
-        $identifiers = $identifiers->get()
-            ->pluck($keyName)
-            ->toArray();
-
-        return $identifiers;
     }
 }

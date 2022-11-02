@@ -4,11 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Validators;
 
-use App\Exceptions\DeleteUserHasParcelsException;
-use App\Exceptions\NotActiveUserException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
-
 class SubscriptionPlanValidation extends AbstractValidation
 {
     /**

@@ -4,18 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
-use App\Exceptions\DeleteUserHasParcelsException;
-use App\Exceptions\NotActiveUserException;
-use App\Exceptions\NotFoundException;
-use App\Exceptions\NotVerifiedUserException;
-use App\Libraries\Constants\LocationConstants;
-use App\Models\GymClass;
-use App\Models\Language;
 use App\Models\SubscriptionPlan;
-use App\Models\User;
-use App\Models\UserSetting;
-use App\Models\UserType;
-use App\Rules\CheckPassword;
 use App\Validators\SubscriptionPlanValidation;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;

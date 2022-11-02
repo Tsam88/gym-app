@@ -108,8 +108,6 @@ class UserService
         // commit database changes
         DB::commit();
 
-//        UserRegisterEvent::dispatch($user);
-
         return [
             'token' => $token,
             'user' => $user

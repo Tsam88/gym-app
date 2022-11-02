@@ -77,7 +77,7 @@ class AdminSubscriptionPlanController extends Controller
     /**
      * Update subscription plan
      *
-     * @param Request $request
+     * @param Request          $request
      * @param SubscriptionPlan $subscriptionPlan
      *
      * @return Response

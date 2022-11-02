@@ -57,4 +57,14 @@ class GymClass extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    /**
+     * Many to Many association for ExcludedCalendarDate
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function excludedCalendarDates()
+    {
+        return $this->belongsToMany(GymClass::class)->withTimestamps();
+    }
 }
