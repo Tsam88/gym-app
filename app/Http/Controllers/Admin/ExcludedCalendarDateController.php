@@ -7,8 +7,11 @@ use App\Http\Resources\ExcludedCalendarDate\ExcludedCalendarDates;
 use App\Http\Resources\ExcludedCalendarDate\ExcludedCalendarDateSingle;
 use App\Models\ExcludedCalendarDate;
 use App\Services\ExcludedCalendarDateService;
+use App\Services\ReservationService;
+use App\Services\SubscriptionService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ExcludedCalendarDateController extends Controller
 {
@@ -17,9 +20,21 @@ class ExcludedCalendarDateController extends Controller
      */
     private $excludedCalendarDateService;
 
-    public function __construct(ExcludedCalendarDateService $excludedCalendarDateService)
+    /**
+     * @var SubscriptionService
+     */
+    private $subscriptionService;
+
+    /**
+     * @var ReservationService
+     */
+    private $reservationService;
+
+    public function __construct(ExcludedCalendarDateService $excludedCalendarDateService, SubscriptionService $subscriptionService, ReservationService $reservationService)
     {
         $this->excludedCalendarDateService = $excludedCalendarDateService;
+        $this->subscriptionService = $subscriptionService;
+        $this->reservationService = $reservationService;
     }
 
     /**
@@ -68,11 +83,33 @@ class ExcludedCalendarDateController extends Controller
         // get the payload
         $data = $request->post();
 
-        // create reservation
-        $reservation = $this->excludedCalendarDateService->create($data);
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            // create excluded calendar date
+            $excludedCalendarDate = $this->excludedCalendarDateService->create($data);
+
+            // extend subscription based on "excluded calendar dates"
+            if ($excludedCalendarDate->extend_subscription) {
+                $this->subscriptionService->extendSubscriptions($excludedCalendarDate->start_date, $excludedCalendarDate->end_date);
+            }
+
+            // decline reservations that are included in the "excluded calendar dates"
+            $this->reservationService->declineReservationsOfGymClassWithinDateRange($excludedCalendarDate->start_date, $excludedCalendarDate->end_date, $data['gym_class_ids']);
+
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
 
         $response = new Response(null, Response::HTTP_CREATED);
-        $response->headers->set('Location', route('admin.reservations.show', ['reservation' => $reservation]));
+        $response->headers->set('Location', route('admin.excluded-calendar-dates.show', ['excludedCalendarDate' => $excludedCalendarDate]));
 
         return $response;
     }
@@ -95,8 +132,34 @@ class ExcludedCalendarDateController extends Controller
             return new Response(null, Response::HTTP_NO_CONTENT);
         }
 
-        // update excluded calendar date
-        $this->excludedCalendarDateService->update($data, $excludedCalendarDate);
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            // remove days of subscription based on "excluded calendar dates"
+            if ($excludedCalendarDate->extend_subscription) {
+                $this->subscriptionService->removeDaysExtensionFromSubscriptions($excludedCalendarDate->start_date, $excludedCalendarDate->end_date);
+            }
+
+            // update excluded calendar date
+            $this->excludedCalendarDateService->update($data, $excludedCalendarDate);
+
+            // extend subscription based on "excluded calendar dates"
+            if ($excludedCalendarDate->extend_subscription) {
+                $this->subscriptionService->extendSubscriptions($excludedCalendarDate->start_date, $excludedCalendarDate->end_date);
+            }
+
+            // decline reservations that are included in the "excluded calendar dates"
+            $this->reservationService->declineReservationsOfGymClassWithinDateRange($excludedCalendarDate->start_date, $excludedCalendarDate->end_date, $data['gym_class_ids']);
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }
@@ -110,7 +173,26 @@ class ExcludedCalendarDateController extends Controller
      */
     public function delete(ExcludedCalendarDate $excludedCalendarDate)
     {
-        $this->excludedCalendarDateService->delete($excludedCalendarDate);
+        // start db transaction
+        DB::beginTransaction();
+
+        try {
+            // remove days of subscription based on "excluded calendar dates"
+            if ($excludedCalendarDate->extend_subscription) {
+                $this->subscriptionService->removeDaysExtensionFromSubscriptions($excludedCalendarDate->start_date, $excludedCalendarDate->end_date);
+            }
+
+            // delete excluded calendar date
+            $this->excludedCalendarDateService->delete($excludedCalendarDate);
+        } catch (\Exception $e) {
+            // something went wrong, rollback and throw same exception
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // commit database changes
+        DB::commit();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
     }

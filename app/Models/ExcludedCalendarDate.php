@@ -14,6 +14,7 @@ class ExcludedCalendarDate extends Model
     protected $casts = [
         'start_date' => 'date:Y-m-d',
         'end_date' => 'date:Y-m-d',
+        'extend_subscription' => 'boolean',
     ];
 
     /**
@@ -24,6 +25,7 @@ class ExcludedCalendarDate extends Model
     protected $fillable = [
         'start_date',
         'end_date',
+        'extend_subscription',
     ];
 
     /**

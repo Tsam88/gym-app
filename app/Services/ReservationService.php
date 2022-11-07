@@ -214,6 +214,7 @@ class ReservationService
         try {
             $now = Carbon::now('Europe/Athens');
             $reservationDate = Carbon::parse($reservation->date, 'Europe/Athens');
+            $reservationUpdatedAt = Carbon::parse($reservation->updated_at)->setTimezone('Europe/Athens');
 
             // check if reservation date has passed
             if ($now > $reservationDate) {
@@ -225,11 +226,15 @@ class ReservationService
                 throw new ReservationAlreadyCanceledException();
             }
 
-            // calculate hours before the reservation date
+            // calculate hours between "now" and "reservation date"
             $hoursBeforeReservationDate = $reservationDate->diffInHours($now);
 
-            // check if the hours are less than the allowed hours to cancel the reservation
-            if ($hoursBeforeReservationDate < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE) {
+            // calculate hours between "updated_at" and "reservation date"
+            $hoursBeforeReservationUpdatedAt = $reservationDate->diffInHours($reservationUpdatedAt);
+
+            // check if the hours between "now" and "reservation date" are less than the allowed hours before the reservation date
+            // and the hours between "updated_at" and "reservation date" are less than the allowed hours before the reservation date
+            if ($hoursBeforeReservationDate < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE && $hoursBeforeReservationUpdatedAt < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_UPDATED_AT) {
                 throw new ReservationCancellationIsNotAllowedException;
             }
 
@@ -502,13 +507,61 @@ class ReservationService
     }
 
     /**
-     * Decline a reservation
+     * get pending reservations within the given date range for a specific gym class
+     *
+     * @param string $startDate
+     * @param string $endDate
+     * @param array  $gymClassIds
+     *
+     * @return Collection
+     */
+    private function getPendingReservationsOfGymClassWithinDateRange(string $startDate, string $endDate, array $gymClassIds): Collection
+    {
+        $now = Carbon::now('Europe/Athens');
+        $startDate = Carbon::parse($startDate, 'Europe/Athens')->startOfDay();
+        $endDate = Carbon::parse($endDate, 'Europe/Athens')->endOfDay();
+
+        $pendingReservations = Reservation::when(!in_array(-1, $gymClassIds), function ($query) use ($gymClassIds) {
+                $query->whereIn('gym_class_id', $gymClassIds);
+            })
+            ->whereBetween('date', [$startDate, $endDate])
+            ->where('date', '>=', $now)
+            ->where('canceled', false)
+            ->where('declined', false)
+            ->get();
+
+        return $pendingReservations;
+    }
+
+    /**
+     * decline reservations within the given date range for a specific gym class
+     *
+     * @param string $startDate
+     * @param string $endDate
+     * @param array  $gymClassIds
+     *
+     * @return void
+     */
+    public function declineReservationsOfGymClassWithinDateRange(string $startDate, string $endDate, array $gymClassIds): void
+    {
+        // get pending reservations within the given date range
+        $pendingReservations = $this->getPendingReservationsOfGymClassWithinDateRange($startDate, $endDate, $gymClassIds);
+
+        // decline all pending reservations before deleting the selected week days
+        foreach ($pendingReservations as $pendingReservation) {
+            $this->decline($pendingReservation);
+        }
+    }
+
+    /**
+     * Send email for declined reservation
      *
      * @param Reservation $reservation
      *
      * @return void
      */
-    public function sendDeclineEmail(Reservation $reservation) {
+    public function sendDeclineEmail(Reservation $reservation): void
+    {
 
         $this->declineEmail->data = [
             'gym_class_name' => $reservation->gymClass->name,

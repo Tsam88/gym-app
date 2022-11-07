@@ -17,7 +17,6 @@ class ReservationSubscriptionHelper
      * @param string   $startsAt
      * @param string   $expiresAt
      * @param int|null $excludedSubscriptionId
-     * @param bool     $lastReservationDate
      *
      * @return bool
      */

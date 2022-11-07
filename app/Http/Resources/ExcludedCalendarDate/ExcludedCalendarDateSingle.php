@@ -30,6 +30,7 @@ class ExcludedCalendarDateSingle extends JsonResource
             'id' => $parent['id'],
             'start_date' => $parent['start_date'],
             'end_date' => $parent['end_date'],
+            'extend_subscription' => $parent['extend_subscription'],
             'gym_classes' => $gymClasses,
         ];
     }

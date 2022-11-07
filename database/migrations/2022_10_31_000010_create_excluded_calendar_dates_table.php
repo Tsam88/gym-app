@@ -17,6 +17,7 @@ class CreateExcludedCalendarDatesTable extends Migration
             $table->id();
             $table->dateTime('start_date')->index();
             $table->dateTime('end_date')->index();
+            $table->boolean('extend_subscription')->default(false);;
             $table->timestamps();
         });
     }

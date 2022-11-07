@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     public const ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE = 12;
+    public const ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_UPDATED_AT = 4;
 
     /**
      * The attributes that should be cast to native types.

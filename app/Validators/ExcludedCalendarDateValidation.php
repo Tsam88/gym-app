@@ -30,6 +30,10 @@ class ExcludedCalendarDateValidation extends AbstractValidation
             'required',
             'date',
         ],
+        'extend_subscription' => [
+            'required',
+            'boolean',
+        ],
         'items_per_page' => [
             'integer',
             'gt:0',
@@ -70,6 +74,7 @@ class ExcludedCalendarDateValidation extends AbstractValidation
             'gym_class_ids' => $this->getRule(self::VALIDATION_RULES, 'gym_class_ids', []),
             'start_date' => $this->getRule(self::VALIDATION_RULES, 'start_date', []),
             'end_date' => $this->getRule(self::VALIDATION_RULES, 'end_date', []),
+            'extend_subscription' => $this->getRule(self::VALIDATION_RULES, 'extend_subscription', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
@@ -92,6 +97,7 @@ class ExcludedCalendarDateValidation extends AbstractValidation
             'gym_class_ids' => $this->getRule(self::VALIDATION_RULES, 'gym_class_ids', []),
             'start_date' => $this->getRule(self::VALIDATION_RULES, 'start_date', []),
             'end_date' => $this->getRule(self::VALIDATION_RULES, 'end_date', []),
+            'extend_subscription' => $this->getRule(self::VALIDATION_RULES, 'extend_subscription', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

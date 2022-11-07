@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
+use App\Exceptions\ExcludedDatesCoincideWithAnotherExcludedDateException;
+use App\Exceptions\ExcludedStartDateIsEarlierThanTodayException;
 use App\Models\ExcludedCalendarDate;
 use App\Models\GymClass;
 use App\Validators\ExcludedCalendarDateValidation;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -79,6 +82,18 @@ class ExcludedCalendarDateService
         DB::beginTransaction();
 
         try {
+            $today = Carbon::today('Europe/Athens');
+            $excludedStartDate = Carbon::parse($data['start_date'], 'Europe/Athens');
+
+            // check if excluded start date is earlier than today
+            if ($excludedStartDate < $today) {
+                throw new ExcludedStartDateIsEarlierThanTodayException();
+            }
+
+            // check if the excluded calendar dates have conflict with existed excluded calendar dates, for the given gym classes
+            $this->hasConflictWithOtherExcludedCalendarDateForTheGivenGymClasses($data['start_date'], $data['end_date'], $data['gym_class_ids'], null);
+
+            // create excluded calendar dates
             $excludedCalendarDate = ExcludedCalendarDate::create($data);
 
             $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
@@ -114,6 +129,18 @@ class ExcludedCalendarDateService
         DB::beginTransaction();
 
         try {
+            $today = Carbon::today('Europe/Athens');
+            $excludedStartDate = Carbon::parse($data['start_date'], 'Europe/Athens');
+
+            // check if excluded start date is earlier than today
+            if ($excludedStartDate < $today) {
+                throw new ExcludedStartDateIsEarlierThanTodayException();
+            }
+
+            // check if the excluded calendar dates have conflict with existed excluded calendar dates, for the given gym classes
+            $this->hasConflictWithOtherExcludedCalendarDateForTheGivenGymClasses($data['start_date'], $data['end_date'], $data['gym_class_ids'], $excludedCalendarDate->id);
+
+            // update excluded calendar dates
             $excludedCalendarDate->update($data);
 
             $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
@@ -153,5 +180,42 @@ class ExcludedCalendarDateService
 
         // commit database changes
         DB::commit();
+    }
+
+    /**
+     * Delete excluded calendar date
+     *
+     * @param string    $excludedStartDate
+     * @param string    $excludedEndDate
+     * @param array     $gymClassIds
+     * @param int|null  $excludedCalendarDateIdToIgnore
+     *
+     * @return void
+     */
+    public function hasConflictWithOtherExcludedCalendarDateForTheGivenGymClasses(string $excludedStartDate, string $excludedEndDate, array $gymClassIds, ?int $excludedCalendarDateIdToIgnore): void
+    {
+        foreach ($gymClassIds as $gymClassId) {
+            $hasConflictWithOtherExcludedCalendarDate = ExcludedCalendarDate::whereHas('gymClasses', function ($query) use ($gymClassId) {
+                    return $query->where('id', $gymClassId);
+                })
+                ->where(function ($query) use ($excludedStartDate, $excludedEndDate) {
+                    $query->WhereBetween('start_date', [$excludedStartDate, $excludedEndDate])
+                        ->orWhereBetween('end_date', [$excludedStartDate, $excludedEndDate])
+                        ->orWhere(function ($query) use ($excludedStartDate, $excludedEndDate) {
+                            $query->where('start_date', '<=', $excludedStartDate)
+                                ->Where('end_date', '>=', $excludedEndDate);
+                        });
+                })
+                ->when(!empty($excludedCalendarDateIdToIgnore), function ($query) use ($excludedCalendarDateIdToIgnore) {
+                    $query->where('id', '!=', $excludedCalendarDateIdToIgnore);
+                })
+                ->exists();
+
+            if ($hasConflictWithOtherExcludedCalendarDate) {
+                $gymClass = GymClass::where('id', $gymClassId)->first();
+
+                throw new ExcludedDatesCoincideWithAnotherExcludedDateException($gymClass->name);
+            }
+        }
     }
 }

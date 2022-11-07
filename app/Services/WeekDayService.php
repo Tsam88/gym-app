@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Services;
 
+use App\Libraries\ExcludedCalendarDatesHelper;
 use App\Libraries\ReservationGymClassHelper;
 use App\Models\GymClass;
 use App\Models\Reservation;
@@ -33,11 +34,17 @@ class WeekDayService
      */
     private $reservationGymClassHelper;
 
+    /**
+     * @var ExcludedCalendarDatesHelper
+     */
+    private $excludedCalendarDatesHelper;
 
-    public function __construct(WeekDayValidation $weekDayValidation, ReservationGymClassHelper $reservationGymClassHelper)
+
+    public function __construct(WeekDayValidation $weekDayValidation, ReservationGymClassHelper $reservationGymClassHelper, ExcludedCalendarDatesHelper $excludedCalendarDatesHelper)
     {
         $this->weekDayValidation = $weekDayValidation;
         $this->reservationGymClassHelper = $reservationGymClassHelper;
+        $this->excludedCalendarDatesHelper = $excludedCalendarDatesHelper;
     }
 
     /**
@@ -124,6 +131,7 @@ class WeekDayService
     {
         $weekCalendar = $this->getWeekCalendar();
         $period = $this->getPeriodForCalendar();
+        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getAllIndividualExcludedCalendarDatesForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
 
         $calendar = [];
         foreach ($period as $date) {
@@ -138,7 +146,7 @@ class WeekDayService
 
             $dayName = strtoupper($date->dayName);
 
-            if (!isset($weekCalendar[$dayName])) {
+            if (!isset($weekCalendar[$dayName]) || in_array($date->format('Y-m-d'), $excludedCalendarDates)) {
                 continue;
             }
 
@@ -204,6 +212,7 @@ class WeekDayService
     {
         $weekCalendar = $this->getWeekCalendar();
         $period = $this->getPeriodForCalendar();
+        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getAllIndividualExcludedCalendarDatesForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
 
         $calendar = [];
         foreach ($period as $date) {
@@ -218,7 +227,7 @@ class WeekDayService
 
             $dayName = strtoupper($date->dayName);
 
-            if (!isset($weekCalendar[$dayName])) {
+            if (!isset($weekCalendar[$dayName]) || in_array($date->format('Y-m-d'), $excludedCalendarDates)) {
                 continue;
             }
 
