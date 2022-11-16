@@ -458,9 +458,14 @@ section {
 }
 .student-calendar a {
     background-color: #04646a !important;
-    font-size: 14px;
+    font-size: 13.5px;
     position: relative;
     padding-right: 19px !important;
+}
+.calendar-item-time {
+    border-right: 1px solid #ffffff;
+    padding-right: 4px;
+    margin-right: 4px;
 }
 .student-calendar .day {
     background-color: #0c1f32;
@@ -504,6 +509,9 @@ section {
 @media (max-width:991px) {
     .student-calendar .display-4 {
         font-size: 1.5rem;
+    }
+    .student-calendar a {
+        font-size: 14px;
     }
     .student-calendar .day {
         background-color: #0c1f32;
