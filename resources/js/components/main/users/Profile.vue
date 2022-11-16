@@ -108,7 +108,8 @@
                                     </b-col>
                                 </b-row>
 
-                                <b-row v-if="subscription.unlimited_sessions === true" class="my-3">
+<!--                                <b-row v-if="subscription.unlimited_sessions === true" class="my-3">-->
+                                <b-row class="my-3">
                                     <b-col class="col-5 col-sm-4 col-md-5 col-xl-4 col-xxl-5">
                                         <span>Expiring date: </span>
                                     </b-col>

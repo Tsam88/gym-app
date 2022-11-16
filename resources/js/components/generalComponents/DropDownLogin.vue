@@ -3,6 +3,12 @@
     <div>
         <b-dropdown id="dropdown-form" class="dropdown-login px-1" right :text="user ? user.name : 'Sign in'" ref="dropdown">
             <div v-if="user">
+                <a v-if="auth.isAdmin()" href="/admin">
+                    <b-dropdown-item-button class="color-wave">Admin</b-dropdown-item-button>
+                </a>
+                <a v-if="auth.isAdmin()" href="/">
+                    <b-dropdown-item-button class="color-wave">Home</b-dropdown-item-button>
+                </a>
                 <a href="/profile">
                     <b-dropdown-item-button class="color-wave">Profile</b-dropdown-item-button>
                 </a>
@@ -45,7 +51,7 @@
                     <b-dropdown-item-button class="color-wave">New around here? Sign up</b-dropdown-item-button>
                 </a>
                 <a href="/forgot-password">
-                    <b-dropdown-item-button class="secondary-color-wave">Forgot Password?</b-dropdown-item-button>
+                    <b-dropdown-item-button class="secondary-color-wave">Forgot password?</b-dropdown-item-button>
                 </a>
             </div>
         </b-dropdown>

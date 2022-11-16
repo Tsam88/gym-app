@@ -59,8 +59,8 @@
                             <li v-for="(user, modalGymClassUsersIndex) in modalGymClass.users" class="list-group-item">
                                 <span>{{user.user_name}} {{user.user_surname}}</span>
                                 <span class="float-right">
-                                    <b-button v-if="user.declined === true" @click="acceptReservation(user.user_id, modalGymClassUsersIndex)" class="button-color-wave button-small-size">Book</b-button>
-                                    <b-button v-if="user.declined === false" @click="declineReservation(user.reservation_id, modalGymClassUsersIndex)" class="danger-button-color-wave button-small-size pl-6">Decline</b-button>
+                                    <b-button v-if="user.declined === true" @click="acceptReservation(user, modalGymClassUsersIndex)" class="button-color-wave button-small-size">Book</b-button>
+                                    <b-button v-if="user.declined === false" @click="declineReservation(user, modalGymClassUsersIndex)" class="danger-button-color-wave button-small-size pl-6">Decline</b-button>
                                 </span>
                             </li>
                         </ul>
@@ -242,26 +242,30 @@
 
                 this.createReservation();
             },
-            acceptReservation(userId, modalGymClassUsersIndex) {
-                this.form.user_id = userId;
-                this.createReservation(modalGymClassUsersIndex);
+            acceptReservation(user, modalGymClassUsersIndex) {
+                if (confirm('Are you sure, you want to book this class for "' + user.user_name + ' ' + user.user_surname + '"?')) {
+                    this.form.user_id = user.user_id;
+                    this.createReservation(modalGymClassUsersIndex);
+                }
             },
-            declineReservation(reservationId, modalGymClassUsersIndex) {
-                axios.post('/admin/reservations/' + reservationId + '/decline')
-                    .then((result) => {
-                        this.modalGymClass.users[modalGymClassUsersIndex].declined = true;
-                        --this.modalGymClass.number_of_reservations;
+            declineReservation(user, modalGymClassUsersIndex) {
+                if (confirm('Are you sure, you want to decline this booking for "' + user.user_name + ' ' + user.user_surname + '"?')) {
+                    axios.post('/admin/reservations/' + user.reservation_id + '/decline')
+                        .then((result) => {
+                            this.modalGymClass.users[modalGymClassUsersIndex].declined = true;
+                            --this.modalGymClass.number_of_reservations;
 
-                        // display success message
-                        this.$alertHandler.showAlert('Booking for student declined successfully', result.status);
-                    })
-                    .catch((error) => {
-                        // display error message
-                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
-                    }).finally(() => {
-                    //Perform action in always
-                    this.buildCalendar();
-                });
+                            // display success message
+                            this.$alertHandler.showAlert('Booking for student declined successfully', result.status);
+                        })
+                        .catch((error) => {
+                            // display error message
+                            this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
+                        }).finally(() => {
+                        //Perform action in always
+                        this.buildCalendar();
+                    });
+                }
             },
             handleOk(bvModalEvent) {
                 // Prevent modal from closing

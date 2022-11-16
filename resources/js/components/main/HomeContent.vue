@@ -102,7 +102,7 @@
                             <div class="ci-text">
                                 <span>STRENGTH</span>
                                 <h5>WEIGHTLIFTING</h5>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
+<!--                                <a href="#"><i class="fa fa-angle-right"></i></a>-->
                             </div>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                             <div class="ci-text">
                                 <span>TRAINING</span>
                                 <h5>CROSS TRAINING</h5>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
+<!--                                <a href="#"><i class="fa fa-angle-right"></i></a>-->
                             </div>
                         </div>
                     </div>
@@ -126,7 +126,7 @@
                             <div class="ci-text">
                                 <span>FLEXIBILITY</span>
                                 <h5>YOGA</h5>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
+<!--                                <a href="#"><i class="fa fa-angle-right"></i></a>-->
                             </div>
                         </div>
                     </div>
@@ -143,7 +143,7 @@
                         <div class="bs-text">
                             <h2>registration now to get more deals</h2>
                             <div class="bt-tips">Where health, beauty and fitness meet.</div>
-                            <a href="#" class="primary-btn  btn-normal">Appointment</a>
+                            <a href="/student-calendar#bookings" class="primary-btn  btn-normal">Book your spot</a>
                         </div>
                     </div>
                 </div>
@@ -190,22 +190,22 @@
             <div class="gallery">
                 <div class="grid-sizer"></div>
                 <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-1.jpg">
-                    <a href="images/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
                 <div class="gs-item set-bg" data-setbg="images/gallery/gallery-2.jpg">
-                    <a href="images/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
                 <div class="gs-item set-bg" data-setbg="images/gallery/gallery-3.jpg">
-                    <a href="images/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
                 <div class="gs-item set-bg" data-setbg="images/gallery/gallery-4.jpg">
-                    <a href="images/gallery/gallery-4.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-4.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
                 <div class="gs-item set-bg" data-setbg="images/gallery/gallery-5.jpg">
-                    <a href="images/gallery/gallery-5.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-5.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
                 <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-6.jpg">
-                    <a href="images/gallery/gallery-6.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>
+<!--                    <a href="images/gallery/gallery-6.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
             </div>
         </div>

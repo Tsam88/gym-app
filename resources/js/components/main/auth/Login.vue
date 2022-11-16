@@ -31,6 +31,15 @@
 
                 </div>
             </div>
+
+            <p class="text-center">
+                <a href="/sign-up" class="d-inline align-middle color-wave">New around here? Sign up</a>
+            </p>
+
+            <p class="text-center">
+                <a href="/forgot-password" class="d-inline align-middle color-wave">Forgot password?</a>
+            </p>
+
         </div>
     </div>
 

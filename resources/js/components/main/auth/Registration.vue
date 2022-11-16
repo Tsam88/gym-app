@@ -47,6 +47,11 @@
 
                 </div>
             </div>
+
+            <p class="text-center">
+                <a href="/sign-in" class="d-inline align-middle color-wave">Already have an account? Sign in</a>
+            </p>
+
         </div>
     </div>
 

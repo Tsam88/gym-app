@@ -9,7 +9,7 @@
 
             <div id="mobile-menu-wrap" @click="setActiveMobileMenuItem">
                 <nav class="canvas-menu mobile-menu">
-                    <ul>
+                    <ul id="mobile-menu-list">
                         <li>
                             <a id="home-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/'}" href="/">Home</a>
                         </li>
@@ -23,7 +23,7 @@
                             <a id="weekly-program-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/#weekly-program'}" href="/#weekly-program">Weekly Program</a>
                         </li>
                         <li>
-                            <a id="contact-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath && activeMenuItemUrlPath.includes('#contact')}" href="/#contact">Contact</a>
+                            <a id="contact-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath && activeMenuItemUrlPath.includes('#contact')}" href="#contact">Contact</a>
                         </li>
                         <li>
                             <a id="student-calendar-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/student-calendar#bookings'}" href="/student-calendar#bookings">Bookings</a>
@@ -39,6 +39,9 @@
                         </li>
                         <li v-if="!auth.user">
                             <a id="forgot-password-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/forgot-password'}" href="/forgot-password">Forgot password</a>
+                        </li>
+                        <li v-if="auth.isAdmin()">
+                            <a id="admin-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/admin'}" href="/admin">Admin</a>
                         </li>
                         <li v-if="auth.user">
                             <a id="profile-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/profile'}" href="/profile">Profile</a>
@@ -66,18 +69,17 @@
         <header class="header-section">
             <div class="container-fluid">
                 <div class="row">
-
                     <div class="col-lg-3 col-xl-2">
-                        <div class="logo">
-                            <a href="/">
+                        <a href="/">
+                            <div class="logo">
                                 <img src="images/wave_transparent_no_buffer.png" alt="">
-                            </a>
-                        </div>
-                        <b class="logo-text">
-                            <span class="color-wave">WAVE</span>
-                            <br>
-                            <span class="text-white">FITNESS PROJECT</span>
-                        </b>
+                            </div>
+                            <b class="logo-text">
+                                <span class="color-wave">WAVE</span>
+                                <br>
+                                <span class="text-white">FITNESS PROJECT</span>
+                            </b>
+                        </a>
                     </div>
 
                     <div class="col-lg-6 col-xl-8">
@@ -178,6 +180,10 @@
 
                     var baseUrl = window.location.origin;
                     this.activeMenuItemUrlPath = event.target.href.split(baseUrl).pop();
+
+                    // close mobile menu on selecting a list item
+                    $(".offcanvas-menu-wrapper").removeClass("show-offcanvas-menu-wrapper");
+                    $(".offcanvas-menu-overlay").removeClass("active");
                 }
             },
         }

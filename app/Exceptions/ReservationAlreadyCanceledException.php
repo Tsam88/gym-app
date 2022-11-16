@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 final class ReservationAlreadyCanceledException extends AbstractException
 {
     protected const DEFAULT_HTTP_CODE = Response::HTTP_CONFLICT;
-    protected const DEFAULT_ERROR_MESSAGE = 'Η κράτηση έχει ήδη ακυρωθεί.';
+//    protected const DEFAULT_ERROR_MESSAGE = 'Η κράτηση έχει ήδη ακυρωθεί';
+    protected const DEFAULT_ERROR_MESSAGE = 'Reservation has already been canceled';
     protected const DEFAULT_SEVERITY = 'info';
 }

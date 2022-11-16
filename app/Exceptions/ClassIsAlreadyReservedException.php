@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 final class ClassIsAlreadyReservedException extends AbstractException
 {
     protected const DEFAULT_HTTP_CODE = Response::HTTP_CONFLICT;
-    protected const DEFAULT_ERROR_MESSAGE = 'Έχετε κάνει ήδη κράτηση στο συγκεκριμένο τμήμα';
+//    protected const DEFAULT_ERROR_MESSAGE = 'Έχετε κάνει ήδη κράτηση στο συγκεκριμένο τμήμα';
+    protected const DEFAULT_ERROR_MESSAGE = 'You have already booked this class';
     protected const DEFAULT_SEVERITY = 'info';
 }

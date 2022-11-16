@@ -123,23 +123,25 @@
         },
         methods:{
             submitForm() {
-                this.form.number_of_students = parseInt(this.form.number_of_students);
+                if (confirm('Every reservation for deleted or updated class dates (date or time) are going to be declined and students with reservation on an old class date will receive an email for declined class! Are you sure?')) {
+                    this.form.number_of_students = parseInt(this.form.number_of_students);
 
-                axios.patch('/admin/gym-classes/' + this.id, this.form)
-                    .then((result) => {
-                        //Perform Success Action
-                        this.$router.push({ name: 'ShowGymClasses' });
+                    axios.patch('/admin/gym-classes/' + this.id, this.form)
+                        .then((result) => {
+                            //Perform Success Action
+                            this.$router.push({ name: 'ShowGymClasses' });
 
-                        // display success message
-                        this.$alertHandler.showAlert('Class updated successfully', result.status);
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                        // display error message
-                        this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
-                    }).finally(() => {
-                    //Perform action in always
-                });
+                            // display success message
+                            this.$alertHandler.showAlert('Class updated successfully', result.status);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            // display error message
+                            this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
+                        }).finally(() => {
+                        //Perform action in always
+                    });
+                }
             },
             addDate() {
                 this.form.week_days.push({day:"", start_time:null, end_time:null}); // what to push unto the rows array?

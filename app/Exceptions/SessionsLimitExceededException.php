@@ -9,6 +9,7 @@ use Illuminate\Http\Response;
 final class SessionsLimitExceededException extends AbstractException
 {
     protected const DEFAULT_HTTP_CODE = Response::HTTP_PRECONDITION_FAILED;
-    protected const DEFAULT_ERROR_MESSAGE = 'Έχετε ξεπεράσει το όριο συνεδριών';
+//    protected const DEFAULT_ERROR_MESSAGE = 'Έχετε ξεπεράσει το όριο συνεδριών';
+    protected const DEFAULT_ERROR_MESSAGE = 'You have exceeded your session limit';
     protected const DEFAULT_SEVERITY = 'info';
 }
