@@ -460,7 +460,7 @@ section {
     background-color: #04646a !important;
     font-size: 13.5px;
     position: relative;
-    padding-right: 19px !important;
+    padding-right: 24px !important;
 }
 .calendar-item-time {
     border-right: 1px solid #ffffff;
@@ -492,10 +492,10 @@ section {
 }
 .reservation-status {
     position: absolute;
-    top: 8px;
+    top: 6px;
     right: 5px;
     margin-left: 4px;
-    font-size: 14px;
+    font-size: 17px;
     font-weight: 900;
 }
 .reservation-status-reserved {
