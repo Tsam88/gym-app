@@ -67,7 +67,7 @@
 
                             <template #modal-footer="{ ok }">
                                 <b-button v-if="modalGymClass.user.has_reservation_record === false || (modalGymClass.user.has_reservation_record === true && modalGymClass.user.has_active_reservation === false)"
-                                          v-b-modal.modal-make-reservation size="sm"
+                                          v-b-modal.modal-make-reservation size="md"
                                           class="btn btn-primary"
                                           :class="[{'button-color-wave':modalGymClass.user.declined === false}, {'danger-button-color-wave':modalGymClass.user.declined === true}]"
                                           @click="createReservation" :disabled="modalGymClass.user.declined === true">
@@ -79,12 +79,12 @@
                                 </span>
                                 </b-button>
                                 <b-button v-if="modalGymClass.user.has_active_reservation === true"
-                                          v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="sm"
+                                          v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="md"
                                           @click="cancelReservation(modalGymClass.user.reservation_id)">
                                     Cancel class
                                 </b-button>
 
-                                <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
+                                <b-button class="btn btn-primary button-color-wave" size="md" @click="ok()">
                                     OK
                                 </b-button>
                             </template>
