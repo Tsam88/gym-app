@@ -591,8 +591,8 @@ section {
 }
 #modal-student-calendar button {
     font-weight: 500;
-    font-size: 15px;
-    padding-top: 3px;
+    font-size: 14px;
+    padding-top: 4px;
 }
 #modal-student-calendar p,
 #modal-student-calendar .modal-info b {
