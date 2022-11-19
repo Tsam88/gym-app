@@ -454,7 +454,8 @@ section {
     border-color: #04646a !important;
 }
 .student-calendar h5 {
-    color: #04D9B2;
+    /*color: #04D9B2;*/
+    color: #ffffff;
 }
 .student-calendar a {
     background-color: #04646a !important;
@@ -488,7 +489,8 @@ section {
     /*background-color: #001526  !important;*/
 }
 .student-calendar-day-muted h5 {
-    color: #04646a !important;
+    /*color: #04646a !important;*/
+    color: #666e6e !important;
 }
 .reservation-status {
     position: absolute;
@@ -582,13 +584,15 @@ section {
     font-size: 22px;
 }
 #modal-student-calendar .modal-info {
-    font-size: 12px;
+    font-size: 13px;
 }
 #modal-student-calendar .modal-info i {
     color: #a9a9a9;
 }
 #modal-student-calendar button {
     font-weight: 500;
+    font-size: 15px;
+    padding-top: 3px;
 }
 #modal-student-calendar p,
 #modal-student-calendar .modal-info b {

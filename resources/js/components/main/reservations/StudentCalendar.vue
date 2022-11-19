@@ -37,7 +37,7 @@
 
                                 <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
                                 <font-awesome-icon v-else-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
-                                <font-awesome-icon v-else icon="fa-regular fa-circle" class="reservation-status reservation-status-reserved"/>
+                                <font-awesome-icon v-else icon="fa-regular fa-circle" class="reservation-status color-wave"/>
                             </a>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
 
                             <template #modal-footer="{ ok }">
                                 <b-button v-if="modalGymClass.user.has_reservation_record === false || (modalGymClass.user.has_reservation_record === true && modalGymClass.user.has_active_reservation === false)"
-                                          v-b-modal.modal-make-reservation size="md"
+                                          v-b-modal.modal-make-reservation size="sm"
                                           class="btn btn-primary"
                                           :class="[{'button-color-wave':modalGymClass.user.declined === false}, {'danger-button-color-wave':modalGymClass.user.declined === true}]"
                                           @click="createReservation" :disabled="modalGymClass.user.declined === true">
@@ -79,12 +79,12 @@
                                 </span>
                                 </b-button>
                                 <b-button v-if="modalGymClass.user.has_active_reservation === true"
-                                          v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="md"
+                                          v-b-modal.modal-make-reservation class="btn btn-primary danger-button-color-wave" size="sm"
                                           @click="cancelReservation(modalGymClass.user.reservation_id)">
                                     Cancel class
                                 </b-button>
 
-                                <b-button class="btn btn-primary button-color-wave" size="md" @click="ok()">
+                                <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
                                     OK
                                 </b-button>
                             </template>
