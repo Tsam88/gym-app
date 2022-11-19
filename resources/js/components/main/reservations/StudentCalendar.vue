@@ -33,9 +33,11 @@
                                 <span class="col-1"></span>
                             </h5>
                             <a v-for="gym_class in calendarDate.gym_classes" @click="buildModal(calendarDate, gym_class)" v-b-modal.modal-student-calendar class="event d-block p-1 pl-2 pr-2 mb-2 rounded text-truncate small bg-success text-white" :title="gym_class.gym_class_name">
-                                <span class="calendar-item-time">{{gym_class.start_time}}</span>{{gym_class.gym_class_name}}
+                                <span class="calendar-item-time">{{gym_class.start_time}}</span><span>{{gym_class.gym_class_name}}</span>
+
                                 <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
-                                <font-awesome-icon v-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
+                                <font-awesome-icon v-else-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
+                                <font-awesome-icon v-else icon="fa-regular fa-circle" class="reservation-status reservation-status-reserved"/>
                             </a>
                         </div>
                     </div>
@@ -72,7 +74,7 @@
                                 <span v-if="modalGymClass.user.declined === false">
                                     Book this class
                                 </span>
-                                    <span v-else>
+                                <span v-else>
                                     Declined
                                 </span>
                                 </b-button>

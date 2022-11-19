@@ -46,6 +46,12 @@
                         <li v-if="auth.user">
                             <a id="profile-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/profile'}" href="/profile">Profile</a>
                         </li>
+                        <li v-if="auth.user">
+                            <a id="change-password-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/change-password'}" href="/change-password">Change password</a>
+                        </li>
+                        <li v-if="auth.user">
+                            <a id="change-email-mobile-menu-item" :class="{'color-wave':activeMenuItemUrlPath === '/change-email'}" href="/change-email">Change email</a>
+                        </li>
                     </ul>
                 </nav>
             </div>
