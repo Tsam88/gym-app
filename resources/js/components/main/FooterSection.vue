@@ -38,7 +38,7 @@
                         <h4 class="text-white">Our Location</h4>
                         <div class="row mt-3">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12583.184824313146!2d23.7250783!3d37.9585442!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x5d4a0035f4809d12!2sWave%20Fitness%20Project!5e0!3m2!1sel!2sgr!4v1666541741905!5m2!1sel!2sgr"
-                                    width="300" height="160" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                    width="300" height="160" style="border:0;" scrolling="yes" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
                             </iframe>
                         </div>
                     </div>
