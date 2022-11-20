@@ -46,6 +46,7 @@ class ExcludedCalendarDateService
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
         $excludedCalendarDates = ExcludedCalendarDate::with('gymClasses')
+            ->orderBy('start_date')
             ->paginate($itemsPerPage);
 
         return $excludedCalendarDates;
@@ -196,7 +197,7 @@ class ExcludedCalendarDateService
     {
         foreach ($gymClassIds as $gymClassId) {
             $hasConflictWithOtherExcludedCalendarDate = ExcludedCalendarDate::whereHas('gymClasses', function ($query) use ($gymClassId) {
-                    return $query->where('id', $gymClassId);
+                    return $query->where('gym_classes.id', $gymClassId);
                 })
                 ->where(function ($query) use ($excludedStartDate, $excludedEndDate) {
                     $query->WhereBetween('start_date', [$excludedStartDate, $excludedEndDate])

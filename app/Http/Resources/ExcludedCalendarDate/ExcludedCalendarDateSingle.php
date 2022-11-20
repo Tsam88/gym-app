@@ -18,12 +18,9 @@ class ExcludedCalendarDateSingle extends JsonResource
     {
         $parent = parent::toArray($request);
 
-        $gymClasses = [];
+        $gymClassIds = [];
         foreach ($parent['gym_classes'] as $gymClass) {
-            $gymClasses[] = [
-                'id' => $gymClass['id'],
-                'name' => $gymClass['name'],
-            ];
+            $gymClassIds[] = $gymClass['id'];
         }
 
         return [
@@ -31,7 +28,7 @@ class ExcludedCalendarDateSingle extends JsonResource
             'start_date' => $parent['start_date'],
             'end_date' => $parent['end_date'],
             'extend_subscription' => $parent['extend_subscription'],
-            'gym_classes' => $gymClasses,
+            'gym_class_ids' => $gymClassIds,
         ];
     }
 }

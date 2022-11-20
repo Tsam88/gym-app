@@ -41,7 +41,8 @@ class SubscriptionPlanService
         $data = $this->subscriptionPlanValidation->subscriptionPlanGetPlans($input);
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $subscriptionPlans = SubscriptionPlan::paginate($itemsPerPage);
+        $subscriptionPlans = SubscriptionPlan::orderBy('name')
+            ->paginate($itemsPerPage);
 
         return $subscriptionPlans;
     }

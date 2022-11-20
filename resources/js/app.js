@@ -51,11 +51,11 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
 import { faUser as faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCircleCheck, faCircleXmark } from '@fortawesome/free-solid-svg-icons'
-import { faCreditCard, faUser, faCalendar, faCircle } from '@fortawesome/free-regular-svg-icons'
+import { faCreditCard, faUser, faCalendar, faCircle, faCalendarXmark, faTrashCan } from '@fortawesome/free-regular-svg-icons'
 import { faTwitter, faFacebook, faStackOverflow, faGithub } from '@fortawesome/free-brands-svg-icons'
 
 /* add icons to the library */
-library.add( faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCircleCheck, faCircleXmark, faCreditCard, faUser, faCalendar, faCircle);
+library.add( faUserSolid, faHouse, faHouseUser, faDollarSign, faMobileScreenButton, faPhone, faLock, faEnvelope, faCircleCheck, faCircleXmark, faCreditCard, faUser, faCalendar, faCircle, faCalendarXmark, faTrashCan);
 
 /* add font awesome icon component */
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -95,6 +95,9 @@ import ShowSubscriptions from './components/admin/subscriptions/ShowSubscription
 import CreateSubscriptions from './components/admin/subscriptions/CreateSubscriptions.vue';
 import UpdateSubscriptions from './components/admin/subscriptions/UpdateSubscriptions.vue';
 import AdminCalendar from './components/admin/reservations/AdminCalendar.vue';
+import ShowExcludedCalendarDates from './components/admin/excludedCalendarDates/ShowExcludedCalendarDates.vue';
+import CreateExcludedCalendarDates from './components/admin/excludedCalendarDates/CreateExcludedCalendarDates.vue';
+import UpdateExcludedCalendarDates from './components/admin/excludedCalendarDates/UpdateExcludedCalendarDates.vue';
 /* GENERAL COMPONENTS */
 import DropDownLogin from './components/generalComponents/DropDownLogin.vue';
 
@@ -192,6 +195,16 @@ const router = new VueRouter({
                         // Reservations
                         {
                             path: '/admin/admin-calendar', name: 'AdminCalendar', component: AdminCalendar,
+                        },
+                        // Excluded calendar dates
+                        {
+                            path: '/admin/show-excluded-calendar-dates', name: 'ShowExcludedCalendarDates', component: ShowExcludedCalendarDates,
+                        },
+                        {
+                            path: '/admin/create-excluded-calendar-dates', name: 'CreateExcludedCalendarDates', component: CreateExcludedCalendarDates,
+                        },
+                        {
+                            path: '/admin/update-excluded-calendar-dates/:id', name: 'UpdateExcludedCalendarDates', component: UpdateExcludedCalendarDates, props: { default: true, sidebar: false }
                         },
                     ]
                 },
@@ -301,6 +314,9 @@ Vue.component('show-subscriptions', require('./components/admin/subscriptions/Sh
 Vue.component('create-subscriptions', require('./components/admin/subscriptions/CreateSubscriptions.vue').default);
 Vue.component('update-subscriptions', require('./components/admin/subscriptions/UpdateSubscriptions.vue').default);
 Vue.component('admin-calendar', require('./components/admin/reservations/AdminCalendar.vue').default);
+Vue.component('show-excluded-calendar-dates', require('./components/admin/excludedCalendarDates/ShowExcludedCalendarDates.vue').default);
+Vue.component('create-excluded-calendar-dates', require('./components/admin/excludedCalendarDates/CreateExcludedCalendarDates.vue').default);
+Vue.component('update-excluded-calendar-dates', require('./components/admin/excludedCalendarDates/UpdateExcludedCalendarDates.vue').default);
 /* GENERAL COMPONENTS */
 Vue.component('drop-down-login', require('./components/generalComponents/DropDownLogin.vue').default);
 

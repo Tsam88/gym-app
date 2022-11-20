@@ -42,6 +42,7 @@ class GymClassService
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
         $gymClasses = GymClass::with('weekDays')
+            ->orderBy('name')
             ->paginate($itemsPerPage);
 
         return $gymClasses;

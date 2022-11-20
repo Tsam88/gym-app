@@ -64,7 +64,7 @@
                         </router-link>
                     </li>
 
-                    <!--GYM CLASSES-->
+                    <!--RESERVATIONS-->
                     <li class="sidebar-header">
                         Bookings
                     </li>
@@ -73,6 +73,25 @@
                         <router-link to="/admin/admin-calendar" class="nav-link sidebar-link">
                             <font-awesome-icon icon="fa-regular fa-calendar" size="lg"/>
                             <span class="align-middle">Bookings</span>
+                        </router-link>
+                    </li>
+
+                    <!--RESERVATIONS-->
+                    <li class="sidebar-header">
+                        Excluded Calendar Dates
+                    </li>
+
+                    <li @click="selected = 'excluded_calendar_dates'" :class="{active:selected === 'excluded_calendar_dates'}" class="sidebar-item">
+                        <router-link to="/admin/show-excluded-calendar-dates" class="nav-link sidebar-link">
+                            <font-awesome-icon icon="fa-regular fa-calendar-xmark" size="lg"/>
+                            <span class="align-middle">Excluded Dates</span>
+                        </router-link>
+                    </li>
+
+                    <li @click="selected = 'create_excluded_calendar_dates'" :class="{active:selected === 'create_excluded_calendar_dates'}" class="sidebar-item">
+                        <router-link to="/admin/create-excluded-calendar-dates" class="nav-link sidebar-link">
+                            <font-awesome-icon icon="fa-regular fa-calendar-xmark" size="lg"/>
+                            <span class="align-middle">Create Excluded Dates</span>
                         </router-link>
                     </li>
 
@@ -109,7 +128,7 @@
                     <div class="row text-muted">
                         <div class="col-6 text-start">
                             <p class="mb-0">
-                                <strong>Christos Tsiamouras</strong> &copy;
+                                <strong>Christos Tsiamouras &copy;</strong>
                             </p>
                         </div>
 <!--                        <div class="col-6 text-end">-->
