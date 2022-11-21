@@ -154,7 +154,7 @@ class WeekDayService
 
             foreach ($weekCalendar[$dayName] as $key => $gymClass) {
                 // exclude gym classes for specific dates from calendar
-                if (in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
+                if (isset($excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']]) && in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
                     continue;
                 }
 
@@ -240,7 +240,7 @@ class WeekDayService
 
             foreach ($weekCalendar[$dayName] as $key => $gymClass) {
                 // exclude gym classes for specific dates from calendar
-                if (in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
+                if (isset($excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']]) && in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
                     continue;
                 }
 
