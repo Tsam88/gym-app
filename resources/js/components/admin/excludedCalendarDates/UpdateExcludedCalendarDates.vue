@@ -16,7 +16,7 @@
                                 <div class="my-3">
                                     <label for="gym_class_ids">Classes</label>
                                     <select v-model="form.gym_class_ids" id="gym_class_ids" name="gym_class_ids" class="form-select mb-3" size="5" multiple required>
-                                        <option value="-1" hidden>All classes</option>
+                                        <option value="-1">All classes</option>
                                         <option v-for="gymClass in gymClasses" :value="gymClass.id">{{gymClass.name}}</option>
                                     </select>
                                 </div>

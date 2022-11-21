@@ -131,7 +131,7 @@ class WeekDayService
     {
         $weekCalendar = $this->getWeekCalendar();
         $period = $this->getPeriodForCalendar();
-        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getAllIndividualExcludedCalendarDatesForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
+        $excludedCalendarDatesPerGymClass = $this->excludedCalendarDatesHelper->getExcludedCalendarDatesPerGymClassForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
 
         $calendar = [];
         foreach ($period as $date) {
@@ -146,13 +146,18 @@ class WeekDayService
 
             $dayName = strtoupper($date->dayName);
 
-            if (!isset($weekCalendar[$dayName]) || in_array($date->format('Y-m-d'), $excludedCalendarDates)) {
+            if (!isset($weekCalendar[$dayName])) {
                 continue;
             }
 
             $dailyGymClasses = [];
 
             foreach ($weekCalendar[$dayName] as $key => $gymClass) {
+                // exclude gym classes for specific dates from calendar
+                if (in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
+                    continue;
+                }
+
                 $gymClassDateTimeString = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
                 $gymClassDateTime = Carbon::parse($gymClassDateTimeString);
 
@@ -212,7 +217,7 @@ class WeekDayService
     {
         $weekCalendar = $this->getWeekCalendar();
         $period = $this->getPeriodForCalendar();
-        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getAllIndividualExcludedCalendarDatesForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
+        $excludedCalendarDatesPerGymClass = $this->excludedCalendarDatesHelper->getExcludedCalendarDatesPerGymClassForTheGivenDateRange($period->first()->format('Y-m-d'), $period->last()->format('Y-m-d'));
 
         $calendar = [];
         foreach ($period as $date) {
@@ -227,13 +232,18 @@ class WeekDayService
 
             $dayName = strtoupper($date->dayName);
 
-            if (!isset($weekCalendar[$dayName]) || in_array($date->format('Y-m-d'), $excludedCalendarDates)) {
+            if (!isset($weekCalendar[$dayName])) {
                 continue;
             }
 
             $dailyGymClasses = [];
 
             foreach ($weekCalendar[$dayName] as $key => $gymClass) {
+                // exclude gym classes for specific dates from calendar
+                if (in_array($date->format('Y-m-d'), $excludedCalendarDatesPerGymClass[$gymClass['gym_class_id']])) {
+                    continue;
+                }
+
                 $gymClassDateTimeString = "{$date->format('Y-m-d')} {$gymClass['start_time']}";
                 $gymClassDateTime = Carbon::parse($gymClassDateTimeString);
 

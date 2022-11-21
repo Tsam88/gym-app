@@ -25,7 +25,7 @@ class ExcludedCalendarDateService
     /**
      * @var ExcludedCalendarDateValidation
      */
-    private $gymClassValidation;
+    private $excludedCalendarDateValidation;
 
     public function __construct(ExcludedCalendarDateValidation $excludedCalendarDateValidation)
     {
@@ -97,7 +97,11 @@ class ExcludedCalendarDateService
             // create excluded calendar dates
             $excludedCalendarDate = ExcludedCalendarDate::create($data);
 
-            $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
+            if (!in_array("-1", $data['gym_class_ids'])) {
+                $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
+            } else {
+                $gymClasses = GymClass::all();
+            }
 
             $excludedCalendarDate->gymClasses()->attach($gymClasses);
         } catch (\Exception $e) {
@@ -144,7 +148,11 @@ class ExcludedCalendarDateService
             // update excluded calendar dates
             $excludedCalendarDate->update($data);
 
-            $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
+            if (!in_array("-1", $data['gym_class_ids'])) {
+                $gymClasses = GymClass::findOrFail($data['gym_class_ids']);
+            } else {
+                $gymClasses = GymClass::all();
+            }
 
             $excludedCalendarDate->gymClasses()->sync($gymClasses);
         } catch (\Exception $e) {

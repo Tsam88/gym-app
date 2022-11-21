@@ -19,9 +19,9 @@ class ExcludedCalendarDatesHelper
      *
      * @return array
      */
-    public function getAllIndividualExcludedCalendarDatesForTheGivenDateRange(string $startDate, string $endDate): array
+    public function getExcludedCalendarDatesPerGymClassForTheGivenDateRange(string $startDate, string $endDate): array
     {
-        $excludedCalendarDates = $this->getExcludedCalendarDatesForTheGivenDateRange($startDate, $endDate);
+        $excludedCalendarDates = $this->getExcludedCalendarDatesForTheGivenDateRange($startDate, $endDate, false);
 
         $allExcludedCalendarDates = [];
 
@@ -33,9 +33,13 @@ class ExcludedCalendarDatesHelper
             // set the date period
             $period = CarbonPeriod::create($excludedCalendarDateStartDate, $excludedCalendarDateEndDate);
 
+            $gymClasses = $excludedCalendarDate->gymClasses()->get();
+
             // get the days of the period
             foreach ($period as $date) {
-                $allExcludedCalendarDates[] = $date->format('Y-m-d');
+                foreach ($gymClasses as $gymClass) {
+                    $allExcludedCalendarDates[$gymClass->id][] = $date->format('Y-m-d');
+                }
             }
         }
 
@@ -50,15 +54,17 @@ class ExcludedCalendarDatesHelper
      *
      * @return Collection
      */
-    public function getExcludedCalendarDatesForTheGivenDateRange(string $startDate, string $endDate): Collection
+    public function getExcludedCalendarDatesForTheGivenDateRange(string $startDate, string $endDate, bool $onlyWithExtendSubscription): Collection
     {
-        $excludedCalendarDates = ExcludedCalendarDate::where('extend_subscription', true)
+        $excludedCalendarDates = ExcludedCalendarDate::when($onlyWithExtendSubscription === true, function ($query) {
+                $query->where('extend_subscription', true);
+            })
             ->where(function ($query) use ($startDate, $endDate) {
                 $query->WhereBetween('start_date', [$startDate, $endDate])
                     ->orWhereBetween('end_date', [$startDate, $endDate])
                     ->orWhere(function ($query) use ($startDate, $endDate) {
                         $query->where('start_date', '<=', $startDate)
-                            ->Where('end_date', '>=', $endDate);
+                            ->where('end_date', '>=', $endDate);
                     });
 //                    ->orWhere(function ($query) use ($startDate, $endDate) {
 //                        $query->where('start_date', '>=', $startDate)

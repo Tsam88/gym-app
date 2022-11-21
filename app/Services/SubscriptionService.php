@@ -318,8 +318,6 @@ class SubscriptionService
      */
     public function removeDaysExtensionFromSubscriptions(string $excludedStartDate, string $excludedEndDate): void
     {
-        // todo check if there are excluded dates when you create a new subscription for user and throw an exception
-
         $today = Carbon::today('Europe/Athens');
         $excludedStartDate = Carbon::parse($excludedStartDate, 'Europe/Athens');
         $excludedStartDate = max($today, $excludedStartDate);
@@ -357,16 +355,17 @@ class SubscriptionService
      */
     public function extendNewSubscriptionIfExcludedCalendarDatesAlreadyExist(Subscription $subscription): void
     {
-        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getExcludedCalendarDatesForTheGivenDateRange($subscription->starts_at->format('Y-m-d'), $subscription->expires_at->format('Y-m-d'));
+        $excludedCalendarDates = $this->excludedCalendarDatesHelper->getExcludedCalendarDatesForTheGivenDateRange($subscription->starts_at->format('Y-m-d'), $subscription->expires_at->format('Y-m-d'), true);
 
         $today = Carbon::today('Europe/Athens');
         $daysToExtend = 0;
 
+        // set 'Europe/Athens' timezone for starts_at and expires_at of subscription
+        $subscriptionStartsAt = Carbon::parse($subscription->starts_at->format('Y-m-d'), 'Europe/Athens');
+        $subscriptionExpiresAt = Carbon::parse($subscription->expires_at->format('Y-m-d'), 'Europe/Athens');
+
         // calculate the days to extend for every "excluded calendar date" range
         foreach ($excludedCalendarDates as $excludedCalendarDate) {
-            // set 'Europe/Athens' timezone for starts_at and expires_at of subscription
-            $subscriptionStartsAt = Carbon::parse($subscription->starts_at->format('Y-m-d'), 'Europe/Athens');
-            $subscriptionExpiresAt = Carbon::parse($subscription->expires_at->format('Y-m-d'), 'Europe/Athens');
             $excludedCalendarDateStartDate = Carbon::parse($excludedCalendarDate->start_date->format('Y-m-d'), 'Europe/Athens');
             $excludedCalendarDateEndDate = Carbon::parse($excludedCalendarDate->end_date->format('Y-m-d'), 'Europe/Athens');
 
