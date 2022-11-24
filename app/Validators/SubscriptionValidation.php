@@ -75,7 +75,8 @@ class SubscriptionValidation extends AbstractValidation
     {
         // build the rules for index
         $validationRules = [
-            'users' => $this->getRule(self::VALIDATION_RULES, 'users', []),
+//            'users' => $this->getRule(self::VALIDATION_RULES, 'users', []),
+            'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', ['sometimes']),
             'items_per_page' => $this->getRule(self::VALIDATION_RULES, 'items_per_page', ['sometimes']),
         ];
 

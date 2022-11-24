@@ -62,6 +62,9 @@ class SubscriptionService
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
         $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
+            ->when(isset($data['user_id']), function ($query) use ($data) {
+                $query->where('user_id', $data['user_id']);
+            })
             ->join('users', 'users.id', '=', 'subscriptions.user_id')
             ->orderBy('users.name', 'ASC')
             ->orderBy('users.surname', 'ASC')

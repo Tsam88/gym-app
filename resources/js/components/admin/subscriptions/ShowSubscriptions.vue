@@ -9,6 +9,14 @@
             <b-spinner class="spinner-size-default" variant="info"></b-spinner>
         </div>
 
+        <Dropdown
+            :options="usersList"
+            @selected="selectOption"
+            :disabled="false"
+            :maxItem="10"
+            placeholder="Please select an option">
+        </Dropdown>
+
         <div v-if="!isLoading" class="table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
@@ -59,30 +67,67 @@
     export default {
         data() {
             return {
+                form: {
+                    user_id: null,
+                    only_active_subscriptions: true,
+                },
+                usersList: [],
                 subscriptions: [],
                 isLoading: true,
             }
         },
         mounted() {
-            axios.get('/admin/subscriptions', this.form)
-                .then((results) => {
-                    results.data.data.forEach((value, index) => {
-                        this.subscriptions.push(value);
-                    });
-
-                    // loader
-                    this.isLoading = false;
-                })
-                .catch((error) => {
-                    console.log(error);
-                }).finally(() => {
-                //Perform action in always
-            });
+            this.getSubscriptions();
+            this.getUsers();
         },
         methods:{
+            selectOption(option) {
+                if (this.form.user_id !== option.id) {
+                    this.form.user_id = option.id;
+
+                    this.getSubscriptions();
+                }
+            },
             updateSubscription(subscriptionId) {
                 this.$router.push({ name: 'UpdateSubscriptions', params: { id: subscriptionId } })
-            }
+            },
+            getSubscriptions() {
+                // loader
+                this.isLoading = true;
+                this.subscriptions = [];
+
+                let params = this.form.user_id ? '?user_id='+this.form.user_id : '';
+
+                axios.get('/admin/subscriptions' + params)
+                    .then((results) => {
+                        results.data.data.forEach((value, index) => {
+                            this.subscriptions.push(value);
+                        });
+
+                        // loader
+                        this.isLoading = false;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    }).finally(() => {
+                    //Perform action in always
+                });
+            },
+            getUsers() {
+                axios.get('/admin/users')
+                    .then(({data}) => {
+                        data.data.forEach((value, index) => {
+                            let item = value.name + ' ' + value.surname + ' - ' + value.email;
+
+                            this.usersList.push({id: value.id, name: item});
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    }).finally(() => {
+                    //Perform action in always
+                });
+            },
         }
     }
 </script>
