@@ -70,7 +70,7 @@ Route::group(['middleware' => ['auth:api', 'admin.access']], function () {
             Route::get('/', 'Admin\GymClassController@index')->name('admin.gym-classes.index');
             Route::post('/', 'Admin\GymClassController@store')->name('admin.gym-classes.store');
             Route::patch('{gymClass}', 'Admin\GymClassController@update')->name('admin.gym-classes.update');
-            Route::get('{gymClass}', 'Admin\GymClassController@show')->name('admin.gym-classes.show');
+            Route::delete('{gymClass}', 'Admin\GymClassController@delete')->name('admin.gym-classes.delete');
         });
         // subscription plans
         Route::group(['prefix' => 'subscription-plans'], function () {

@@ -63,7 +63,7 @@ class SubscriptionService
         $data['only_active_subscriptions'] = (bool) $data['only_active_subscriptions'];
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
-        $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
+        $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.email as user_email', 'users.phone_number as user_phone_number')
             ->when(isset($data['user_id']), function ($query) use ($data) {
                 $query->where('user_id', $data['user_id']);
             })
@@ -85,7 +85,7 @@ class SubscriptionService
 
             $activeSubscriptionIdPerUser = $this->getOnlyActiveSubscriptionsPerUser($subscriptions);
 
-            $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
+            $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.email as user_email', 'users.phone_number as user_phone_number')
                 ->join('users', 'users.id', '=', 'subscriptions.user_id')
                 ->whereIn('subscriptions.id', $activeSubscriptionIdPerUser)
                 ->orderBy('users.name', 'ASC')

@@ -41,6 +41,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Όνομα</th>
                     <th scope="col">Επίθετο</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Τηλέφωνο</th>
                     <th class="text-center" scope="col">Τιμή</th>
                     <th class="text-center" scope="col">Υπόλοιπες επισκέψεις </th>
@@ -49,14 +50,16 @@
                     <th class="text-center" scope="col">Λήξη</th>
                     <th class="text-center" scope="col">Απεριόριστο</th>
                     <th class="text-center" scope="col">Ενεργή</th>
+                    <th class="text-center" scope="col">Delete</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr v-for="subscription in subscriptions" @click="updateSubscription(subscription.id)">
+                <tr v-for="subscription in subscriptions" @click="updateSubscription(subscription.id, $event)">
                     <th scope="row">{{ subscription.id }}</th>
                     <td>{{ subscription.user_name }}</td>
                     <td>{{ subscription.user_surname }}</td>
+                    <td>{{ subscription.user_email }}</td>
                     <td>{{ subscription.user_phone_number }}</td>
                     <td class="text-center">{{ subscription.price }} </td>
                     <td class="text-center">{{ subscription.remaining_sessions }}</td>
@@ -72,6 +75,11 @@
                         <label class="form-check d-flex justify-content-center">
                             <input class="form-check-input wave-check-input-disabled" type="checkbox" value="" :checked="subscription.is_active == true" disabled>
                         </label>
+                    </td>
+                    <td class="text-center">
+                        <b-button @click="deleteSubscription(subscription)" class="btn btn-primary danger-button-color-wave">
+                            <font-awesome-icon icon="fa-regular fa-trash-can"/>
+                        </b-button>
                     </td>
                 </tr>
                 </tbody>
@@ -130,7 +138,11 @@
                     this.getSubscriptions();
                 }
             },
-            updateSubscription(subscriptionId) {
+            updateSubscription(subscriptionId, event) {
+                if (["button", "svg", "path"].includes(event.target.tagName.toLowerCase())) {
+                    return;
+                }
+
                 this.$router.push({ name: 'UpdateSubscriptions', params: { id: subscriptionId } })
             },
             getSubscriptions() {
@@ -173,6 +185,27 @@
                     //Perform action in always
                 });
             },
+            deleteSubscription(subscription) {
+                if (confirm('Every pending reservation for this subscription is going to be declined and user (' + subscription.user_surname + ' ' + subscription.user_name + ' - ' + subscription.user_email + ') will receive an email for declined class! Are you sure, you want to delete this user subscription for date range ' + subscription.starts_at + ' - ' + subscription.expires_at + '?' )) {
+                    axios.delete('/admin/subscriptions/' + subscription.id)
+                        .then((result) => {
+                            //Perform Success Action
+                            // loader
+                            this.isLoading = true;
+
+                            // display success message
+                            this.$alertHandler.showAlert('User subscription deleted successfully', result.status);
+                        })
+                        .catch((error) => {
+                            // display error message
+                            this.$alertHandler.showAlert(error.response.data.message || error.message, error.response.status);
+                        }).finally(() => {
+                        //Perform action in always
+                    });
+
+                    this.getSubscriptions();
+                }
+            }
         }
     }
 </script>
