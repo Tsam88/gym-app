@@ -611,6 +611,8 @@ section {
     margin: 0 !important;
 }
 .dropdown .dropdown-content {
+    height: 200px;
+    overflow-y: auto;
     min-width: 100% !important;
     max-width: 100% !important;
 }
