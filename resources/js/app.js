@@ -41,6 +41,7 @@ import Auth from './auth.js'
 Vue.prototype.auth = Auth;
 Vue.use(VueRouter,axios);
 
+Vue.use(Dropdown);
 
 /* FONT AWESOME START */
 /* import the fontawesome core */

@@ -13,6 +13,7 @@ use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use App\Validators\SubscriptionValidation;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 
@@ -23,7 +24,7 @@ class SubscriptionService
      *
      * @var int
      */
-    private const DEFAULT_ITEMS_PER_PAGE = 0;
+    private const DEFAULT_ITEMS_PER_PAGE = 200;
 
     /**
      * @var SubscriptionValidation
@@ -59,6 +60,7 @@ class SubscriptionService
     {
         // data validation
         $data = $this->subscriptionValidation->subscriptionGetSubscriptions($input);
+        $data['only_active_subscriptions'] = (bool) $data['only_active_subscriptions'];
 
         $itemsPerPage = $data['items_per_page'] ?? self::DEFAULT_ITEMS_PER_PAGE;
         $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
@@ -68,17 +70,32 @@ class SubscriptionService
             ->join('users', 'users.id', '=', 'subscriptions.user_id')
             ->orderBy('users.name', 'ASC')
             ->orderBy('users.surname', 'ASC')
-            ->orderBy('subscriptions.id', 'DESC')
-            ->paginate($itemsPerPage);
+            ->orderBy('subscriptions.id', 'DESC');
+
+        // get only active subscriptions or not, based on "only_active_subscriptions" filter
+        // all subscriptions
+        if (!$data['only_active_subscriptions']) {
+            $subscriptions = $subscriptions->paginate($itemsPerPage);
+
+            $activeSubscriptionIdPerUser = $this->getOnlyActiveSubscriptionsPerUser($subscriptions);
+
+        // only active subscriptions
+        } else {
+            $subscriptions = $subscriptions->get();
+
+            $activeSubscriptionIdPerUser = $this->getOnlyActiveSubscriptionsPerUser($subscriptions);
+
+            $subscriptions = Subscription::select('subscriptions.*', 'users.name as user_name', 'users.surname as user_surname', 'users.phone_number as user_phone_number')
+                ->join('users', 'users.id', '=', 'subscriptions.user_id')
+                ->whereIn('subscriptions.id', $activeSubscriptionIdPerUser)
+                ->orderBy('users.name', 'ASC')
+                ->orderBy('users.surname', 'ASC')
+                ->orderBy('subscriptions.id', 'DESC')
+                ->paginate($itemsPerPage);
+        }
 
         // set is_active attribute per subscription
-        $activeSubscriptionIdPerUser = [];
         foreach ($subscriptions as &$subscription) {
-            if (!array_key_exists($subscription->user_id, $activeSubscriptionIdPerUser)) {
-                $activeSubscription = $this->reservationSubscriptionHelper->getClosestActiveSubscription($subscription->user_id);
-                $activeSubscriptionIdPerUser[$subscription->user_id] = $activeSubscription ? $activeSubscription->id : null;
-            }
-
             if ($activeSubscriptionIdPerUser[$subscription->user_id] !== $subscription->id) {
                 $subscription->is_active = false;
             } else {
@@ -198,6 +215,26 @@ class SubscriptionService
 
         // commit database changes
         DB::commit();
+    }
+
+    /**
+     * Check if the subscription is active
+     *
+     * @param Collection|LengthAwarePaginator  $subscription
+     *
+     * @return array
+     */
+    public function getOnlyActiveSubscriptionsPerUser($subscriptions): array
+    {
+        $activeSubscriptionIdPerUser = [];
+        foreach ($subscriptions as $subscription) {
+            if (!array_key_exists($subscription->user_id, $activeSubscriptionIdPerUser)) {
+                $activeSubscription = $this->reservationSubscriptionHelper->getClosestActiveSubscription($subscription->user_id);
+                $activeSubscriptionIdPerUser[$subscription->user_id] = $activeSubscription ? $activeSubscription->id : null;
+            }
+        }
+
+        return $activeSubscriptionIdPerUser;
     }
 
     /**

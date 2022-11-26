@@ -58,6 +58,10 @@ class SubscriptionValidation extends AbstractValidation
         'users.*' => [
             'integer',
         ],
+        'only_active_subscriptions' => [
+            'required',
+            'boolean',
+        ],
         'items_per_page' => [
             'integer',
             'gt:0',
@@ -77,6 +81,7 @@ class SubscriptionValidation extends AbstractValidation
         $validationRules = [
 //            'users' => $this->getRule(self::VALIDATION_RULES, 'users', []),
             'user_id' => $this->getRule(self::VALIDATION_RULES, 'user_id', ['sometimes']),
+            'only_active_subscriptions' => $this->getRule(self::VALIDATION_RULES, 'only_active_subscriptions', []),
             'items_per_page' => $this->getRule(self::VALIDATION_RULES, 'items_per_page', ['sometimes']),
         ];
 

@@ -606,6 +606,44 @@ section {
 }
 /* DROPDOWN LOGIN END*/
 
+/* AUTOCOMPLETE DROPDOWN START*/
+.autocomplete-dropdown {
+    margin: 0 !important;
+}
+.dropdown .dropdown-content {
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+.autocomplete-dropdown-subscriptions input {
+    /*float: right;*/
+    min-width: 100% !important;
+    max-width: 100% !important;
+}
+/* AUTOCOMPLETE DROPDOWN END*/
+
+/* PAGINATION START*/
+.pagination li > a
+{
+    color: #04646a;
+    border: solid 1px #204d6a !Important;
+}
+.pagination > .active > a
+{
+    color: #ffffff !Important;
+    background-color: #04646a !Important;
+    border: solid 1px #204d6a !Important;
+}
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover
+{
+    color: #04646a;
+    background-color: #d9d9d9;
+    border-color: #204d6a;
+}
+/* PAGINATION END*/
+
 /* PROFILE FORM START*/
 .profile-form {
     padding: 5px 0 15px 0;

@@ -9,15 +9,32 @@
             <b-spinner class="spinner-size-default" variant="info"></b-spinner>
         </div>
 
-        <Dropdown
-            :options="usersList"
-            @selected="selectOption"
-            :disabled="false"
-            :maxItem="10"
-            placeholder="Please select an option">
-        </Dropdown>
+        <div v-show="!isLoading" class="row mt-4 mb-4 justify-content-end">
+            <div class="col-lg-3 pt-1">
+                <div class="float-right">
+                    <label class="form-check">
+                    <span class="form-check-label">
+                        <b>Only active subscriptions</b>
+                    </span>
+                        <!--                    <input v-model="form.only_active_subscriptions" @change="toggleUnlimitedSessionsCheckBox" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox" :checked="only_active_subscriptions === true">-->
+                        <input v-model="form.only_active_subscriptions" @change="getSubscriptions()" id="only_active_subscriptions" name="only_active_subscriptions" class="form-check-input wave-check-input" type="checkbox">
+                    </label>
+                </div>
+            </div>
 
-        <div v-if="!isLoading" class="table-responsive">
+            <div class="col-lg-3 ms-2">
+                <Dropdown
+                    class="autocomplete-dropdown autocomplete-dropdown-subscriptions"
+                    :options="usersList"
+                    @selected="selectOption"
+                    :disabled="false"
+                    :maxItem="10"
+                    placeholder="Search by name or email">
+                </Dropdown>
+            </div>
+        </div>
+
+        <div v-if="!isLoading" class="row table-responsive">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -59,6 +76,20 @@
                 </tr>
                 </tbody>
             </table>
+
+            <nav aria-label="Subscriptions page navigation">
+                <ul class="pagination justify-content-end mt-5">
+                    <li class="page-item" :class="{'disabled':form.page === 1}" @click="changePage(form.page - 1)">
+                        <a class="page-link">Previous</a>
+                    </li>
+                    <li v-for="page_number in lastPage" @click="changePage(page_number)" class="page-item" :class="{'active':form.page === page_number}">
+                        <a class="page-link">{{page_number}}</a>
+                    </li>
+                    <li class="page-item" :class="{'disabled':form.page === lastPage}" @click="changePage(form.page + 1)">
+                        <a class="page-link">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </template>
@@ -70,21 +101,32 @@
                 form: {
                     user_id: null,
                     only_active_subscriptions: true,
+                    items_per_page: 15,
+                    page: 1,
                 },
-                usersList: [],
+                usersList: [{id: null, name: 'All users'}],
                 subscriptions: [],
                 isLoading: true,
+                lastPage: null,
             }
         },
-        mounted() {
+        created() {
             this.getSubscriptions();
             this.getUsers();
         },
         methods:{
             selectOption(option) {
-                if (this.form.user_id !== option.id) {
+                if (option.id !== undefined && this.form.user_id !== option.id) {
                     this.form.user_id = option.id;
+                    this.form.page = 1;
 
+                    this.getSubscriptions();
+                }
+            },
+            changePage(pageNumber) {
+                // check if the requested page number is between 1 and last page number
+                if (pageNumber >= 1 && pageNumber <= this.lastPage) {
+                    this.form.page = pageNumber;
                     this.getSubscriptions();
                 }
             },
@@ -96,13 +138,16 @@
                 this.isLoading = true;
                 this.subscriptions = [];
 
-                let params = this.form.user_id ? '?user_id='+this.form.user_id : '';
+                // cast bool value to integer, because laravel validator can not validate string "true" and "false" values
+                this.form.only_active_subscriptions = this.form.only_active_subscriptions ? 1 : 0;
 
-                axios.get('/admin/subscriptions' + params)
+                axios.get('/admin/subscriptions', {params: this.form})
                     .then((results) => {
                         results.data.data.forEach((value, index) => {
                             this.subscriptions.push(value);
                         });
+
+                        this.lastPage = results.data.last_page;
 
                         // loader
                         this.isLoading = false;
