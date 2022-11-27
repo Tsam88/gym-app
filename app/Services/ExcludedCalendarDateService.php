@@ -203,6 +203,11 @@ class ExcludedCalendarDateService
      */
     public function hasConflictWithOtherExcludedCalendarDateForTheGivenGymClasses(string $excludedStartDate, string $excludedEndDate, array $gymClassIds, ?int $excludedCalendarDateIdToIgnore): void
     {
+        // if "All classes" (-1) is selected, then check all gym class ids
+        if (in_array(-1, $gymClassIds)) {
+            $gymClassIds = GymClass::pluck('id');
+        }
+
         foreach ($gymClassIds as $gymClassId) {
             $hasConflictWithOtherExcludedCalendarDate = ExcludedCalendarDate::whereHas('gymClasses', function ($query) use ($gymClassId) {
                     return $query->where('gym_classes.id', $gymClassId);
