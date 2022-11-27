@@ -34,6 +34,7 @@
         "bootstrap-vue": "^2.22.0",
         "feather-icons": "^4.29.0",
         "jquery": "^3.6.1",
-        "vue-router": "^2.7.0"
+        "vue-router": "^2.7.0",
+        "vue-select": "^3.20.0"
     }
 }

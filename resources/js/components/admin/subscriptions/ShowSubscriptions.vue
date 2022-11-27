@@ -16,21 +16,13 @@
                     <span class="form-check-label">
                         <b>Only active subscriptions</b>
                     </span>
-                        <!--                    <input v-model="form.only_active_subscriptions" @change="toggleUnlimitedSessionsCheckBox" id="unlimited_sessions" name="unlimited_sessions" class="form-check-input wave-check-input" type="checkbox" :checked="only_active_subscriptions === true">-->
-                        <input v-model="form.only_active_subscriptions" @change="getSubscriptions()" id="only_active_subscriptions" name="only_active_subscriptions" class="form-check-input wave-check-input" type="checkbox">
+                        <input v-model="form.only_active_subscriptions" @change="selectFilter()" id="only_active_subscriptions" name="only_active_subscriptions" class="form-check-input wave-check-input" type="checkbox">
                     </label>
                 </div>
             </div>
 
-            <div class="col-lg-3 ms-2">
-                <Dropdown
-                    class="autocomplete-dropdown autocomplete-dropdown-subscriptions"
-                    :options="usersList"
-                    @selected="selectOption"
-                    :disabled="false"
-                    :maxItem="10"
-                    placeholder="Search by name or email">
-                </Dropdown>
+            <div class="col-lg-4 ms-2">
+                <v-select v-model="form.user_id" @input="selectFilter()" :options="usersList" :reduce="name => name.id" label="name" />
             </div>
         </div>
 
@@ -123,13 +115,9 @@
             this.getUsers();
         },
         methods:{
-            selectOption(option) {
-                if (option.id !== undefined && this.form.user_id !== option.id) {
-                    this.form.user_id = option.id;
-                    this.form.page = 1;
-
-                    this.getSubscriptions();
-                }
+            selectFilter() {
+                this.form.page = 1;
+                this.getSubscriptions();
             },
             changePage(pageNumber) {
                 // check if the requested page number is between 1 and last page number
@@ -186,7 +174,7 @@
                 });
             },
             deleteSubscription(subscription) {
-                if (confirm('Every pending reservation for this subscription is going to be declined and user (' + subscription.user_surname + ' ' + subscription.user_name + ' - ' + subscription.user_email + ') will receive an email for declined class! Are you sure, you want to delete this user subscription for date range ' + subscription.starts_at + ' - ' + subscription.expires_at + '?' )) {
+                if (confirm('Every reservation in a future date for this subscription is going to be declined and user (' + subscription.user_surname + ' ' + subscription.user_name + ' - ' + subscription.user_email + ') will receive an email for declined class! Are you sure, you want to delete this user subscription for date range ' + subscription.starts_at + ' - ' + subscription.expires_at + '?' )) {
                     axios.delete('/admin/subscriptions/' + subscription.id)
                         .then((result) => {
                             //Perform Success Action

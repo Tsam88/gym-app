@@ -97,6 +97,7 @@ class WeekDayService
     public function getWeekCalendar(): array
     {
         $weekDays = WeekDay::with('gymClass')
+            ->whereHas('gymClass')
             ->orderBy('start_time')
             ->get()
             ->toArray();

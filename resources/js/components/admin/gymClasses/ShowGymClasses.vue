@@ -79,7 +79,7 @@
                 this.$router.push({ name: 'UpdateGymClasses', params: { id: gymClassId } })
             },
             deleteGymClass(gymClass) {
-                if (confirm('Every pending reservation for this gym class is going to be declined and users will receive an email for declined class! Are you sure, you want to delete this gym class (' + gymClass.name + ')?' )) {
+                if (confirm('Every reservation in a future date for this gym class is going to be declined and users will receive an email for declined class! Are you sure, you want to delete this gym class (' + gymClass.name + ')?' )) {
                     axios.delete('/admin/gym-classes/' + gymClass.id)
                         .then((result) => {
                             //Perform Success Action

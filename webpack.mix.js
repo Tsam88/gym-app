@@ -11,8 +11,7 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/vue-simple-search-dropdown.min.js', 'public/js')
-    .js('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/jquery.magnific-popup.min.js', 'public/js')
     .js('resources/js/masonry.pkgd.min.js', 'public/js')
     .js('resources/js/jquery.barfiller.js', 'public/js')

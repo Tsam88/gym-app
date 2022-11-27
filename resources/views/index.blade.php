@@ -32,7 +32,7 @@
             <main-page></main-page>
         </div>
 
-        <script src="{{ mix('js/vue-simple-search-dropdown.min.js') }}"></script>
+        <script src="https://unpkg.com/vue-select@latest"></script>
         <script src="{{ mix('js/app.js') }}"></script>
 {{--        <script src="{{ mix('js/jquery-3.3.1.min.js') }}"></script>--}}
 {{--        <script src="{{ mix('js/bootstrap.min.js') }}"></script>--}}

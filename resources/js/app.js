@@ -12,8 +12,12 @@ window.Vue = require('vue').default;
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 
+// autocomplete select
+import vSelect from 'vue-select';
+Vue.component('v-select', vSelect);
+Vue.component('v-select', VueSelect.VueSelect);
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 // import 'bootstrap/dist/css/bootstrap.css'
@@ -29,6 +33,7 @@ import '../css/owl.carousel.min.css'
 import '../css/barfiller.css'
 import '../css/slicknav.min.css'
 import '../css/style.css'
+import 'vue-select/dist/vue-select.css';
 
 // Make BootstrapVue available throughout your project
 Vue.use(BootstrapVue);
@@ -40,8 +45,6 @@ import Auth from './auth.js'
 
 Vue.prototype.auth = Auth;
 Vue.use(VueRouter,axios);
-
-Vue.use(Dropdown);
 
 /* FONT AWESOME START */
 /* import the fontawesome core */

@@ -434,6 +434,7 @@ class ReservationService
         $nameOfDay = strtoupper(Carbon::parse($date, 'Europe/Athens')->format('l'));
 
         $weekDay = WeekDay::where('id', $weekDayId)
+            ->whereHas('gymClass')
             ->where('day', $nameOfDay)
             ->where('start_time', $startTime)
             ->exists();

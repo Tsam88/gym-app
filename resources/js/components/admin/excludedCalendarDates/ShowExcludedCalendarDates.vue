@@ -81,7 +81,7 @@
                 this.$router.push({ name: 'UpdateExcludedCalendarDates', params: { id: excludedCalendarDateId } })
             },
             deleteExcludedCalendarDate(excludedCalendarDate) {
-                    if (confirm('Every pending reservation that is included in these excluded dates is going to be declined and users will receive an email for declined class! Are you sure, you want to delete these excluded calendar dates (' + excludedCalendarDate.start_date + ' - ' + excludedCalendarDate.end_date + ')?')) {
+                    if (confirm('Every reservation in a future date that is included in these excluded dates is going to be declined and users will receive an email for declined class! Are you sure, you want to delete these excluded calendar dates (' + excludedCalendarDate.start_date + ' - ' + excludedCalendarDate.end_date + ')?')) {
                     axios.delete('/admin/excluded-calendar-dates/' + excludedCalendarDate.id)
                         .then((result) => {
                             //Perform Success Action

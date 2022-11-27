@@ -89,10 +89,20 @@
 
                 <form ref="form" @submit.stop.prevent="submitForm">
                     <b-form-group label="Student" label-for="user_id">
-                        <b-form-select v-model="form.user_id" id="user_id" name="user_id" class="form-select mb-3" :state="state.user_id" required>
-                            <option value=null selected>Select student</option>
-                            <option v-for="user in usersList" :value="user.id">{{user.name}} {{user.surname}} - {{user.email}}</option>
-                        </b-form-select>
+                        <v-select v-model="form.user_id" :options="usersList" :reduce="name => name.id" label="name" id="user_id" :class="{'is-invalid': state.user_id === false}" placeholder="Επιλογή χρήστη">
+                            <template #search="{attributes, events}">
+                                <input
+                                    class="vs__search"
+                                    :required="!form.user_id"
+                                    v-bind="attributes"
+                                    v-on="events"
+                                />
+                            </template>
+                        </v-select>
+<!--                        <b-form-select v-model="form.user_id" id="user_id" name="user_id" class="form-select mb-3" :state="state.user_id" required>-->
+<!--                            <option value=null selected>Select student</option>-->
+<!--                            <option v-for="user in usersList" :value="user.id">{{user.name}} {{user.surname}} - {{user.email}}</option>-->
+<!--                        </b-form-select>-->
                         <b-form-invalid-feedback id="user_id">
                             {{validationMessages.user_id}}
                         </b-form-invalid-feedback>
@@ -190,10 +200,14 @@
                 this.form.date = calendarDate.date + ' ' + gymClass.start_time;
             },
             getUsers() {
+                this.usersList = [];
+
                 axios.get('/admin/users')
-                    .then((results) => {
-                        results.data.data.forEach((value, index) => {
-                            this.usersList.push(value);
+                    .then(({data}) => {
+                        data.data.forEach((value, index) => {
+                            let item = value.name + ' ' + value.surname + ' - ' + value.email;
+
+                            this.usersList.push({id: value.id, name: item});
                         });
                     })
                     .catch((error) => {

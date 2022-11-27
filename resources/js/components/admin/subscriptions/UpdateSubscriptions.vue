@@ -15,10 +15,16 @@
 
                                 <div class="mb-3">
                                     <label for="user_id">Χρήστης</label>
-                                    <select v-model="form.user_id" id="user_id" name="user_id" class="form-select mb-3" required>
-                                        <option value="" hidden>Επιλογή χρήστη</option>
-                                        <option v-for="user in users" :value="user.id">{{user.name}} {{user.surname}} - {{user.email}}</option>
-                                    </select>
+                                    <v-select v-model="form.user_id" :options="users" :reduce="name => name.id" label="name" id="user_id" placeholder="Επιλογή χρήστη">
+                                        <template #search="{attributes, events}">
+                                            <input
+                                                class="vs__search"
+                                                :required="!form.user_id"
+                                                v-bind="attributes"
+                                                v-on="events"
+                                            />
+                                        </template>
+                                    </v-select>
                                 </div>
 
                                 <div class="my-3">
@@ -75,7 +81,7 @@
         data() {
             return {
                 form: {
-                    user_id: "",
+                    user_id: null,
                     price: null,
                     remaining_sessions: null,
                     sessions_per_week: null,
@@ -90,17 +96,7 @@
         },
         mounted() {
             // get users
-            axios.get('/admin/users', this.form)
-                .then((results) => {
-                    results.data.data.forEach((value, index) => {
-                        this.users.push(value);
-                    });
-                })
-                .catch((error) => {
-                    console.log(error);
-                }).finally(() => {
-                //Perform action in always
-            });
+            this.getUsers();
 
             // get subscription
             axios.get('/admin/subscriptions/' + this.id)
@@ -121,6 +117,21 @@
             });
         },
         methods:{
+            getUsers() {
+                axios.get('/admin/users')
+                    .then(({data}) => {
+                        data.data.forEach((value, index) => {
+                            let item = value.name + ' ' + value.surname + ' - ' + value.email;
+
+                            this.users.push({id: value.id, name: item});
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    }).finally(() => {
+                    //Perform action in always
+                });
+            },
             submitForm() {
                 axios.patch('/admin/subscriptions/' + this.id, this.form)
                     .then((result) => {

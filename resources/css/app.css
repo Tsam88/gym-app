@@ -144,6 +144,10 @@ section {
     cursor: pointer;
 }
 
+.table>tbody>tr>th {
+    vertical-align: middle;
+}
+
 .wave-group-dates {
     border-style: solid;
     border-radius: 5px;
@@ -607,20 +611,9 @@ section {
 /* DROPDOWN LOGIN END*/
 
 /* AUTOCOMPLETE DROPDOWN START*/
-.autocomplete-dropdown {
-    margin: 0 !important;
-}
-.dropdown .dropdown-content {
-    height: 200px;
-    overflow-y: auto;
-    min-width: 100% !important;
-    max-width: 100% !important;
-}
-.autocomplete-dropdown-subscriptions input {
-    /*float: right;*/
-    min-width: 100% !important;
-    max-width: 100% !important;
-}
+/*#vs1__listbox {*/
+/*    width: 100% !important;*/
+/*}*/
 /* AUTOCOMPLETE DROPDOWN END*/
 
 /* PAGINATION START*/
