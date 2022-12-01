@@ -633,6 +633,10 @@ ol {
 	opacity: 0;
 }
 
+.hs-item .container {
+    padding: 0 55px;
+}
+
 /*---------------------
   ChoseUs Section
 -----------------------*/

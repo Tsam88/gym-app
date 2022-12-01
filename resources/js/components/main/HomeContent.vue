@@ -3,27 +3,105 @@
         <!-- Hero Section Begin -->
         <section class="hero-section">
             <div class="hs-slider owl-carousel">
-                <div class="hs-item set-bg" data-setbg="images/hero/hero-1.jpg">
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-1.jpg">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6 offset-lg-6">
                                 <div class="hi-text">
                                     <span>Shape your body</span>
                                     <h1>Be <strong>strong</strong> traning hard</h1>
-                                    <a href="#" class="primary-btn">Get info</a>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="hs-item set-bg" data-setbg="images/hero/hero-2.jpg">
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-2.jpg">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6 offset-lg-6">
                                 <div class="hi-text">
                                     <span>Shape your body</span>
                                     <h1>Be <strong>strong</strong> traning hard</h1>
-                                    <a href="#" class="primary-btn">Get info</a>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-3.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-6">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-4.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-6">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-5.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-6">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-6.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-7.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-6">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hs-item set-bg" data-setbg="images/landing/landing-8.jpg">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-8">
+                                <div class="hi-text">
+                                    <span>Shape your body</span>
+                                    <h1>Be <strong>strong</strong> traning hard</h1>
+                                    <a href="/sign-up" class="primary-btn">Sign up</a>
                                 </div>
                             </div>
                         </div>
@@ -97,7 +175,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="class-item">
                             <div class="ci-pic">
-                                <img src="images/classes/class-1.jpg" alt="">
+                                <img src="images/classes/classes-12.jpg" alt="">
                             </div>
                             <div class="ci-text">
                                 <span>STRENGTH</span>
@@ -109,7 +187,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="class-item">
                             <div class="ci-pic">
-                                <img src="images/classes/class-3.jpg" alt="">
+                                <img src="images/classes/classes-14.jpg" alt="">
                             </div>
                             <div class="ci-text">
                                 <span>TRAINING</span>
@@ -121,7 +199,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div class="class-item">
                             <div class="ci-pic">
-                                <img src="images/classes/class-2.jpg" alt="">
+                                <img src="images/classes/classes-15.jpg" alt="">
                             </div>
                             <div class="ci-text">
                                 <span>FLEXIBILITY</span>
@@ -136,7 +214,8 @@
         <!-- ChoseUs Section End -->
 
         <!-- Banner Section Begin -->
-        <section class="banner-section set-bg" data-setbg="images/banner-bg.jpg">
+<!--        <section class="banner-section set-bg" data-setbg="images/banner-bg.jpg">-->
+        <section class="banner-section set-bg" data-setbg="images/mid/mid-1.jpg">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
