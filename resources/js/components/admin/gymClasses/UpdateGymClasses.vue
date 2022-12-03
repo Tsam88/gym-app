@@ -72,7 +72,7 @@
                                     <b-button @click="addDate" class="btn btn-primary button-color-wave float-right">Πρόσθεσε ημερομηνία</b-button>
                                 </div>
 
-                                <div class="mt-5">
+                                <div class="mt-6">
                                     <b-button class="btn btn-primary button-color-wave" type="submit" variant="primary">Αποθήκευση</b-button>
                                 </div>
 
