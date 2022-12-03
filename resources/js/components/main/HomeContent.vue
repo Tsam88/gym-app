@@ -268,23 +268,23 @@
         <div class="gallery-section">
             <div class="gallery">
                 <div class="grid-sizer"></div>
-                <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-1.jpg">
-<!--                    <a href="images/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
-                </div>
-                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-2.jpg">
-<!--                    <a href="images/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
-                </div>
-                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-3.jpg">
-<!--                    <a href="images/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
-                </div>
-                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-4.jpg">
+                <div class="gs-item set-bg" data-setbg="images/mid/mid-3.jpg">
 <!--                    <a href="images/gallery/gallery-4.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
-                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-5.jpg">
+                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-40.jpg">
 <!--                    <a href="images/gallery/gallery-5.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
-                <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-6.jpg">
+                <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-48.jpg">
 <!--                    <a href="images/gallery/gallery-6.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
+                </div>
+                <div class="gs-item grid-wide set-bg" data-setbg="images/gallery/gallery-47.jpg">
+                    <!--                    <a href="images/gallery/gallery-1.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
+                </div>
+                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-49.jpg">
+                    <!--                    <a href="images/gallery/gallery-2.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
+                </div>
+                <div class="gs-item set-bg" data-setbg="images/gallery/gallery-44.jpg">
+                    <!--                    <a href="images/gallery/gallery-3.jpg" class="thumb-icon image-popup"><i class="fa fa-picture-o"></i></a>-->
                 </div>
             </div>
         </div>
