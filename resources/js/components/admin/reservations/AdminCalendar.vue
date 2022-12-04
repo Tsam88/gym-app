@@ -74,7 +74,7 @@
                     </b-button>
 
                     <b-button class="btn btn-primary button-color-wave" size="sm" @click="ok()">
-                        OK
+                        Close
                     </b-button>
                 </template>
             </b-modal>
