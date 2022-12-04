@@ -124,7 +124,7 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px;">
                 <tr>
                     <td bgcolor="#0c1f32" align="left" style="padding: 20px 30px 40px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;">
-                        <p style="margin: 0; color: #ffffff">Sadly, your booking for class <span style="color: #04D9B2">"{{$gym_class_name}}"</span> on <span style="color: #04D9B2">{{$reservation_date}}</span> has been declined.</p>
+                        <p style="margin: 0; color: #ffffff">Sadly, your booking for <span style="color: #04D9B2">"{{$gym_class_name}}"</span> class on <span style="color: #04D9B2">{{$reservation_date}}</span> has been declined.</p>
                     </td>
                 </tr>
                 <tr>
