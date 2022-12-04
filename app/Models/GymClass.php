@@ -26,6 +26,7 @@ class GymClass extends Model
         'description',
         'teacher',
         'number_of_students',
+        'color',
     ];
 
     /**

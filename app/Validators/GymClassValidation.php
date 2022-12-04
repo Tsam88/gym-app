@@ -32,6 +32,11 @@ class GymClassValidation extends AbstractValidation
             'integer',
             'gt:0',
         ],
+        'color' => [
+            'required',
+            'string',
+            'max:255',
+        ],
         'week_days' => [
             'array',
             'min:1',
@@ -92,6 +97,7 @@ class GymClassValidation extends AbstractValidation
             'description' => $this->getRule(self::VALIDATION_RULES, 'description', []),
             'teacher' => $this->getRule(self::VALIDATION_RULES, 'teacher', []),
             'number_of_students' => $this->getRule(self::VALIDATION_RULES, 'number_of_students', []),
+            'color' => $this->getRule(self::VALIDATION_RULES, 'color', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);
@@ -115,6 +121,7 @@ class GymClassValidation extends AbstractValidation
             'description' => $this->getRule(self::VALIDATION_RULES, 'description', []),
             'teacher' => $this->getRule(self::VALIDATION_RULES, 'teacher', []),
             'number_of_students' => $this->getRule(self::VALIDATION_RULES, 'number_of_students', []),
+            'color' => $this->getRule(self::VALIDATION_RULES, 'color', []),
         ];
 
         $validator = $this->getValidator($input, $validationRules);

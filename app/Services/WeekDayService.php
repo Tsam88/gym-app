@@ -75,6 +75,7 @@ class WeekDayService
             $weekCalendar[$class['start_time']]['days'][$class['day']][] = [
                 'gym_class_name' => $class['gym_class']['name'],
                 'teacher' => $class['gym_class']['teacher'],
+                'color' => $class['gym_class']['color'],
                 'start_time' => $class['start_time'],
                 'end_time' => $class['end_time'],
             ];

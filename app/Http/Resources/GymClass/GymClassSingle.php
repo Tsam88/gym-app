@@ -33,6 +33,7 @@ class GymClassSingle extends JsonResource
             'description' => $parent['description'],
             'teacher' => $parent['teacher'],
             'number_of_students' => $parent['number_of_students'],
+            'color' => $parent['color'],
             'week_days' => $weekDays,
         ];
     }

@@ -44,7 +44,7 @@
                                         <td v-for="(gymClasses, index2) in weekDays.days" class="ts-meta" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
                                             <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
                                                 <div v-for="gymClass in gymClasses" :class="{'hover-bg': gymClasses.length > 1}">
-                                                    <h5>{{gymClass.gym_class_name}}</h5>
+                                                    <h5 :style="{color: gymClass.color}">{{gymClass.gym_class_name}}</h5>
                                                     <span>{{gymClass.teacher}}</span>
                                                 </div>
                                             </div>

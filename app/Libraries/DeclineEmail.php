@@ -14,13 +14,6 @@ class DeclineEmail extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     /**
-     * The time (seconds) before the job should be processed.
-     *
-     * @var int
-     */
-    public $delay = 3;
-
-    /**
      * The number of times the job may be attempted.
      *
      * @var int
@@ -49,6 +42,7 @@ class DeclineEmail extends Mailable implements ShouldQueue
     public function __construct()
     {
         $this->data = [];
+        $this->delay = 3;
     }
 
     /**
