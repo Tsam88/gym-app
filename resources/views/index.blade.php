@@ -18,13 +18,7 @@
 
         <link rel="icon" href="{{ asset('/images/wave_transparent_no_buffer.png') }}"/>
         <title>Wave Fitness Project</title>
-{{--        <img src="{{ asset('/images/logo.png') }}" alt="jacket3">--}}
 
-        {{--        <meta name="csrf-token" content="{{ csrf_token() }}"/>--}}
-
-{{--        <link href="{{ mix('css/bootstrap.css') }}" rel="stylesheet" type="text/css">--}}
-{{--        <link href="{{ mix('css/adminApp.css') }}" rel="stylesheet" type="text/css">--}}
-{{--        <link href="{{ mix('css/app.css') }}" rel="stylesheet" type="text/css">--}}
     </head>
 
     <body>
