@@ -253,8 +253,8 @@
                                 <li>Cross Training</li>
                                 <li>Yoga</li>
                                 <li v-if="subscriptionPlan.unlimited_sessions === false">{{subscriptionPlan.number_of_sessions}} sessions</li>
-                                <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.number_of_months === 1">1 month</li>
-                                <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.number_of_months > 1">{{subscriptionPlan.number_of_months}} months</li>
+                                <li v-if="subscriptionPlan.number_of_months === 1">1 month</li>
+                                <li v-if="subscriptionPlan.number_of_months > 1">{{subscriptionPlan.number_of_months}} months</li>
                                 <li v-if="subscriptionPlan.unlimited_sessions === true && subscriptionPlan.sessions_per_week > 0">{{subscriptionPlan.sessions_per_week}} sessions per week</li>
                             </ul>
                         </div>
