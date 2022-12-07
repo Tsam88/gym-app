@@ -11,9 +11,9 @@
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <div class="table-controls mb-3">
-                            <ul class="p-1">
-                                <li class="active" data-tsfilter="all">All classes</li>
+                        <div class="table-controls mb-2">
+                            <ul class="px-4 py-1">
+                                <li class="active pb-1" data-tsfilter="all">All classes</li>
                                 <li v-for="gymClassName in gymClassNames" :data-tsfilter="gymClassName">{{gymClassName}}</li>
                             </ul>
                         </div>
