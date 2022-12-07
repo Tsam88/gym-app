@@ -60,10 +60,13 @@ class WeekDayService
             ->get()
             ->toArray();
 
+        $weekDays = [];
         foreach (WeekDay::WEEK_DAYS as $day) {
             $weekDays[$day] = [];
         }
 
+        $weekCalendar = [];
+        $gymClassNames = [];
         // initialize weekCalendar per start_time
         foreach ($classes as $class) {
             $weekCalendar[$class['start_time']]['days'] = $weekDays;
@@ -79,6 +82,8 @@ class WeekDayService
                 'start_time' => $class['start_time'],
                 'end_time' => $class['end_time'],
             ];
+
+            $gymClassNames[$class['gym_class']['id']] = $class['gym_class']['name'];
         }
 
         foreach ($weekCalendar as &$data) {
@@ -86,8 +91,14 @@ class WeekDayService
         }
 
         $weekCalendar = array_values($weekCalendar);
+        $gymClassNames = array_values($gymClassNames);
 
-        return $weekCalendar;
+        $result = [
+            'week_calendar' => $weekCalendar,
+            'gym_class_names' => $gymClassNames,
+        ];
+
+        return $result;
     }
 
     /**

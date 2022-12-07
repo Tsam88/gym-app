@@ -10,16 +10,14 @@
                             <h2>FIND YOUR TIME</h2>
                         </div>
                     </div>
-<!--                    <div class="col-lg-6">-->
-<!--                        <div class="table-controls">-->
-<!--                            <ul>-->
-<!--                                <li class="active" data-tsfilter="all">All event</li>-->
-<!--                                <li data-tsfilter="fitness">Fitness tips</li>-->
-<!--                                <li data-tsfilter="motivation">Motivation</li>-->
-<!--                                <li data-tsfilter="workout">Workout</li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
+                    <div class="col-lg-12">
+                        <div class="table-controls mb-4">
+                            <ul class="p-0">
+                                <li class="active" data-tsfilter="all">All event</li>
+                                <li v-for="gymClassName in gymClassNames" :data-tsfilter="gymClassName">{{gymClassName}}</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
@@ -41,10 +39,11 @@
                                     <tbody>
                                     <tr v-for="(weekDays, index1) in weekDaysPerTime">
                                         <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(weekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
-                                        <td v-for="(gymClasses, index2) in weekDays.days" class="ts-meta" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
+                                        <td v-for="(gymClasses, index2) in weekDays.days" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
                                             <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
-                                                <div v-for="gymClass in gymClasses" :class="{'hover-bg': gymClasses.length > 1}">
-                                                    <h5 :style="{color: gymClass.color}">{{gymClass.gym_class_name}}</h5>
+                                                <div v-for="gymClass in gymClasses" class="ts-meta" :data-tsmeta="gymClass.gym_class_name" :class="{'hover-bg': gymClasses.length > 1}">
+<!--                                                    <h5 :style="{color: gymClass.color}">{{gymClass.gym_class_name}}</h5>-->
+                                                    <h5>{{gymClass.gym_class_name}}</h5>
                                                     <span>{{gymClass.teacher}}</span>
                                                 </div>
                                             </div>
@@ -67,12 +66,14 @@
         data() {
             return {
                 weekDaysPerTime: {},
+                gymClassNames: [],
             }
         },
         mounted() {
             axios.get('/calendar/week', this.form)
                 .then((results) => {
-                    this.weekDaysPerTime = results.data;
+                    this.weekDaysPerTime = results.data['week_calendar'];
+                    this.gymClassNames = results.data['gym_class_names'];
                 })
                 .catch((error) => {
                     console.log(error);

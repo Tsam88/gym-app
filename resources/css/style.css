@@ -1631,7 +1631,7 @@ ol {
 }
 
 .table-controls ul {
-	background: #000000;
+	background: #010e1c;
 	padding: 12px 30px 15px;
 	display: inline-block;
 }
@@ -1658,7 +1658,7 @@ ol {
 }
 
 .table-controls ul li.active {
-	color: #ffffff;
+	color: #04D9B2;
 }
 
 .table-controls ul li.active:after {
