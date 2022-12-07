@@ -13,7 +13,7 @@
                     <div class="col-lg-12">
                         <div class="table-controls mb-3">
                             <ul class="p-1">
-                                <li class="active" data-tsfilter="all">All event</li>
+                                <li class="active" data-tsfilter="all">All classes</li>
                                 <li v-for="gymClassName in gymClassNames" :data-tsfilter="gymClassName">{{gymClassName}}</li>
                             </ul>
                         </div>

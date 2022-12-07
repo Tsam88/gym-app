@@ -157,7 +157,7 @@
         duration: 2000
     });
 
-    $('.table-controls ul li').on('click', function () {
+    $('.table-controls ul').on('click', 'li', function () {
         var tsfilter = $(this).data('tsfilter');
         $('.table-controls ul li').removeClass('active');
         $(this).addClass('active');

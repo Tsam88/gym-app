@@ -1634,6 +1634,7 @@ ol {
 	background: #010e1c;
 	padding: 12px 30px 15px;
 	display: inline-block;
+    text-align: end;
 }
 
 .table-controls ul li {
@@ -1642,20 +1643,22 @@ ol {
 	color: #aaaaaa;
 	list-style: none;
 	display: inline-block;
-	margin-right: 35px;
+	margin-left: 25px;
 	-webkit-transition: all 0.3s;
 	-o-transition: all 0.3s;
 	transition: all 0.3s;
 	cursor: pointer;
 	position: relative;
+    padding-top: 5px;
 }
 
-.table-controls ul li:after {
-	position: absolute;
-	right: -22px;
-	top: 0;
-	content: "/";
-}
+/*.table-controls ul li:after {*/
+/*	position: absolute;*/
+/*	right: -20px;*/
+/*	top: 0;*/
+/*	content: "/";*/
+/*    padding-top: 5px;*/
+/*}*/
 
 .table-controls ul li.active {
 	color: #04D9B2;

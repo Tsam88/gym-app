@@ -181,7 +181,7 @@
             },
             setActiveMobileMenuItem(event) {
                 if(event.target.tagName.toLowerCase() === 'a') {
-                    $('.slicknav_nav  > ul > li > a').removeClass('color-wave');
+                    $('.slicknav_nav > ul > li > a').removeClass('color-wave');
                     $(event.target).addClass('color-wave');
 
                     var baseUrl = window.location.origin;
