@@ -157,23 +157,23 @@
         duration: 2000
     });
 
-    $('.table-controls ul').on('click touchstart tap', 'li', function () {
-        var tsfilter = $(this).data('tsfilter');
-        $('.table-controls ul li').removeClass('active');
-        $(this).addClass('active');
-
-        if (tsfilter == 'all') {
-            $('.class-timetable').removeClass('filtering');
-            $('.ts-meta').removeClass('show');
-        } else {
-            $('.class-timetable').addClass('filtering');
-        }
-        $('.ts-meta').each(function () {
-            $(this).removeClass('show');
-            if ($(this).data('tsmeta') == tsfilter) {
-                $(this).addClass('show');
-            }
-        });
-    });
+    // $('.table-controls ul').on('click touchstart tap', 'li', function () {
+    //     var tsfilter = $(this).data('tsfilter');
+    //     $('.table-controls ul li').removeClass('active');
+    //     $(this).addClass('active');
+    //
+    //     if (tsfilter == 'all') {
+    //         $('.class-timetable').removeClass('filtering');
+    //         $('.ts-meta').removeClass('show');
+    //     } else {
+    //         $('.class-timetable').addClass('filtering');
+    //     }
+    //     $('.ts-meta').each(function () {
+    //         $(this).removeClass('show');
+    //         if ($(this).data('tsmeta') == tsfilter) {
+    //             $(this).addClass('show');
+    //         }
+    //     });
+    // });
 
 })(jQuery);

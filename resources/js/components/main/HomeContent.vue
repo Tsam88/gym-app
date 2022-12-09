@@ -112,12 +112,12 @@
         <!-- Hero Section End -->
 
         <!-- ChoseUs Section Begin -->
-        <section id="choose-us-section" class="choseus-section spad">
+        <section id="choose-us-section" class="choose-us-section spad">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="section-title">
-                            <span>Why chose us?</span>
+                            <span>Why choose us?</span>
                             <h2>PUSH YOUR LIMITS FORWARD</h2>
                         </div>
                     </div>
@@ -220,7 +220,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="bs-text">
-                            <h2>registration now to get more deals</h2>
+                            <h2>sign up now to get more deals</h2>
                             <div class="bt-tips">Where health, beauty and fitness meet.</div>
                             <a href="/student-calendar#bookings" class="primary-btn  btn-normal">Book your spot</a>
                         </div>
