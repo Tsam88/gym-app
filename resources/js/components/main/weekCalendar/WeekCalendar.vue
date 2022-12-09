@@ -13,8 +13,8 @@
                     <div class="col-lg-12">
                         <div class="table-controls mb-2">
                             <ul class="px-1 py-1">
-                                <li @click="selectClass('all_classes')" class="active pb-1">All classes</li>
-                                <li v-for="gymClassName in gymClassNames" @click="selectClass(gymClassName)">{{gymClassName}}</li>
+                                <li @click="selectClass('all_classes')" class="pb-1" :class="{'active':selectedClass === 'all_classes'}">All classes</li>
+                                <li v-for="gymClassName in gymClassNames" @click="selectClass(gymClassName)" :class="{'active':selectedClass === gymClassName}">{{gymClassName}}</li>
                             </ul>
                         </div>
                     </div>
@@ -68,6 +68,7 @@
                 allWeekDaysPerTime: {},
                 selectedWeekDaysPerTime: [],
                 gymClassNames: [],
+                selectedClass: 'all_classes',
             }
         },
         mounted() {
@@ -85,6 +86,8 @@
         },
         methods: {
             selectClass(className) {
+                this.selectedClass = className;
+
                 // if all classes are selected, then set selectedWeekDaysPerTime equal to allWeekDaysPerTime
                 if (className === 'all_classes') {
                     this.selectedWeekDaysPerTime = this.allWeekDaysPerTime;
