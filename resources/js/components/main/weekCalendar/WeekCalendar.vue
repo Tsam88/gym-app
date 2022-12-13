@@ -37,12 +37,12 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(weekDays, index1) in selectedWeekDaysPerTime">
-                                        <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(selectedWeekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
+                                    <tr v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time)" v-for="(weekDays, index1) in allWeekDaysPerTime">
+                                        <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(allWeekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
                                         <td v-for="(gymClasses, index2) in weekDays.days" :class="[{'dark-bg':(index1%2 === 0 && index2%2 === 0) || (index1%2 !== 0 && index2%2 !== 0)}]">
                                             <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
-                                                <div v-for="gymClass in gymClasses" :class="{'hover-bg': gymClasses.length > 1}">
-<!--                                                    <h5 :style="{color: gymClass.color}">{{gymClass.gym_class_name}}</h5>-->
+                                                <div v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time) && selectedWeekDaysPerTime[weekDays.start_time].includes(gymClass.week_day_id)"
+                                                     v-for="gymClass in gymClasses" class="fade-class" :class="[{'hover-bg': gymClasses.length > 1}]">
                                                     <h5>{{gymClass.gym_class_name}}</h5>
                                                     <span>{{gymClass.teacher}}</span>
                                                 </div>
@@ -66,16 +66,16 @@
         data() {
             return {
                 allWeekDaysPerTime: {},
-                selectedWeekDaysPerTime: [],
+                selectedWeekDaysPerTime: {},
                 gymClassNames: [],
                 selectedClass: 'all_classes',
             }
         },
-        mounted() {
+        created() {
             axios.get('/calendar/week', this.form)
                 .then((results) => {
                     this.allWeekDaysPerTime = results.data['week_calendar'];
-                    this.selectedWeekDaysPerTime = results.data['week_calendar'];
+                    this.selectClass(this.selectedClass);
                     this.gymClassNames = results.data['gym_class_names'];
                 })
                 .catch((error) => {
@@ -87,54 +87,24 @@
         methods: {
             selectClass(className) {
                 this.selectedClass = className;
-
-                // if all classes are selected, then set selectedWeekDaysPerTime equal to allWeekDaysPerTime
-                if (className === 'all_classes') {
-                    this.selectedWeekDaysPerTime = this.allWeekDaysPerTime;
-                    return;
-                }
-
-                // empty selectedWeekDaysPerTime variable so we can build it based on the selected class
-                this.selectedWeekDaysPerTime = [];
-                let weekDaysPerTime = {};
+                this.selectedWeekDaysPerTime = {};
 
                 // for each datetime object (each row in weekly calendar)
                 this.allWeekDaysPerTime.forEach((weekDays, index) => {
-                    // empty weekDaysPerTime variable for every datetime object (every row in weekly calendar)
-                    weekDaysPerTime = {};
-
                     // for each day of the week
                     weekDays.days.forEach((gymClasses, index2) => {
-
                         // for each class in day
                         gymClasses.forEach((gymClass) => {
                             // check if the class is equal to the selected class
-                            if (gymClass.gym_class_name === className) {
-                                // if weekDaysPerTime is empty, then initialize it
-                                if (Object.keys(weekDaysPerTime).length === 0) {
-                                    weekDaysPerTime = {
-                                        'days': [],
-                                        'start_time': weekDays.start_time
-                                    };
-
-                                    // push 7 empty arrays (as the days of the week) to days property
-                                    for (let i = 0; i < 7; i++) {
-                                        weekDaysPerTime.days.push([]);
-                                    }
+                            if (gymClass.gym_class_name === className || className === 'all_classes') {
+                                if (!this.selectedWeekDaysPerTime[weekDays.start_time]) {
+                                    this.selectedWeekDaysPerTime[weekDays.start_time] = [];
                                 }
 
-                                // push gym class
-                                weekDaysPerTime.days[index2].push(gymClass);
+                                this.selectedWeekDaysPerTime[weekDays.start_time].push(gymClass.week_day_id);
                             }
                         });
-
                     });
-
-                    // if there classes based on the selected class, then add them to the weekly calendar
-                    if (Object.keys(weekDaysPerTime).length !== 0) {
-                        this.selectedWeekDaysPerTime.push(weekDaysPerTime);
-                    }
-
                 });
             },
         }

@@ -37,6 +37,7 @@
 
                                 <font-awesome-icon v-if="gym_class.user.has_active_reservation === true" icon="fa-solid fa-circle-check" class="reservation-status reservation-status-reserved"/>
                                 <font-awesome-icon v-else-if="gym_class.user.declined === true" icon="fa-solid fa-circle-xmark" class="reservation-status reservation-status-declined"/>
+                                <font-awesome-icon title="Class is full" v-else-if="gym_class.number_of_reservations === gym_class.number_of_students_limit" icon="fa-solid fa-ban" class="reservation-status reservation-status-declined"/>
                                 <font-awesome-icon v-else icon="fa-regular fa-circle" class="reservation-status color-wave"/>
                             </a>
                         </div>
