@@ -39,7 +39,7 @@
                                     <tbody>
                                     <tr v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time)" v-for="(weekDays, index1) in allWeekDaysPerTime">
                                         <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(allWeekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
-                                        <td v-for="gymClasses in weekDays.days" :class="{'dark-bg':setDarkBackground(Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time)) === true}">
+                                        <td v-for="(gymClasses, index2) in weekDays.days" :class="{'dark-bg':Object.keys(darkBackgroundPerDay).includes(weekDays.start_time) && darkBackgroundPerDay[weekDays.start_time][index2] === true}">
                                             <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
                                                 <div v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time) && selectedWeekDaysPerTime[weekDays.start_time].includes(gymClass.week_day_id)"
                                                      v-for="gymClass in gymClasses" class="fade-class" :class="[{'hover-bg': gymClasses.length > 1}]">
@@ -69,7 +69,7 @@
                 selectedWeekDaysPerTime: {},
                 gymClassNames: [],
                 selectedClass: 'all_classes',
-                darkBackground: false,
+                darkBackgroundPerDay: {},
             }
         },
         created() {
@@ -89,6 +89,8 @@
             selectClass(className) {
                 this.selectedClass = className;
                 this.selectedWeekDaysPerTime = {};
+                this.darkBackgroundPerDay = {};
+                let darkBackground = false;
 
                 // for each datetime object (each row in weekly calendar)
                 this.allWeekDaysPerTime.forEach((weekDays, index) => {
@@ -103,17 +105,24 @@
                                 }
 
                                 this.selectedWeekDaysPerTime[weekDays.start_time].push(gymClass.week_day_id);
+
+                                if (!this.darkBackgroundPerDay[weekDays.start_time]) {
+                                    this.darkBackgroundPerDay[weekDays.start_time] = [];
+
+                                    darkBackground = !darkBackground;
+
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(!darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(!darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(!darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(darkBackground);
+                                    this.darkBackgroundPerDay[weekDays.start_time].push(!darkBackground);
+                                }
                             }
                         });
                     });
                 });
-            },
-            setDarkBackground(changeDarkBackground) {
-                if (changeDarkBackground === true) {
-                    this.darkBackground = !this.darkBackground;
-                }
-
-                return this.darkBackground;
             },
         }
     }
