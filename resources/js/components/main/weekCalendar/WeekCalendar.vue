@@ -39,7 +39,7 @@
                                     <tbody>
                                     <tr v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time)" v-for="(weekDays, index1) in allWeekDaysPerTime">
                                         <td class="class-time" :class="{'no-border-bottom':index1 === Object.keys(allWeekDaysPerTime).length-1}">{{weekDays.start_time}}</td>
-                                        <td v-for="gymClasses in weekDays.days" :class="{'dark-bg':setDarkBackground() === true}">
+                                        <td v-for="gymClasses in weekDays.days" :class="{'dark-bg':setDarkBackground(Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time)) === true}">
                                             <div class="class-height" :class="{'hover-bg': gymClasses.length === 1}">
                                                 <div v-show="Object.keys(selectedWeekDaysPerTime).includes(weekDays.start_time) && selectedWeekDaysPerTime[weekDays.start_time].includes(gymClass.week_day_id)"
                                                      v-for="gymClass in gymClasses" class="fade-class" :class="[{'hover-bg': gymClasses.length > 1}]">
@@ -108,8 +108,10 @@
                     });
                 });
             },
-            setDarkBackground() {
-                this.darkBackground = !this.darkBackground;
+            setDarkBackground(changeDarkBackground) {
+                if (changeDarkBackground === true) {
+                    this.darkBackground = !this.darkBackground;
+                }
 
                 return this.darkBackground;
             },
