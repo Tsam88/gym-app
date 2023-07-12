@@ -18,7 +18,6 @@
 
         <link rel="icon" href="{{ asset('/images/wave_transparent_no_buffer.png') }}"/>
         <title>Wave Fitness Project</title>
-
     </head>
 
     <body>
