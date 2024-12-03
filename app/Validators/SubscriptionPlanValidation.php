@@ -33,7 +33,7 @@ class SubscriptionPlanValidation extends AbstractValidation
             'integer',
             'gte:0',
             'nullable',
-            'prohibited_if:unlimited_sessions, "false"',
+            'prohibited_if:unlimited_sessions, "true"',
         ],
         'number_of_months' => [
             'required',

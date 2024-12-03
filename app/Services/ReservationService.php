@@ -89,6 +89,7 @@ class ReservationService
      *
      * @param array $input Reservation data
      * @param User  $user
+     *
      * @return Reservation
      */
     public function create(array $input, User $user): Reservation
@@ -155,9 +156,8 @@ class ReservationService
             if (!$activeSubscription->unlimited_sessions) {
                 // check if subscription has sessions per week
                 if ($activeSubscription->sessions_per_week) {
-                    $now = Carbon::now('Europe/Athens');
-                    $firstDayOfWeek = $now->startOfWeek(Carbon::MONDAY);
-                    $lastDayOfWeek = $now->endOfWeek(Carbon::SUNDAY);
+                    $firstDayOfWeek = Carbon::parse($data['date'],'Europe/Athens')->startOfWeek(Carbon::MONDAY);
+                    $lastDayOfWeek = Carbon::parse($data['date'],'Europe/Athens')->endOfWeek(Carbon::SUNDAY);
 
                     // count reserved week sessions
                     $reservedWeekSessions = Reservation::whereBetween('date', [$firstDayOfWeek, $lastDayOfWeek])
@@ -169,16 +169,16 @@ class ReservationService
                     if ($reservedWeekSessions >= $activeSubscription->sessions_per_week) {
                         throw new SessionsWeekLimitExceededException();
                     }
+                }
+
+                // check if there are remaining sessions
+                if ($activeSubscription->remaining_sessions > 0) {
+                    // decrease remaining sessions by one
+                    $activeSubscription->remaining_sessions--;
+                    $activeSubscription->save();
                 } else {
-                    // check if there are remaining sessions
-                    if ($activeSubscription->remaining_sessions > 0) {
-                        // decrease remaining sessions by one
-                        $activeSubscription->remaining_sessions--;
-                        $activeSubscription->save();
-                    } else {
-                        // sessions limit has been exceeded
-                        throw new SessionsLimitExceededException();
-                    }
+                    // sessions limit has been exceeded
+                    throw new SessionsLimitExceededException();
                 }
             }
 
@@ -226,15 +226,15 @@ class ReservationService
                 throw new ReservationAlreadyCanceledException();
             }
 
-            // calculate hours between "now" and "reservation date"
+            // calculate the hours between "now" and "reservation date"
             $hoursBeforeReservationDate = $reservationDate->diffInHours($now);
 
-            // calculate hours between "updated_at" and "reservation date"
-            $hoursBeforeReservationUpdatedAt = $reservationDate->diffInHours($reservationUpdatedAt);
+            // calculate the hours between "updated_at" and "now"
+            $hoursClassIsReserved = $now->diffInHours($reservationUpdatedAt);
 
             // check if the hours between "now" and "reservation date" are less than the allowed hours before the reservation date
-            // and the hours between "updated_at" and "reservation date" are less than the allowed hours before the reservation date
-            if ($hoursBeforeReservationDate < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE && $hoursBeforeReservationUpdatedAt < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_UPDATED_AT) {
+            // and the hours between "updated_at" and "now" are more than the allowed hours before the reservation date
+            if ($hoursBeforeReservationDate < Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_DATE && $hoursClassIsReserved > Reservation::ALLOWED_HOURS_TO_CANCEL_BEFORE_RESERVATION_UPDATED_AT) {
                 throw new ReservationCancellationIsNotAllowedException;
             }
 
@@ -247,7 +247,7 @@ class ReservationService
             }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+            if (!$activeSubscription->unlimited_sessions) {
                 $activeSubscription->remaining_sessions++;
                 $activeSubscription->save();
             }
@@ -298,7 +298,7 @@ class ReservationService
             }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+            if (!$activeSubscription->unlimited_sessions) {
                 $activeSubscription->remaining_sessions++;
                 $activeSubscription->save();
             }
@@ -341,7 +341,7 @@ class ReservationService
             }
 
             // increase remaining sessions by one, if subscription is based on remaining_sessions
-            if (!$activeSubscription->unlimited_sessions && !$activeSubscription->sessions_per_week) {
+            if (!$activeSubscription->unlimited_sessions) {
                 $activeSubscription->remaining_sessions++;
                 $activeSubscription->save();
             }

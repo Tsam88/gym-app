@@ -39,7 +39,7 @@
 
                                 <div class="my-3">
                                     <label for="sessions_per_week">Αριθμός επισκέψεων ανά εβδομάδα</label>
-                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" :disabled="this.form.unlimited_sessions === false" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
+                                    <input v-model="form.sessions_per_week" id="sessions_per_week" name="sessions_per_week" :disabled="this.form.unlimited_sessions === true" type="number" min="0" step="1" class="form-control" placeholder="Αριθμός επισκέψεων ανά εβδομάδα">
                                 </div>
 
                                 <div class="my-3">
@@ -151,7 +151,6 @@
             toggleUnlimitedSessionsCheckBox() {
                 if (this.form.unlimited_sessions === true) {
                     this.form.remaining_sessions = null;
-                } else {
                     this.form.sessions_per_week = null;
                 }
             },
