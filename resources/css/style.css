@@ -1238,6 +1238,25 @@ ol {
 	margin-bottom: 30px;
 }
 
+/* Make layout full-height so footer stays at bottom */
+html, body, #app {
+	height: 100%;
+}
+
+.main-home-page {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.home-content {
+	flex: 1 0 auto;
+}
+
+.footer-section {
+	flex-shrink: 0;
+}
+
 .fs-about .fa-logo {
 	margin-bottom: 30px;
 }

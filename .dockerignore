@@ -1,0 +1,15 @@
+vendor
+node_modules
+.env
+.env.local
+.env.*.local
+.phpunit.result.cache
+npm-debug.log*
+yarn-error.log*
+.DS_Store
+.idea
+.vscode
+.git
+.gitignore
+storage/*.key
+docker-compose.override.yml
